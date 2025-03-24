@@ -18,7 +18,7 @@
 + [Miro (Диаграммы см. здесь)]()
 
 ## Документация проекта
-+ Предпроектное исследование [(DOCX)]("")[(PDF)]("")
++ Предпроектное исследование [(DOCX)](https://github.com/Shao-Lin/Music-dating/blob/main/documentation/Предпроектное%20исследование.docx) [(PDF)](https://github.com/Shao-Lin/Music-dating/blob/main/documentation/Предпроектное%20исследование.pdf)
 + Техническое задание [(DOCX)]("")[(PDF)]("")
 
 ## Презентация проекта
