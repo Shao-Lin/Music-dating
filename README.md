@@ -15,7 +15,7 @@
 ## Сервисы командной разработки
 + [Figma](https://www.figma.com/design/ZNCX9T8B8aIeirZFfgory6/Дизайн-приложения?node-id=0-1&t=A3FxiTbCTv6Qw3si-0)
 + [Jira - доска задач](https://dianakr.atlassian.net/jira/software/projects/TPPROJ/boards/3)
-+ [Miro (Диаграммы см. здесь)]()
++ [Miro](https://miro.com/app/board/uXjVIXQqGTw=/)
 
 ## Документация проекта
 + Предпроектное исследование [(DOCX)](https://github.com/Shao-Lin/Music-dating/blob/main/documentation/Предпроектное%20исследование.docx) [(PDF)](https://github.com/Shao-Lin/Music-dating/blob/main/documentation/Предпроектное%20исследование.pdf)
