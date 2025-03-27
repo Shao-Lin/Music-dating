@@ -1,8 +1,8 @@
 # Команда 1, группа 3, курс 3
-### Проект: 
+## 🎵 Проект: 
 Дейтинг-приложение "**Vibe**", объединяющее людей через музыку, сгенерированную ИИ
 
-## Команда 
+## 🤝 Команда 
 - [Диана Кравченко](https://github.com/0dkravchenko0) - PM,team-lead,Аналитик
 - [Давид Черных](https://github.com/vega2475) - Backend developer
 - [Кущенко Артём](https://github.com/Svalbard1) - DevOps 
@@ -27,15 +27,15 @@
 + [Jira - доска задач](https://dianakr.atlassian.net/jira/software/projects/TPPROJ/boards/3)
 + [Miro](https://miro.com/app/board/uXjVIXQqGTw=/)
 
-## Документация проекта
+## 📂 Документация проекта
 + Предпроектное исследование [(DOCX)](https://github.com/Shao-Lin/Music-dating/blob/main/documentation/Предпроектное%20исследование.docx) [(PDF)](https://github.com/Shao-Lin/Music-dating/blob/main/documentation/Предпроектное%20исследование.pdf)
 + Техническое задание [(DOCX)](https://github.com/Shao-Lin/Music-dating/blob/main/documentation/Техническое%20задание.docx) [(PDF)](https://github.com/Shao-Lin/Music-dating/blob/main/documentation/Техническое%20задание.pdf)
 + [Диаграммы](https://github.com/Shao-Lin/Music-dating/tree/main/documentation/Диаграммы)
 + Брендбук [(PDF)](https://github.com/Shao-Lin/Music-dating/blob/main/documentation/Брендбук.pdf)
 
-## Презентация проекта
+## 🖥️ Презентация проекта
 + [Презентация ТЗ](https://github.com/Shao-Lin/Music-dating/blob/main/documentation/Презентация%20Проекта.pptx)
 
-## Видео по проекту
+## 🎥 Видео по проекту
 
-## Чек-листы
+## ✅ Чек-листы
