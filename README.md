@@ -19,7 +19,7 @@
 
 ## Документация проекта
 + Предпроектное исследование [(DOCX)](https://github.com/Shao-Lin/Music-dating/blob/main/documentation/Предпроектное%20исследование.docx) [(PDF)](https://github.com/Shao-Lin/Music-dating/blob/main/documentation/Предпроектное%20исследование.pdf)
-+ Техническое задание [(DOCX)]("")[(PDF)]("")
++ Техническое задание [(DOCX)](https://github.com/Shao-Lin/Music-dating/blob/main/documentation/Техническое%20задание.docx) [(PDF)](https://github.com/Shao-Lin/Music-dating/blob/main/documentation/Техническое%20задание.pdf)
 + [Диаграммы](https://github.com/Shao-Lin/Music-dating/tree/main/documentation/Диаграммы)
 + Брендбук [(PDF)](https://github.com/Shao-Lin/Music-dating/blob/main/documentation/Брендбук.pdf)
 
