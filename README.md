@@ -37,5 +37,5 @@
 + [Презентация ТЗ](https://github.com/Shao-Lin/Music-dating/blob/main/documentation/Презентация%20Проекта.pptx)
 
 ## 🎥 Видео по проекту
-
++ [Видео-презентация проекта](https://rutube.ru/video/private/058c2bd30da10fb4d47675282fce108a/?p=AwybtGvjN346jdHVNj1k1w)
 ## ✅ Чек-листы
