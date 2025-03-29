@@ -25,6 +25,9 @@
 ## 🛠️ Сервисы командной разработки
 + [Figma](https://www.figma.com/design/ZNCX9T8B8aIeirZFfgory6/Дизайн-приложения?node-id=0-1&t=A3FxiTbCTv6Qw3si-0)
 + [Jira - доска задач](https://dianakr.atlassian.net/jira/software/projects/TPPROJ/boards/3)
+Специальный аккаунт для просмотра:
+Логин: baulin-e@bk.ru
+Пароль:  Guest12345
 + [Miro (RoadMap здесь)](https://miro.com/app/board/uXjVIXQqGTw=/)
 + [OPEN-API](https://shao-lin.github.io/Music-dating/docs/api/#/)
 
