@@ -1,0 +1,268 @@
+openapi: 3.0.0
+info:
+  title: Vibe API
+  version: 1.0.0
+  description: API для мобильного дейтинг-приложения Vibe с интеграцией музыкального ИИ.
+
+servers:
+  - url: https://api.vibe-app.com/v1
+
+tags:
+  - name: User API
+    description: Эндпоинты для обычных пользователей приложения.
+  - name: Admin API
+    description: Эндпоинты для администраторов приложения.
+
+paths:
+  /register:
+    post:
+      tags:
+        - User API
+      summary: Регистрация нового пользователя
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - login
+                - password
+                - name
+                - age
+                - gender
+                - city
+                - about
+                - photo
+              properties:
+                login:
+                  type: string
+                password:
+                  type: string
+                name:
+                  type: string
+                age:
+                  type: integer
+                gender:
+                  type: string
+                city:
+                  type: string
+                about:
+                  type: string
+                photo:
+                  type: string
+      responses:
+        '201':
+          description: Пользователь успешно зарегистрирован
+
+  /login:
+    post:
+      tags:
+        - User API
+      summary: Аутентификация пользователя
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - login
+                - password
+              properties:
+                login:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: JWT токен
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+
+  /users/me:
+    get:
+      tags:
+        - User API
+      summary: Получение информации о текущем авторизованном пользователе
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Информация о пользователе
+
+    put:
+      tags:
+        - User API
+      summary: Редактирование информации о себе
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                age:
+                  type: integer
+                gender:
+                  type: string
+                city:
+                  type: string
+                about:
+                  type: string
+      responses:
+        '200':
+          description: Профиль успешно обновлён
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  track1:
+                    type: string
+                    description: Ссылка на первый сгенерированный трек
+                  track2:
+                    type: string
+                    description: Ссылка на второй сгенерированный трек
+                  
+  /users/{userId}:
+    get:
+      tags:
+        - User API
+      summary: Получить информацию о пользователе по его ID
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Информация о пользователе
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  age:
+                    type: integer
+                  gender:
+                    type: string
+                  city:
+                    type: string
+                  about:
+                    type: string
+                  photo:
+                    type: string
+
+  /matches:
+    post:
+      tags:
+        - User API
+      summary: Регистрация нового мэтча
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                targetUserId:
+                  type: string
+      responses:
+        '201':
+          description: Мэтч успешно зарегистрирован
+
+  /matches/list:
+    get:
+      tags:
+        - User API
+      summary: Получить список мэтчей
+      responses:
+        '200':
+          description: Список мэтчей
+
+  /matches/{matchId}:
+    delete:
+      tags:
+        - User API
+      summary: Удалить мэтч
+      parameters:
+        - name: matchId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Удалено
+
+  /admin/users:
+    get:
+      tags:
+        - Admin API
+      summary: Получить список всех пользователей
+      description: Только для администратора.
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Список всех пользователей
+
+  /admin/users/{userId}:
+    delete:
+      tags:
+        - Admin API
+      summary: Удалить пользователя
+      description: Удаляет пользователя по его ID. Только для администратора.
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Пользователь успешно удалён
+
+  /admin/users/{userId}/block:
+    post:
+      tags:
+        - Admin API
+      summary: Заблокировать пользователя
+      description: Блокировка пользователя по ID. Только для администратора.
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Пользователь успешно заблокирован
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+security:
+  - BearerAuth: []
