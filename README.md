@@ -27,7 +27,9 @@
 + [Jira - доска задач](https://dianakr.atlassian.net/jira/software/projects/TPPROJ/boards/3)
 
   Специальный аккаунт для просмотра:
+
   Логин: baulin-e@bk.ru
+
   Пароль:  Guest12345
 
 + [Miro (RoadMap здесь)](https://miro.com/app/board/uXjVIXQqGTw=/)
