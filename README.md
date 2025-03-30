@@ -53,7 +53,7 @@
 
 Нас проверили:
 
-+ 2 группа 2 команда - [(Git)](https://github.com/GoshaNumberOne/escadre.io?tab=readme-ov-file) [(XLSX)]("")
-+ 3 группа 2 команда - [(Git)](https://github.com/dnlksnvv/Trainova) [(XLSX)]("")
-+ 3 группа 4 команда - [(Git)](https://github.com/dnlksnvv/Trainova) [(XLSX)]("")
-+ 10 группа 4 команда - [(Git)](https://github.com/LUFFPUFF/TPProduct) [(XLSX)]("")
++ 2 группа 2 команда - [(Git)](https://github.com/GoshaNumberOne/escadre.io?tab=readme-ov-file) [(PDF)](https://github.com/GoshaNumberOne/escadre.io/blob/main/documentation/Кросс-ревью%20(1%20аттестация).pdf)
++ 3 группа 2 команда - [(Git)](https://github.com/dnlksnvv/Trainova) [(PDF)](https://github.com/dnlksnvv/Trainova/blob/main/docs/оценивание.pdf)
++ 3 группа 4 команда - [(Git)](https://github.com/dnlksnvv/Trainova) [(PDF)](https://github.com/uyrtryu/MindCard/blob/main/Documentation/checklist1atta.pdf)
++ 10 группа 4 команда - [(Git)](https://github.com/LUFFPUFF/TPProduct) [(PDF)](https://github.com/LUFFPUFF/TPProduct/blob/main/Чеклист%201%20этап%20-%20чеклист.pdf)
