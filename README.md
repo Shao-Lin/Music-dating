@@ -49,7 +49,7 @@
 ## 🎥 Видео по проекту
 + [Видео-презентация проекта](https://rutube.ru/video/private/058c2bd30da10fb4d47675282fce108a/?p=AwybtGvjN346jdHVNj1k1w)
 ## ✅ Чек-листы
-+ Чек-лист [(PDF)]("https://github.com/Shao-Lin/Music-dating/blob/main/documentation/ВГУ-ТП.%20Чеклист%201%20этап%203.1%20команда.pdf")
++ Чек-лист [(PDF)](https://github.com/Shao-Lin/Music-dating/blob/main/documentation/ВГУ-ТП.%20Чеклист%201%20этап%203.1%20команда.pdf)
 
 Нас проверили:
 
