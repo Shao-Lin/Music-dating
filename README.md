@@ -53,7 +53,7 @@
 
 Нас проверили:
 
-+ 2 группа 2 команда - [(GitHub)](https://github.com/GoshaNumberOne/escadre.io?tab=readme-ov-file) [(XLSX)]("")
-+ 3 группа 2 команда - [(GitHub)](https://github.com/dnlksnvv/Trainova) [(XLSX)]("")
-+ 3 группа 4 команда - [(GitHub)](https://github.com/dnlksnvv/Trainova) [(XLSX)]("")
-+ 10 группа 4 команда - [(GitHub)](https://github.com/LUFFPUFF/TPProduct) [(XLSX)]("")
++ 2 группа 2 команда - [(Git)](https://github.com/GoshaNumberOne/escadre.io?tab=readme-ov-file) [(XLSX)]("")
++ 3 группа 2 команда - [(Git)](https://github.com/dnlksnvv/Trainova) [(XLSX)]("")
++ 3 группа 4 команда - [(Git)](https://github.com/dnlksnvv/Trainova) [(XLSX)]("")
++ 10 группа 4 команда - [(Git)](https://github.com/LUFFPUFF/TPProduct) [(XLSX)]("")
