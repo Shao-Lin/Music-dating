@@ -49,3 +49,11 @@
 ## 🎥 Видео по проекту
 + [Видео-презентация проекта](https://rutube.ru/video/private/058c2bd30da10fb4d47675282fce108a/?p=AwybtGvjN346jdHVNj1k1w)
 ## ✅ Чек-листы
++ Чек-лист [(PDF)]("")
+
+Нас проверили:
+
++ 2 группа 2 команда - [(GitHub)](https://github.com/GoshaNumberOne/escadre.io?tab=readme-ov-file) [(XLSX)]("")
++ 3 группа 2 команда - [(GitHub)](https://github.com/dnlksnvv/Trainova) [(XLSX)]("")
++ 3 группа 4 команда - [(GitHub)](https://github.com/dnlksnvv/Trainova) [(XLSX)]("")
++ 10 группа 4 команда - [(GitHub)](https://github.com/LUFFPUFF/TPProduct) [(XLSX)]("")
