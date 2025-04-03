@@ -1,0 +1,8 @@
+@use "helpers" as *;
+
+body {
+  font-family: var(--font-family-base);
+  color: var(--color-dark);
+
+  background-color: var(--color-background);
+}
