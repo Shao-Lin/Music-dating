@@ -1,0 +1,25 @@
+@use "helpers" as *;
+
+:root {
+  --color-dark: #1e1e1e;
+
+  --color-light: #ffffff;
+
+  --color-background: #ffe8f4;
+
+  --color-accent: #fe6d87;
+
+  --color-myMessage: #ff9eb0;
+
+  --color-otherMessage: #ffc7e4;
+
+  --font-family-base: "Roboto", sans-serif;
+
+  --font-family-accent: "Emilys Candy", sans-serif;
+
+  --container-width: #{rem(330)};
+
+  --container-padding-x: #{rem(30)};
+
+  --transition-duration: 0.2s;
+}
