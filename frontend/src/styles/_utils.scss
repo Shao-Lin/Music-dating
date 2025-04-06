@@ -1,7 +1,16 @@
 @use "helpers" as *;
 
 .container {
-  max-width: calc(var(--container-width) + var(--container-padding-x) * 2);
-  margin-inline: auto;
-  padding-inline: var(--container-padding-x);
+  // max-width: calc(var(--container-width) + var(--container-padding-x) * 2);
+  // margin-inline: auto;
+  // padding-inline: var(--container-padding-x);
+  display: flex;
+  flex-direction: column;
+  // flex-wrap: wrap;
+}
+
+.margin-30 {
+  margin-left: 30px;
+  margin-right: 30px;
+  padding: 0;
 }

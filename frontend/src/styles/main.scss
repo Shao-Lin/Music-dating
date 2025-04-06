@@ -3,3 +3,9 @@
 @use "variables";
 @use "utils";
 @use "globals";
+
+@use "../components/UI/buttons/classicButton/button";
+@use "blocks/layouts/headerEntryRegister";
+@use "../components/forms/loginForm/loginForm";
+@use "../components/forms/signUpForm/signUpForm";
+@use "blocks/layouts/entryLinks";
