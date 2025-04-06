@@ -10,8 +10,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/material": "^7.0.1",
+    "formik": "^2.4.6",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "react-router": "^7.4.1",
+    "yup": "^1.6.1"
   },
   "devDependencies": {
     "@eslint/create-config": "^1.0.0",
@@ -24,6 +30,7 @@
     "eslint-plugin-react-hooks": "^5.1.0",
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^15.15.0",
+    "sass-embedded": "^1.86.2",
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.29.0",
     "vite": "^6.2.0",

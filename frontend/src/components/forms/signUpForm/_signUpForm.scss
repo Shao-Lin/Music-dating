@@ -1,0 +1,38 @@
+.form-wrapper {
+  max-width: 500px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-title {
+  margin: 0 30px;
+  margin-top: 58px;
+  margin-bottom: 28px;
+  font-size: 36px;
+  text-align: left;
+}
+
+.form-label {
+  margin: 0 50px;
+  margin-bottom: 5px;
+  font-size: 24px;
+  text-align: left;
+}
+
+.form-button {
+  margin: 0 30px;
+  margin-top: 14px;
+  margin-bottom: 37px;
+}
+
+.form-error {
+  color: #d32f2f;
+  font-size: 1rem;
+  line-height: 1.66;
+  margin: 3px 0 0 30px; // как helperText, но с учётом наших отступов
+}

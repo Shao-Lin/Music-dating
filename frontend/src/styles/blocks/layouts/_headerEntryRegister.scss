@@ -1,0 +1,18 @@
+@use "../../helpers/" as *;
+
+.header-vibe-entry {
+  display: flex;
+  color: var(--color-accent);
+  justify-content: center;
+  margin-top: rem(45);
+  font-family: "Emilys Candy";
+  font-size: rem(96);
+}
+.label-entry {
+  font-size: 36px;
+  margin-top: 55px;
+  margin-left: 30px;
+  margin-right: 30px;
+  margin-bottom: 31px;
+  padding: 0;
+}
