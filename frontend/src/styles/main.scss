@@ -6,6 +6,8 @@
 
 @use "../components/UI/buttons/classicButton/button";
 @use "blocks/layouts/headerEntryRegister";
-@use "../components/forms/loginForm/loginForm";
-@use "../components/forms/signUpForm/signUpForm";
 @use "blocks/layouts/entryLinks";
+@use "../components/UI/buttons/imageUploaderButton/imageUploader";
+@use "../styles/blocks/layouts/questionnaireHeader";
+
+@use "./blocks/components/formStyle";

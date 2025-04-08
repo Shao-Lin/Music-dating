@@ -21,6 +21,7 @@ const validationSchema = Yup.object({
 
 export const SignUpForm = () => {
   const [authError, setAuthError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   function fakeLoginRequest(login: string, password: string) {
     throw new Error("Function not implemented.");
   }
@@ -31,6 +32,9 @@ export const SignUpForm = () => {
         initialValues={{ login: "", password: "", confirmPassword: "" }}
         validationSchema={validationSchema}
         onSubmit={async (values, { setSubmitting }) => {
+          setIsLoading(true);
+
+          setIsLoading(false);
           setAuthError(""); // сброс ошибки при новой попытке
           try {
             // Имитация запроса
@@ -73,7 +77,8 @@ export const SignUpForm = () => {
               value={values.login}
               onChange={handleChange}
               onBlur={handleBlur}
-              error={touched.login && errors.login}
+              error={touched.login ? errors.login : ""}
+              placeholder="Введите логин"
             />
 
             <div className="form-label">Пароль</div>
@@ -82,7 +87,7 @@ export const SignUpForm = () => {
               value={values.password}
               onChange={handleChange}
               onBlur={handleBlur}
-              error={touched.password && errors.password}
+              error={touched.password ? errors.password : ""}
             />
             <div className="form-label">Подтверждение пароля</div>
             <PasswordInput
@@ -90,11 +95,11 @@ export const SignUpForm = () => {
               value={values.confirmPassword}
               onChange={handleChange}
               onBlur={handleBlur}
-              error={touched.confirmPassword && errors.confirmPassword}
+              error={touched.confirmPassword ? errors.confirmPassword : ""}
             />
 
             <div className="form-button">
-              <ClassicButton name="Войти" type="submit" />
+              <ClassicButton name="Войти" type="submit" isLoading={isLoading} />
               {authError && <div className="form-error">{authError}</div>}
             </div>
           </form>

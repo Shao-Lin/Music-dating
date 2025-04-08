@@ -14,6 +14,7 @@ const validationSchema = Yup.object({
 
 export const LoginForm = () => {
   const [authError, setAuthError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   function fakeLoginRequest(login: string, password: string) {
     throw new Error("Function not implemented.");
   }
@@ -25,6 +26,10 @@ export const LoginForm = () => {
         validationSchema={validationSchema}
         onSubmit={async (values, { setSubmitting }) => {
           setAuthError(""); // сброс ошибки при новой попытке
+
+          setIsLoading(true);
+
+          //setIsLoading(false)
           try {
             // Имитация запроса
             const response = await fakeLoginRequest(
@@ -66,7 +71,8 @@ export const LoginForm = () => {
               value={values.login}
               onChange={handleChange}
               onBlur={handleBlur}
-              error={touched.login && errors.login}
+              error={touched.login ? errors.login : ""}
+              placeholder="Введите логин"
             />
 
             <div className="form-label">Пароль</div>
@@ -75,11 +81,11 @@ export const LoginForm = () => {
               value={values.password}
               onChange={handleChange}
               onBlur={handleBlur}
-              error={touched.password && errors.password}
+              error={touched.password ? errors.password : ""}
             />
 
             <div className="form-button">
-              <ClassicButton name="Войти" type="submit" />
+              <ClassicButton name="Войти" type="submit" isLoading={isLoading} />
               {authError && <div className="form-error">{authError}</div>}
             </div>
           </form>
