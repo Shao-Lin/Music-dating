@@ -7,6 +7,7 @@ interface ClassicInputProps {
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   onBlur: (e: FocusEvent<HTMLInputElement>) => void;
   error?: string | null;
+  placeholder: string;
 }
 
 export const ClassicInput = ({
@@ -15,17 +16,17 @@ export const ClassicInput = ({
   onChange,
   onBlur,
   error,
+  placeholder,
 }: ClassicInputProps) => {
   return (
     <TextField
       name={name}
-      label="Введите логин"
+      label={placeholder}
       value={value}
       onChange={onChange}
       onBlur={onBlur}
       error={!!error}
       helperText={error}
-      className="input-classic"
       sx={{
         boxShadow: "0 4px 4px 0 rgba(0, 0, 0, 0.25)",
         borderRadius: "50px",
@@ -37,7 +38,7 @@ export const ClassicInput = ({
 
         "& .MuiOutlinedInput-root": {
           borderRadius: "50px",
-          height: "52px",
+          height: "54px",
         },
       }}
     />
