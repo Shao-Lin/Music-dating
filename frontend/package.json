@@ -16,12 +16,16 @@
     "@mui/material": "^7.0.1",
     "@mui/x-date-pickers": "^7.28.3",
     "@mui/x-date-pickers-pro": "^7.28.3",
+    "@reduxjs/toolkit": "^2.6.1",
+    "@types/redux": "^3.6.31",
     "date-fns": "^2.30.0",
     "dayjs": "^1.11.13",
     "formik": "^2.4.6",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-redux": "^9.2.0",
     "react-router": "^7.4.1",
+    "redux": "^5.0.1",
     "yup": "^1.6.1"
   },
   "devDependencies": {

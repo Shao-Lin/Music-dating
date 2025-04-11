@@ -1,5 +1,5 @@
 import { Formik } from "formik";
-import * as Yup from "yup";
+
 import { useState } from "react";
 import { ClassicInput } from "../../UI/inputs/classicInput/ClassicInput";
 import { DateInput } from "../../UI/inputs/dateInput/DateInput";
@@ -8,61 +8,93 @@ import { TextArea } from "../../UI/inputs/textArea/TextArea";
 import { RadioButton } from "../../UI/buttons/radioButton/RadioButton";
 import { ImageUploader } from "../../UI/buttons/imageUploaderButton/ImageUploaderButton";
 import { ClassicButton } from "../../UI/buttons/classicButton/ClassicButton";
-import { CityOption } from "../../UI/inputs/autocompleteInput/AutocompleteInput";
+
+import { useSignupUserMutation } from "../../../api/authApi";
+import { useNavigate } from "react-router";
+import { deleteCredentials } from "../../../slices/authSlice";
+import { useAppDispatch } from "../../../hooks/reduxHook";
+import { validationSchema } from "./validation";
+import { isFetchBaseQueryError } from "../../../utils/errorChecker";
+import { isSerializedError } from "../../../utils/errorChecker";
+import type { FormValues } from "./types";
+import type { SubmitData } from "./types";
 
 export const QuestionnaireForm = () => {
-  const [imageData, setImageData] = useState<string | null>(null);
+  const [, setImagePreview] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [authError, setAuthError] = useState("");
+  const [singUp] = useSignupUserMutation();
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
-  const initialValues = {
+  const initialValues: FormValues = {
     name: "",
-    birthDate: null,
-    city: null as CityOption | null,
-    gender: "",
     about: "",
-    image: null as File | null,
+    birthDate: null,
+    city: null,
+    gender: "",
+    image: null,
   };
 
-  const validationSchema = Yup.object().shape({
-    name: Yup.string().required("Обязательное поле"),
-    birthDate: Yup.date()
-      .nullable()
-      .required("Обязательное поле")
-      .max(new Date(), "Дата рождения не может быть в будущем")
-      .typeError("Введите корректную дату"),
-    city: Yup.object()
-      .shape({
-        label: Yup.string().required(),
-      })
-      .required("Обязательное поле"),
-    gender: Yup.string().required("Обязательное поле"),
-    about: Yup.string()
-      .required("Обязательное поле")
-      .min(50, "Минимум 50 символов"),
-    image: Yup.mixed()
-      .required("Фото обязательно")
-      .test("fileSize", "Размер файла не должен превышать 10 МБ", (value) => {
-        if (!value) return false; // если файл не загружен
-        return (value as File).size <= 10 * 1024 * 1024; // 10MB в байтах
-      })
-      .test("fileType", "Неподдерживаемый формат изображения", (value) => {
-        if (!value) return false;
-        return ["image/jpeg", "image/png", "image/gif"].includes(
-          (value as File).type
-        );
-      }),
-  });
+  const handleSubmit = async (values: FormValues) => {
+    setIsLoading(true);
+    if (
+      !values.city ||
+      !values.city.label ||
+      !values.birthDate ||
+      !values.image
+    ) {
+      console.error("Некорректные данные формы");
+      return;
+    }
+
+    const submitData: SubmitData = {
+      name: values.name,
+      about: values.about,
+      birthDate: values.birthDate,
+      city: values.city.label,
+      gender: values.gender,
+      image: values.image,
+    };
+    try {
+      console.log("Данные формы:", submitData);
+      const response = await singUp(submitData).unwrap();
+      const { token } = response;
+
+      localStorage.setItem("token", token);
+      dispatch(deleteCredentials());
+
+      console.log(`login ${localStorage.getItem("token")}`);
+
+      navigate("/profile");
+    } catch (err) {
+      if (isFetchBaseQueryError(err)) {
+        // Ошибка от сервера
+        if (err.status === 409) {
+          setAuthError("Пользователь уже существует");
+        } else if (err.status === 400) {
+          setAuthError("Некорректный запрос");
+        } else {
+          setAuthError(`Ошибка сервера: ${err.status}`);
+        }
+      } else if (isSerializedError(err)) {
+        // Ошибка сериализации
+        setAuthError(err.message || "Неизвестная ошибка");
+      } else {
+        // Другие ошибки
+        setAuthError("Что-то пошло не так");
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="form-wrapper">
-      <Formik
+      <Formik<FormValues>
         initialValues={initialValues}
         validationSchema={validationSchema}
-        onSubmit={(values) => {
-          setIsLoading(true);
-          console.log("Данные формы:", { ...values, image: imageData });
-          //setIsLoading(false);
-        }}
+        onSubmit={handleSubmit}
       >
         {({
           values,
@@ -83,6 +115,7 @@ export const QuestionnaireForm = () => {
               error={touched.name ? errors.name : ""}
               placeholder="Введите имя"
             />
+
             <div className="form-label">Дата рождения</div>
             <DateInput
               value={values.birthDate}
@@ -100,14 +133,15 @@ export const QuestionnaireForm = () => {
               onBlur={handleBlur}
               error={touched.city ? errors.city : ""}
             />
-            <div className="form-label">О себе</div>
 
+            <div className="form-label">О себе</div>
             <TextArea
               value={values.about}
               onChange={handleChange}
               name="about"
               error={touched.about ? errors.about : ""}
             />
+
             <div className="form-label">Пол</div>
             <RadioButton
               value={values.gender}
@@ -115,19 +149,15 @@ export const QuestionnaireForm = () => {
               error={touched.gender ? errors.gender : ""}
             />
 
+            <div className="form-label">Фото</div>
             <ImageUploader
               onImageUpload={(file, preview) => {
-                setImageData(preview);
+                setImagePreview(preview);
                 setFieldValue("image", file);
               }}
             />
             {touched.image && errors.image && (
-              <div
-                className="form-error"
-                style={{ marginTop: "8px", color: "red" }}
-              >
-                {errors.image}
-              </div>
+              <div className="form-error">{errors.image}</div>
             )}
 
             <div className="form-button">
@@ -136,10 +166,7 @@ export const QuestionnaireForm = () => {
                 name="Отправить"
                 isLoading={isLoading}
               />
-
-              <div className="form-error">
-                {"Ошибка сервера. Повторите попытку позже."}
-              </div>
+              {authError && <div className="form-error">{authError}</div>}
             </div>
           </form>
         )}
