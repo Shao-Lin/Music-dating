@@ -11,3 +11,8 @@
 @use "../styles/blocks/layouts/questionnaireHeader";
 
 @use "./blocks/components/formStyle";
+
+@use "../components/navigation/bottomMenu/bottomMenu";
+@use "../components/userCard/userCard";
+@use "../components/navigation/actionMenu/actionMenu";
+@use "../components/UI/carousel/carousel";
