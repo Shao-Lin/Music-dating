@@ -3,7 +3,10 @@ import * as Yup from "yup";
 import { ClassicInput } from "../../UI/inputs/classicInput/ClassicInput";
 import { PasswordInput } from "../../UI/inputs/passwordInput/PasswordInput";
 import { ClassicButton } from "../../UI/buttons/classicButton/ClassicButton";
+import { useAppDispatch } from "../../../hooks/reduxHook";
 import { useState } from "react";
+import { setCredentials } from "../../../slices/authSlice";
+import { useNavigate } from "react-router";
 
 const validationSchema = Yup.object({
   login: Yup.string()
@@ -19,46 +22,34 @@ const validationSchema = Yup.object({
     .required("Обязательное поле"),
 });
 
+type CredentialsType = {
+  login: string;
+  password: string;
+  confirmPassword: string;
+};
+
 export const SignUpForm = () => {
   const [authError, setAuthError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  function fakeLoginRequest(login: string, password: string) {
-    throw new Error("Function not implemented.");
-  }
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const handleSubmit = (credentials: CredentialsType) => {
+    const { login, password, confirmPassword } = credentials;
+    if (password !== confirmPassword) {
+      setAuthError("Пароли не совпадают");
+      return;
+    }
+    dispatch(setCredentials({ login, password }));
+    setIsLoading(false);
+    navigate("/questionnaire");
+  };
 
   return (
     <div className="form-wrapper">
       <Formik
         initialValues={{ login: "", password: "", confirmPassword: "" }}
         validationSchema={validationSchema}
-        onSubmit={async (values, { setSubmitting }) => {
-          setIsLoading(true);
-
-          setIsLoading(false);
-          setAuthError(""); // сброс ошибки при новой попытке
-          try {
-            // Имитация запроса
-            const response = await fakeLoginRequest(
-              values.login,
-              values.password
-            );
-
-            if (!response.ok) {
-              if (response.status === 401) {
-                setAuthError("Неверный логин или пароль");
-              } else {
-                setAuthError("Ошибка сервера. Повторите попытку позже.");
-              }
-            } else {
-              console.log("Успешный вход");
-              // переход или действия после входа
-            }
-          } catch (error) {
-            setAuthError("Произошла ошибка. Попробуйте позже.");
-          } finally {
-            setSubmitting(false);
-          }
-        }}
+        onSubmit={handleSubmit}
       >
         {({
           values,
