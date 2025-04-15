@@ -1,11 +1,20 @@
 import { Carousel } from "../UI/carousel/Carousel";
-import one from "../../assets/one.png";
-import two from "../../assets/two.png";
-import three from "../../assets/three.png";
-import four from "../../assets/four.png";
-import five from "../../assets/five.png";
+import one from "../../assets/testCarousel/one.png";
+import two from "../../assets/testCarousel/two.png";
+import three from "../../assets/testCarousel/three.png";
+import { AudioButton } from "../UI/buttons/audioButton/AudioButton";
 
 export const UserCard = () => {
-  const photos = [one, two, three, four, five];
-  return <Carousel images={photos} />;
+  const photos = [one, two, three];
+
+  return (
+    <>
+      <Carousel images={photos} />
+      <div className="human-data">
+        <div className="name-age"> Хлоя 26</div>
+        <div className="city">г.Сан-Диего</div>
+      </div>
+      <AudioButton />
+    </>
+  );
 };

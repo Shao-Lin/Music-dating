@@ -1,12 +1,12 @@
 import { useState } from "react";
 import LentMatch from "../../../assets/bottomMenuIcon/LentMatch.png";
 import LentMatchActive from "../../../assets/bottomMenuIcon/LentMatchActive.png";
-import ListChat from "../../../assets/bottomMenuIcon/ListChat.svg";
-import ListChatActive from "../../../assets/bottomMenuIcon/ListChatActive.svg";
+import ListChat from "../../../assets/bottomMenuIcon/ListChat.png";
+import ListChatActive from "../../../assets/bottomMenuIcon/ListChatActive.png";
 import ListYourMatch from "../../../assets/bottomMenuIcon/ListYourMatch.svg";
 import ListYourMatchActive from "../../../assets/bottomMenuIcon/ListYourMatchActive.svg";
-import Profile from "../../../assets/bottomMenuIcon/Profile.svg";
-import ProfileActive from "../../../assets/bottomMenuIcon/ProfileActive.svg";
+import Profile from "../../../assets/bottomMenuIcon/Profile.png";
+import ProfileActive from "../../../assets/bottomMenuIcon/ProfileActive.png";
 import { BottomNavBtn } from "../../UI/buttons/bottomNavBtn/BottomNavBtn";
 export const BottomMenu = () => {
   const [activeIndex, setActiveIndex] = useState(0);
