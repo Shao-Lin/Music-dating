@@ -1,0 +1,48 @@
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+
+  .content {
+    flex: 1; // занимает всё доступное пространство
+  }
+
+  .app-footer {
+    height: 65px;
+    width: 100%;
+    background-color: var(--color-accent);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+  }
+}
+
+.bottom-nav-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 45px;
+    height: 45px;
+    transition: transform 0.2s ease;
+  }
+
+  &:active img {
+    transform: scale(0.95);
+  }
+
+  &.large-left img {
+    width: 60px;
+    height: 60px;
+  }
+
+  &.large-center img {
+    width: 41px;
+    height: 41px;
+  }
+}

@@ -1,12 +1,16 @@
 @use "helpers" as *;
 
 body {
+  display: flex;
+  flex-direction: column;
   font-family: var(--font-family-base);
   color: var(--color-dark);
 
   background-color: var(--color-background);
 }
-
+main {
+  flex-grow: 1;
+}
 a {
   color: var(--color-accent);
   text-decoration: none;

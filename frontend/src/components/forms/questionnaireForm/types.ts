@@ -15,4 +15,6 @@ export type SubmitData = {
   city: string;
   gender: string;
   image: File;
+  login: string;
+  password: string;
 };

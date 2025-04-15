@@ -16,6 +16,7 @@ import { useAppDispatch } from "../../../hooks/reduxHook";
 import { validationSchema } from "./validation";
 import { isFetchBaseQueryError } from "../../../utils/errorChecker";
 import { isSerializedError } from "../../../utils/errorChecker";
+import { useAppSelector } from "../../../hooks/reduxHook";
 import type { FormValues } from "./types";
 import type { SubmitData } from "./types";
 
@@ -35,6 +36,8 @@ export const QuestionnaireForm = () => {
     gender: "",
     image: null,
   };
+  const login = useAppSelector((state) => state.authUsers.login);
+  const password = useAppSelector((state) => state.authUsers.password);
 
   const handleSubmit = async (values: FormValues) => {
     setIsLoading(true);
@@ -42,7 +45,9 @@ export const QuestionnaireForm = () => {
       !values.city ||
       !values.city.label ||
       !values.birthDate ||
-      !values.image
+      !values.image ||
+      !login ||
+      !password
     ) {
       console.error("Некорректные данные формы");
       return;
@@ -55,6 +60,8 @@ export const QuestionnaireForm = () => {
       city: values.city.label,
       gender: values.gender,
       image: values.image,
+      login,
+      password,
     };
     try {
       console.log("Данные формы:", submitData);
