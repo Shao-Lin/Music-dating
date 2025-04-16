@@ -1,0 +1,32 @@
+.spacer-container {
+  min-height: 80px; /* Минимальная высота */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 40px 0; /* Вертикальные отступы */
+  padding-bottom: 35px;
+  height: 100%;
+}
+
+.centered-buttons {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 800px; /* Ограничение ширины */
+  margin: 0 auto;
+  padding: 0 30px; /* Отступы по бокам */
+}
+
+.image-button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.image-button img {
+  height: 100px; /* Размер изображений */
+  width: 100px;
+  object-fit: contain;
+}
