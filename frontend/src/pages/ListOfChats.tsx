@@ -1,8 +1,10 @@
-import { UserCard } from "../components/userCard/UserCard";
+import { ChatItem } from "../components/chatItem/ChatItem";
 export const ListOfChats = () => {
   return (
     <main className="content">
-      <UserCard />
+      <ChatItem />
+      <ChatItem />
+      <ChatItem />
     </main>
   );
 };

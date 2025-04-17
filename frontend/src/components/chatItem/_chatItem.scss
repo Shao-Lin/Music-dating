@@ -1,0 +1,54 @@
+.chat-item {
+  display: flex;
+  align-items: center;
+  height: 90px;
+  width: 100%;
+  padding: 0 30px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  text-align: left; // чтобы текст не был по центру
+  border-bottom: 1px solid #eee;
+  box-sizing: border-box;
+
+  &__avatar {
+    flex-shrink: 0;
+    .MuiAvatar-root {
+      width: 60px !important;
+      height: 60px !important;
+    }
+  }
+
+  &__content {
+    margin-left: 25px;
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  &__name {
+    font-size: 20px;
+    font-family: "Roboto-SemiBold";
+    margin-top: 6px;
+  }
+
+  &__message {
+    font-size: 14px;
+    color: #555;
+    margin-top: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__unread-dot {
+    margin-left: 25px;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background-color: var(--color-accent);
+    flex-shrink: 0;
+  }
+}
