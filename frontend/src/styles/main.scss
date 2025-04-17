@@ -20,3 +20,12 @@
 @use "./../components/UI/buttons/audioButton/audioButton";
 
 @use "../components/UI/selectMatch/selectMatch";
+
+@use "../components/chatItem/chatItem";
+@use "./blocks/layouts/headerChatsAndMatches";
+
+@use "../components/matchItem/matchItem";
+@use "../components/UI/buttons/audioButtonMatchItem/audioButtonMatchItem";
+
+@use "../components/modals/removeMatch";
+@use "./blocks/layouts/mainContent";

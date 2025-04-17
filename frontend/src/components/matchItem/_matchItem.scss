@@ -1,0 +1,62 @@
+.match-item {
+  width: 100%;
+  height: 145px;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-bottom: 1px solid var(--color-accent);
+
+  &__name {
+    font-size: 20px;
+    margin-top: 11px;
+    font-family: "Roboto-SemiBold";
+  }
+
+  &__content {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 0 20px;
+  }
+
+  &__avatar {
+    width: 70px;
+    height: 70px;
+    flex-shrink: 0;
+  }
+
+  &__reject {
+    width: 70px;
+    height: 70px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    button {
+      width: 70px;
+      height: 70px;
+      padding: 0;
+      margin: 0;
+      border: none;
+      background: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      img {
+        width: 70px;
+        height: 70px;
+        object-fit: contain;
+      }
+    }
+  }
+}

@@ -2,7 +2,7 @@ import { UserCard } from "../components/userCard/UserCard";
 import { SelectMatch } from "../components/UI/selectMatch/SelectMatch";
 export const MatchFeed = () => {
   return (
-    <main className="content">
+    <main>
       <UserCard />
       <SelectMatch />
     </main>

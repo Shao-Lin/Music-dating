@@ -39,7 +39,9 @@ export const BottomMenu = () => {
 
   return (
     <div className="app-layout">
-      <Outlet />
+      <div className="content">
+        <Outlet />
+      </div>
 
       <footer className="app-footer">
         {menuItems.map((item, index) => (
