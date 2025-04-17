@@ -1,0 +1,16 @@
+.content-inner {
+  padding-top: 90px; // Отступ под фиксированную шапку
+}
+
+.header-chat-and-Matches {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 99;
+  background-color: var(--color-background);
+  text-align: center;
+  font-size: 64px;
+  font-family: "Emilys Candy";
+  border-bottom: 1px solid #ccc;
+}

@@ -1,11 +1,18 @@
 import { Avatar, Badge, styled } from "@mui/material";
-import a from "../../../assets/aa.png";
+import a from "../../../assets/testAvatar.png";
 
-export const CustomAvatar = () => {
+type AvatarProps = {
+  size: number;
+};
+
+export const CustomAvatar = ({ size = 50 }: AvatarProps) => {
   const StyledBadge = styled(Badge)(({ theme }) => ({
     "& .MuiBadge-badge": {
+      width: 11, // ширина точки
+      height: 11, // высота точки
       backgroundColor: "#FE6D87",
       color: "#FE6D87",
+      borderRadius: "50%",
       boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
       "&::after": {
         position: "absolute",
@@ -37,7 +44,7 @@ export const CustomAvatar = () => {
       anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
       variant="dot"
     >
-      <Avatar alt="Remy Sharp" src={a} />
+      <Avatar alt="Remy Sharp" src={a} sx={{ width: size, height: size }} />
     </StyledBadge>
   );
 };

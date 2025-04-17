@@ -3,7 +3,7 @@ export const ChatItem = () => {
   return (
     <button className="chat-item">
       <div className="chat-item__avatar">
-        <CustomAvatar />
+        <CustomAvatar size={60} />
       </div>
 
       <div className="chat-item__content">

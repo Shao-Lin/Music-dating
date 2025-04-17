@@ -1,8 +1,17 @@
-import { UserCard } from "../components/userCard/UserCard";
+import { MatchItem } from "../components/matchItem/MatchItem";
 export const ListOfMatches = () => {
   return (
     <main className="content">
-      <UserCard />
+      <div className="content-inner">
+        <div className="header-chat-and-Matches">Vibe</div>
+        <MatchItem />
+        <MatchItem />
+        <MatchItem />
+        <MatchItem />
+        <MatchItem />
+        <MatchItem />
+        <MatchItem />
+      </div>
     </main>
   );
 };

@@ -3,7 +3,7 @@ import { UserCard } from "../components/userCard/UserCard";
 import { ActionMenu } from "../components/navigation/actionMenu/ActionMenu";
 export const Profile = () => {
   return (
-    <main className="content">
+    <main>
       <UserCard />
       <ActionMenu />
     </main>
