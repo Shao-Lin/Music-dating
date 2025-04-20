@@ -57,3 +57,8 @@
 + 3 группа 2 команда - [(Git)](https://github.com/dnlksnvv/Trainova) [(PDF)](https://github.com/dnlksnvv/Trainova/blob/main/docs/оценивание.pdf)
 + 3 группа 4 команда - [(Git)](https://github.com/dnlksnvv/Trainova) [(PDF)](https://github.com/uyrtryu/MindCard/blob/main/Documentation/checklist1atta.pdf)
 + 10 группа 4 команда - [(Git)](https://github.com/LUFFPUFF/TPProduct) [(PDF)](https://github.com/LUFFPUFF/TPProduct/blob/main/Чеклист%201%20этап%20-%20чеклист.pdf)
+
+## 📝 Отчеты PM
+
++ [Отчет за 31.03-06.04](https://github.com/Shao-Lin/Music-dating/blob/dev/documentation/Отчет%20за%2031.03-06.04.pdf)
++ [Отчет за 07.04-13.04](https://github.com/Shao-Lin/Music-dating/blob/dev/documentation/Отчет%20за%2007.04-13.04.pdf)
