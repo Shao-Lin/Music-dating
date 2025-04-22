@@ -1,4 +1,4 @@
-name: 🚀 Deploy Frontend (TPPROJ-21)
+name: Deploy Frontend (TPPROJ-21)
 
 on:
   push:
@@ -8,16 +8,15 @@ on:
 
 jobs:
   deploy:
-    name: Deploy Frontend to Server
     runs-on: ubuntu-latest
 
     steps:
-      - name: 🔄 Checkout code
+      - name: ⬇️ Checkout code
         uses: actions/checkout@v4
         with:
           ref: TPPROJ-21
 
-      - name: 🛠 Setup Node.js
+      - name: ⚙️ Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18.x'
@@ -26,9 +25,18 @@ jobs:
         working-directory: ./frontend
         run: npm ci --legacy-peer-deps
 
-      - name: 🏗 Build project
+      - name: 🛠️ Build project
         working-directory: ./frontend
         run: npm run build
+
+      - name: 🧹 Clean target directory on server
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            rm -rf /home/deployer/music-dating/frontend/*
 
       - name: 🚚 Deploy files to Server
         uses: appleboy/scp-action@v0.1.3
@@ -36,10 +44,7 @@ jobs:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "frontend/dist/**"
+          source: "frontend/dist/*"
           target: "/home/deployer/music-dating/frontend"
-          rm: true
+          rm: false
           overwrite: true
-          debug: true
-          tar_tmp_path: "/tmp" # явно указать путь на сервере
-    
