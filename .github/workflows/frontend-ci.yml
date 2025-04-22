@@ -1,0 +1,39 @@
+name: Deploy Frontend (TPPROJ-21)
+
+on:  # Этот раздел ОБЯЗАТЕЛЕН!
+  push:
+    branches: [TPPROJ-21]  # Запуск только для вашей ветки
+    paths:
+      - 'frontend/**'      # Триггер при изменении файлов фронтенда
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: TPPROJ-21  # Явное указание ветки
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18.x'
+
+      - name: Install dependencies
+        working-directory: ./frontend
+        run: npm ci
+
+      - name: Build project
+        working-directory: ./frontend
+        run: npm run build
+
+      - name: Deploy files
+        uses: appleboy/scp-action@v0.1.3
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: "frontend/dist/*"
+          target: "/home/deployer/music-dating/frontend"
