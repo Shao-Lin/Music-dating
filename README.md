@@ -40,7 +40,7 @@
 + Техническое задание [(DOCX)](https://github.com/Shao-Lin/Music-dating/blob/main/documentation/Техническое%20задание.docx) [(PDF)](https://github.com/Shao-Lin/Music-dating/blob/main/documentation/Техническое%20задание.pdf)
 + [Диаграммы](https://github.com/Shao-Lin/Music-dating/tree/main/documentation/Диаграммы)
 + Брендбук [(PDF)](https://github.com/Shao-Lin/Music-dating/blob/main/documentation/Брендбук.pdf)
-+ Инструкция по коммитам [(PDF)](https://github.com/Shao-Lin/Music-dating/blob/main/documentation/Инструкция%20по%20коммитам%20для%20разработчиков.pdf)
++ Инструкция по коммитам [(PDF)](https://github.com/Shao-Lin/Music-dating/blob/dev/documentation/Инструкция%20по%20коммитам%20для%20разработчиков.pdf)
 + [SWOT-анализ](https://github.com/Shao-Lin/Music-dating/blob/main/documentation/SWOT%20анализ.jpeg)
 
 ## 🖥️ Презентация проекта
