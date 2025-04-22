@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 
 type CodeInputProps = {
-  onComplete?: (code: string) => void; // callback, когда все 4 цифры введены
+  onComplete?: (code: string) => boolean; // callback, когда все 4 цифры введены
 };
 
 export const CodeInput = ({ onComplete }: CodeInputProps) => {
@@ -25,8 +25,10 @@ export const CodeInput = ({ onComplete }: CodeInputProps) => {
     // если код полный, вызываем onComplete
     const fullCode = newCode.join("");
     if (fullCode.length === 4 && !newCode.includes("")) {
-      onComplete?.(fullCode);
-      setError("Неверный код. Попробуйте снова.");
+      const success = onComplete?.(fullCode);
+      if (!success) {
+        setError("Неверный код. Попробуйте снова.");
+      }
     }
   };
 

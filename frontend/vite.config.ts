@@ -1,6 +1,7 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { ManifestOptions, VitePWA } from "vite-plugin-pwa";
+import { qrcode } from "vite-plugin-qrcode";
 
 // https://vite.dev/config/
 
@@ -36,7 +37,11 @@ const manifest: Partial<ManifestOptions> | false = {
   short_name: "Vibe",
 };
 export default defineConfig({
+  server: {
+    host: "0.0.0.0", // разрешаем доступ со всех IP
+  },
   plugins: [
+    qrcode(),
     react(),
     VitePWA({
       registerType: "autoUpdate",
