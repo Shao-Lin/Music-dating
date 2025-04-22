@@ -30,6 +30,16 @@ jobs:
         working-directory: ./frontend
         run: npm run build
 
+      - name: 🧹 Clean target directory (optional)
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            rm -rf /home/deployer/music-dating/frontend/*
+            mkdir -p /home/deployer/music-dating/frontend
+
       - name: 🚚 Deploy files to Server
         uses: appleboy/scp-action@v0.1.3
         with:
@@ -37,9 +47,9 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: "frontend/dist/*"
-          target: "/home/deployer/music-dating/frontend/dist"
+          target: "/home/deployer/music-dating/frontend/"
+          strip_components: 1  # Удалить первый уровень директории (dist)
           rm: true
           overwrite: true
           debug: true
-          tar_tmp_path: "/tmp" # явно указать путь на сервере
-    
+          tar_tmp_path: "/tmp"
