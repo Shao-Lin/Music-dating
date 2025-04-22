@@ -36,5 +36,10 @@ jobs:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "frontend/dist/*"
+          source: "frontend/dist/**"
           target: "/home/deployer/music-dating/frontend"
+          rm: true
+          overwrite: true
+          debug: true
+          tar_tmp_path: "/tmp" # явно указать путь на сервере
+    
