@@ -1,45 +1,45 @@
-name: Deploy Frontend
+# name: Deploy Frontend
 
-on:
-  push:
-    branches: [TPPROJ-21, dev]
-    paths:
-      - 'frontend/**'
+# on:
+#   push:
+#     branches: [TPPROJ-21, dev]
+#     paths:
+#       - 'frontend/**'
 
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@v4
+#     steps:
+#       - uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18.x'
+#       - name: Setup Node.js
+#         uses: actions/setup-node@v4
+#         with:
+#           node-version: '18.x'
 
-      - name: Install Dependencies
-        working-directory: ./frontend
-        run: npm ci
+#       - name: Install Dependencies
+#         working-directory: ./frontend
+#         run: npm ci
 
-      - name: Build Project
-        working-directory: ./frontend
-        run: npm run build
+#       - name: Build Project
+#         working-directory: ./frontend
+#         run: npm run build
 
-      - name: Deploy Files
-        uses: appleboy/scp-action@v0.1.3
-        with:
-          host: ${{ secrets.SERVER_IP }}  
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "frontend/dist/*"
-          target: "/home/deployer/music-dating/frontend"
+#       - name: Deploy Files
+#         uses: appleboy/scp-action@v0.1.3
+#         with:
+#           host: ${{ secrets.SERVER_IP }}  
+#           username: ${{ secrets.SSH_USER }}
+#           key: ${{ secrets.SSH_PRIVATE_KEY }}
+#           source: "frontend/dist/*"
+#           target: "/home/deployer/music-dating/frontend"
 
-      - name: Refresh Nginx
-        uses: appleboy/ssh-action@v1.0.0
-        with:
-          host: ${{ secrets.SERVER_IP }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            docker exec music-dating_frontend_1 nginx -s reload
+#       - name: Refresh Nginx
+#         uses: appleboy/ssh-action@v1.0.0
+#         with:
+#           host: ${{ secrets.SERVER_IP }}
+#           username: ${{ secrets.SSH_USER }}
+#           key: ${{ secrets.SSH_PRIVATE_KEY }}
+#           script: |
+#             docker exec music-dating_frontend_1 nginx -s reload
