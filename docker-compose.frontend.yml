@@ -2,9 +2,9 @@ version: '3.9'
 
 services:
   frontend:
-    build: ./frontend  =
+    image: nginx:alpine
+    volumes:
+      - ./frontend/dist:/usr/share/nginx/html
     ports:
       - "80:80"
-    volumes:
-      - ./frontend/dist:/usr/share/nginx/html  =
     restart: unless-stopped
