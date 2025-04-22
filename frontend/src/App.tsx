@@ -7,6 +7,7 @@ import { BottomMenu } from "./components/navigation/bottomMenu/BottomMenu";
 import { MatchFeed } from "./pages/MatchFeed";
 import { ListOfChats } from "./pages/ListOfChats";
 import { ListOfMatches } from "./pages/ListOfMatches";
+import { InputCode } from "./pages/InputCodePage";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signUp" element={<SignUpPage />} />
+        <Route path="/inputCode" element={<InputCode />} />
         <Route path="/questionnaire" element={<QuestionnairePage />} />
 
         <Route path="/" element={<BottomMenu />}>

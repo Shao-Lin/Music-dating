@@ -29,3 +29,6 @@
 
 @use "../components/modals/removeMatch";
 @use "./blocks/layouts/mainContent";
+
+@use "./blocks/layouts/headerInputCode";
+@use "../components/UI/inputs/codeInput/codeInput";
