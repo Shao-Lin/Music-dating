@@ -1,35 +1,36 @@
-name: Deploy Frontend (TPPROJ-21)
+name: 🚀 Deploy Frontend (TPPROJ-21)
 
-on:  # Этот раздел ОБЯЗАТЕЛЕН!
+on:
   push:
-    branches: [TPPROJ-21]  # Запуск только для вашей ветки
+    branches: [TPPROJ-21]
     paths:
-      - 'frontend/**'      # Триггер при изменении файлов фронтенда
+      - 'frontend/**'
 
 jobs:
   deploy:
+    name: Deploy Frontend to Server
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: 🔄 Checkout code
         uses: actions/checkout@v4
         with:
-          ref: TPPROJ-21  # Явное указание ветки
+          ref: TPPROJ-21
 
-      - name: Setup Node.js
+      - name: 🛠 Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18.x'
 
-      - name: Install dependencies
+      - name: 📦 Install dependencies
         working-directory: ./frontend
         run: npm ci
 
-      - name: Build project
+      - name: 🏗 Build project
         working-directory: ./frontend
         run: npm run build
 
-      - name: Deploy files
+      - name: 🚚 Deploy files to Server
         uses: appleboy/scp-action@v0.1.3
         with:
           host: ${{ secrets.SERVER_IP }}
