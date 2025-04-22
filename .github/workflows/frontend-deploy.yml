@@ -36,8 +36,8 @@ jobs:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "frontend/dist/**"
-          target: "/home/deployer/music-dating/frontend"
+          source: "frontend/dist/*"
+          target: "/home/deployer/music-dating/frontend/dist"
           rm: true
           overwrite: true
           debug: true
