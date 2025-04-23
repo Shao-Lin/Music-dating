@@ -4,21 +4,18 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --host",
+    "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
   "dependencies": {
-    "@date-io/date-fns": "^3.0.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@mui/material": "^7.0.1",
-    "@mui/x-date-pickers": "^7.28.3",
-    "@mui/x-date-pickers-pro": "^7.28.3",
     "@reduxjs/toolkit": "^2.6.1",
     "@types/redux": "^3.6.31",
-    "date-fns": "^2.30.0",
+    "antd": "^5.24.8",
     "dayjs": "^1.11.13",
     "formik": "^2.4.6",
     "lucide-react": "^0.487.0",
