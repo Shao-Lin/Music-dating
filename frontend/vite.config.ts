@@ -6,7 +6,7 @@ import { ManifestOptions, VitePWA } from "vite-plugin-pwa";
 
 const manifest: Partial<ManifestOptions> | false = {
   theme_color: "#8936FF",
-  background_color: "#8936FF", //#2EC6FE
+  background_color: "#2EC6FE", 
   icons: [
     {
       purpose: "maskable",
