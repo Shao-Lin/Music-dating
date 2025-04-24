@@ -42,11 +42,8 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            # Удаляем старый билд
             echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S rm -rf /home/deployer/music-dating/frontend/dist
-            # Создаём чистую папку dist
             echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S mkdir -p /home/deployer/music-dating/frontend/dist
-            # Назначаем права
             echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S chown -R deployer:deployer /home/deployer/music-dating/frontend/dist
 
       - name: 🚚 Deploy build to Server (into dist)
@@ -57,7 +54,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: "frontend/dist/*"
           target: "/home/deployer/music-dating/frontend/dist/"
-          strip_components: 1
+          strip_components: 2
           overwrite: true
           tar_tmp_path: "/tmp"
 
