@@ -1,7 +1,7 @@
 name: 🚀 Deploy Frontend (dev)
 
 on:
-  pull_request:
+  push:
     branches: [dev]
     paths:
       - 'frontend/**'
@@ -15,14 +15,12 @@ jobs:
       - name: 🔄 Checkout code
         uses: actions/checkout@v4
         with:
-          ref: dev  
+          ref: dev
 
       - name: 🛠 Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18.x'
-          cache: 'npm'
-          cache-dependency-path: frontend/package-lock.json
 
       - name: 📦 Install dependencies
         working-directory: ./frontend
@@ -30,9 +28,9 @@ jobs:
 
       - name: 🏗 Build project
         working-directory: ./frontend
-        run: npm run build
+        run: npm run build 
 
-      - name: 🐳 Rebuild Docker containers
+      - name: 🧹 Clean target directory (optional)
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.SERVER_IP }}
@@ -44,7 +42,7 @@ jobs:
             rm -rf frontend/*
             docker system prune -af
             docker-compose -f docker-compose.frontend.yml up -d --build --force-recreate
-            sleep 15  # Даем время контейнеру инициализироваться
+            sleep 15
 
       - name: 🚚 Deploy files to Server
         uses: appleboy/scp-action@v0.1.3
@@ -54,16 +52,8 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: "frontend/dist/*"
           target: "/home/deployer/music-dating/frontend/"
-          strip_components: 1
+          strip_components: 1  
+          rm: true
           overwrite: true
           debug: true
-
-      - name: 🔍 Verify Deployment
-        uses: appleboy/ssh-action@v1.0.0
-        with:
-          host: ${{ secrets.SERVER_IP }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            docker ps -a
-            docker logs music-dating_frontend_1
+          tar_tmp_path: "/tmp"
