@@ -1,0 +1,55 @@
+name: 🚀 Deploy Frontend (TPPROJ-21)
+
+on:
+  push:
+    branches: [dev]
+    paths:
+      - 'frontend/**'
+
+jobs:
+  deploy:
+    name: Deploy Frontend to Server
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🔄 Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: TPPROJ-21
+
+      - name: 🛠 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18.x'
+
+      - name: 📦 Install dependencies
+        working-directory: ./frontend
+        run: npm ci
+
+      - name: 🏗 Build project
+        working-directory: ./frontend
+        run: npm run build
+
+      - name: 🧹 Clean target directory (optional)
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            rm -rf /home/deployer/music-dating/frontend/*
+            mkdir -p /home/deployer/music-dating/frontend
+
+      - name: 🚚 Deploy files to Server
+        uses: appleboy/scp-action@v0.1.3
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: "frontend/dist/*"
+          target: "/home/deployer/music-dating/frontend/"
+          strip_components: 1  
+          rm: true
+          overwrite: true
+          debug: true
+          tar_tmp_path: "/tmp"
