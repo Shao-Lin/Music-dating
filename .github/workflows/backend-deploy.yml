@@ -2,7 +2,7 @@ name: Deploy Backend
 
 on:
   push:
-    branches: [TPPROJ-21, devg]
+    branches: [TPPROJ-21]
     paths:
       - 'backend/**'
 
@@ -13,10 +13,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up JDK 17
+      - name: Set up JDK 21
         uses: actions/setup-java@v3
         with:
-          java-version: '17'
+          java-version: '21'
           distribution: 'temurin'  # Исправлено: добавлен обязательный параметр
 
       - name: Build with Gradle
