@@ -35,22 +35,25 @@ jobs:
         working-directory: ./frontend
         run: npm run build
 
-      - name: 🧹 Clean target directory (SSH as root)
+      - name: 🧹 Clean target directory (SSH + sudo -S)
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.SERVER_IP }}
-          username: root
+          username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            rm -rf /home/deployer/music-dating/frontend/*
-            mkdir -p /home/deployer/music-dating/frontend
-            chown -R deployer:deployer /home/deployer/music-dating/frontend
+            # удаляем старые файлы
+            echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S rm -rf /home/deployer/music-dating/frontend/*
+            # создаём каталог заново
+            echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S mkdir -p /home/deployer/music-dating/frontend
+            # меняем владельца на deployer
+            echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S chown -R deployer:deployer /home/deployer/music-dating/frontend
 
       - name: 🚚 Deploy files to Server
         uses: appleboy/scp-action@v0.1.3
         with:
           host: ${{ secrets.SERVER_IP }}
-          username: root
+          username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: "frontend/dist/*"
           target: "/home/deployer/music-dating/frontend/"
@@ -58,21 +61,22 @@ jobs:
           overwrite: true
           tar_tmp_path: "/tmp"
 
-      - name: 🔄 Restart Services (SSH as root)
+      - name: 🔄 Restart Services (SSH + sudo -S)
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.SERVER_IP }}
-          username: root
+          username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd /home/deployer/music-dating
-            # Перезапускаем только фронтенд-контейнер
+
+            # Docker Compose — без sudo, если ваш пользователь в docker-группе
             docker-compose -f docker-compose.frontend.yml down
             docker-compose -f docker-compose.frontend.yml up -d --build
 
-            # (Опционально) если вместо Docker Compose у вас systemd:
-            # systemctl restart nginx
-            # systemctl restart frontend.service
+            # Если нужны sudo для systemd/nginx — передаём пароль через stdin
+            echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S systemctl restart nginx
+            echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S systemctl restart frontend.service
 
             # Проверка доступности
             sleep 15
@@ -83,7 +87,7 @@ jobs:
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.SERVER_IP }}
-          username: root
+          username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             docker logs music-dating_frontend_1 2>&1 | tail -n 100
