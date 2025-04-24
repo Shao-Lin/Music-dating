@@ -2,7 +2,7 @@ name: 🚀 Deploy Frontend (dev)
 
 on:
   push:
-    branches: [TPPROJ-21]
+    branches: [tpproj-21]
     paths:
       - 'frontend/**'
 
@@ -15,7 +15,7 @@ jobs:
       - name: 🔄 Checkout code
         uses: actions/checkout@v4
         with:
-          ref: TPPROJ-21
+          ref: tpproj-21
 
       - name: 🛠 Setup Node.js
         uses: actions/setup-node@v4
@@ -37,8 +37,12 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            rm -rf /home/deployer/music-dating/frontend/*
-            mkdir -p /home/deployer/music-dating/frontend
+            cd /home/deployer/music-dating
+            docker-compose -f docker-compose.frontend.yml down --volumes --remove-orphans
+            rm -rf frontend/*
+            docker system prune -af
+            docker-compose -f docker-compose.frontend.yml up -d --build --force-recreate
+            sleep 15
 
       - name: 🚚 Deploy files to Server
         uses: appleboy/scp-action@v0.1.3
