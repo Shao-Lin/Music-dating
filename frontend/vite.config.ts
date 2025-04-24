@@ -26,7 +26,7 @@ const manifest: Partial<ManifestOptions> | false = {
     {
       src: "/frontend/public/Mobile.png",
       type: "image/png",
-      sizes: "270x578", 
+      sizes: "265x578", 
       form_factor: "narrow",
     },
   ],
