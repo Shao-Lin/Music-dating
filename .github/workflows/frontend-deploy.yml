@@ -2,7 +2,7 @@ name: 🚀 Deploy Frontend (TPPROJ-21)
 
 on:
   push:
-    branches: [TPPROJ-21]
+    branches: [dev]
     paths:
       - 'frontend/**'
 
@@ -48,7 +48,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: "frontend/dist/*"
           target: "/home/deployer/music-dating/frontend/"
-          strip_components: 1  # Удалить первый уровень директории (dist)
+          strip_components: 1  
           rm: true
           overwrite: true
           debug: true
