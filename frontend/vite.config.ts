@@ -6,8 +6,8 @@ import { qrcode } from "vite-plugin-qrcode";
 // https://vite.dev/config/
 
 const manifest: Partial<ManifestOptions> | false = {
-  theme_color: "#2EC6FE",
-  background_color: "#2EC6FE", //2EC6FE
+  theme_color: "#8936FF",
+  background_color: "#2EC6FE", 
   icons: [
     {
       purpose: "maskable",
