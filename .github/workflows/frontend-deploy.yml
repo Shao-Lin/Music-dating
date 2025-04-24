@@ -2,7 +2,7 @@ name: 🚀 Deploy Frontend (dev)
 
 on:
   push:
-    branches: [tpproj-21]
+    branches: [dev]
     paths:
       - 'frontend/**'
 
@@ -15,7 +15,7 @@ jobs:
       - name: 🔄 Checkout code
         uses: actions/checkout@v4
         with:
-          ref: tpproj-21
+          ref: dev
           fetch-depth: 0
 
       - name: 🛠 Setup Node.js
