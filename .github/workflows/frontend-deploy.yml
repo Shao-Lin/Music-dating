@@ -35,33 +35,33 @@ jobs:
         working-directory: ./frontend
         run: npm run build
 
-      - name: 🧹 Clean target directory (SSH + sudo -S)
+      - name: 🧹 Clean target dist directory (SSH + sudo -S)
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            # удаляем старые файлы
-            echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S rm -rf /home/deployer/music-dating/frontend/*
-            # создаём каталог заново
-            echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S mkdir -p /home/deployer/music-dating/frontend
-            # меняем владельца на deployer
-            echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S chown -R deployer:deployer /home/deployer/music-dating/frontend
+            # Удаляем старый билд
+            echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S rm -rf /home/deployer/music-dating/frontend/dist
+            # Создаём чистую папку dist
+            echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S mkdir -p /home/deployer/music-dating/frontend/dist
+            # Назначаем права
+            echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S chown -R deployer:deployer /home/deployer/music-dating/frontend/dist
 
-      - name: 🚚 Deploy files to Server
+      - name: 🚚 Deploy build to Server (into dist)
         uses: appleboy/scp-action@v0.1.3
         with:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: "frontend/dist/*"
-          target: "/home/deployer/music-dating/frontend/"
+          target: "/home/deployer/music-dating/frontend/dist/"
           strip_components: 1
           overwrite: true
           tar_tmp_path: "/tmp"
 
-      - name: 🔄 Restart Services (SSH + sudo -S)
+      - name: 🔄 Restart Frontend Container (SSH)
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.SERVER_IP }}
@@ -69,18 +69,8 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd /home/deployer/music-dating
-
-            # Docker Compose — без sudo, если ваш пользователь в docker-группе
             docker-compose -f docker-compose.frontend.yml down
             docker-compose -f docker-compose.frontend.yml up -d --build
-
-            # Если нужны sudo для systemd/nginx — передаём пароль через stdin
-            echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S systemctl restart nginx
-            echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S systemctl restart frontend.service
-
-            # Проверка доступности
-            sleep 15
-            curl -I http://localhost:3000 || exit 1
 
       - name: 📜 Check Logs on Failure
         if: ${{ failure() }}
@@ -90,5 +80,4 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            docker logs music-dating_frontend_1 2>&1 | tail -n 100
-            journalctl -u nginx --since "5 minutes ago" | tail -n 50
+            docker-compose -f docker-compose.frontend.yml logs --tail=100
