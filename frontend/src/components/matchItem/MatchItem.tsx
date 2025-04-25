@@ -3,7 +3,16 @@ import { AudioButton } from "../UI/buttons/audioButtonMatchItem/AudioButtonMatch
 import dislike from "../../assets/dislike.png";
 import { RemoveMatch } from "../modals/RemoveMatch";
 import { useState } from "react";
-export const MatchItem = () => {
+import { MatchItemType } from "./matchItemType";
+import { useDeleteMatchMutation } from "../../api/matchesApi";
+
+type Props = {
+  item: MatchItemType; // Явно указываем, что ожидаем пропс `item`
+};
+export const MatchItem = ({ item }: Props) => {
+  const { id, name, avatar, online, music } = item;
+
+  const [deleteMatch] = useDeleteMatchMutation();
   const onClick = () => {
     console.log("111");
   };
@@ -14,9 +23,15 @@ export const MatchItem = () => {
     setIsModalOpen(true);
   };
 
-  const handleDelete = () => {
-    console.log("Удалить");
-    setIsModalOpen(false);
+  const handleDelete = async () => {
+    try {
+      await deleteMatch(id).unwrap();
+      console.log("Удалить");
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsModalOpen(false);
+    }
   };
 
   const handleClose = () => {
@@ -25,14 +40,14 @@ export const MatchItem = () => {
   return (
     <>
       <div className="match-item">
-        <div className="match-item__name">Анастасия</div>
+        <div className="match-item__name">{name}</div>
 
         <div className="match-item__content">
           <div className="match-item__avatar" onClick={onClick}>
-            <CustomAvatar size={70} />
+            <CustomAvatar avatar={avatar} online={online} size={70} />
           </div>
 
-          <AudioButton />
+          <AudioButton {...music} />
 
           <div className="match-item__reject">
             <button onClick={handleRejectClick}>

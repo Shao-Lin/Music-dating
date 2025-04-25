@@ -6,16 +6,8 @@ import { ClassicButton } from "../../UI/buttons/classicButton/ClassicButton";
 import { useState } from "react";
 import { useLoginUserMutation } from "../../../api/authApi";
 import { useNavigate } from "react-router";
-import type { SerializedError } from "@reduxjs/toolkit";
-
-function isFetchBaseQueryError(
-  error: unknown
-): error is { status: number; data: unknown } {
-  return typeof error === "object" && error !== null && "status" in error;
-}
-function isSerializedError(error: unknown): error is SerializedError {
-  return typeof error === "object" && error !== null && "message" in error;
-}
+import { isFetchBaseQueryError } from "../../../utils/errorChecker";
+import { isSerializedError } from "../../../utils/errorChecker";
 
 const validationSchema = Yup.object({
   login: Yup.string()
