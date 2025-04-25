@@ -7,6 +7,8 @@ import { useAppDispatch } from "../../../hooks/reduxHook";
 import { useState } from "react";
 import { setCredentials } from "../../../slices/authSlice";
 import { useNavigate } from "react-router";
+import { useSendingEmailMutation } from "../../../api/authApi";
+import { isFetchBaseQueryError } from "../../../utils/errorChecker";
 
 const validationSchema = Yup.object({
   login: Yup.string()
@@ -29,19 +31,41 @@ type CredentialsType = {
 };
 
 export const SignUpForm = () => {
-  const [authError, setAuthError] = useState("");
+  const [sendEmailError, setSendEmailError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const handleSubmit = (credentials: CredentialsType) => {
+  const [sendingEmail] = useSendingEmailMutation();
+
+  const handleSubmit = async (credentials: CredentialsType) => {
     const { login, password, confirmPassword } = credentials;
     if (password !== confirmPassword) {
-      setAuthError("Пароли не совпадают");
+      setSendEmailError("Пароли не совпадают");
       return;
     }
-    dispatch(setCredentials({ login, password }));
-    setIsLoading(false);
-    navigate("/questionnaire");
+
+    try {
+      setIsLoading(true);
+      await sendingEmail(login).unwrap(); // важно!
+      dispatch(setCredentials({ login, password }));
+      navigate("/inputCode");
+    } catch (error) {
+      if (isFetchBaseQueryError(error)) {
+        if ("status" in error) {
+          // Пример если API вернул JSON: { message: "Email не найден" }
+          const errData = error.data as { message?: string };
+          setSendEmailError(errData?.message || "Ошибка при отправке email");
+        } else {
+          setSendEmailError("Ошибка подключения к серверу");
+        }
+      } else if (error instanceof Error) {
+        setSendEmailError(error.message);
+      } else {
+        setSendEmailError("Неизвестная ошибка");
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -91,7 +115,9 @@ export const SignUpForm = () => {
 
             <div className="form-button">
               <ClassicButton name="Войти" type="submit" isLoading={isLoading} />
-              {authError && <div className="form-error">{authError}</div>}
+              {sendEmailError && (
+                <div className="form-error">{sendEmailError}</div>
+              )}
             </div>
           </form>
         )}

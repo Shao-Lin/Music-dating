@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import { useNavigate } from "react-router";
 
 type CodeInputProps = {
   onComplete?: (code: string) => boolean; // callback, когда все 4 цифры введены
@@ -8,6 +9,7 @@ export const CodeInput = ({ onComplete }: CodeInputProps) => {
   const [code, setCode] = useState(["", "", "", ""]);
   const inputsRef = useRef<(HTMLInputElement | null)[]>([]);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleChange = (value: string, index: number) => {
     if (!/^\d?$/.test(value)) return; // только цифры или пусто
@@ -28,6 +30,8 @@ export const CodeInput = ({ onComplete }: CodeInputProps) => {
       const success = onComplete?.(fullCode);
       if (!success) {
         setError("Неверный код. Попробуйте снова.");
+      } else {
+        navigate("/questionnaire");
       }
     }
   };
