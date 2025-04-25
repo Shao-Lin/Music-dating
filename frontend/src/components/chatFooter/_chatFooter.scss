@@ -1,0 +1,88 @@
+.chat-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  background-color: var(--color-otherMessage);
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+
+  &__preview {
+    position: fixed;
+    bottom: 60px; // прямо над футером
+    left: 11px;
+    width: 100px;
+    height: 100px;
+    border-radius: 8px;
+    overflow: hidden;
+    z-index: 11;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    background-color: #fff;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &__form {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding: 0 13px 0 0;
+  }
+
+  &__photo-btn {
+    width: 55px;
+    height: 32px;
+    margin: 10px 7px 10px 11px;
+    background: none;
+    border: none;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+  }
+
+  &__input {
+    flex: 1;
+    font-size: 16px;
+    border: none;
+    outline: none;
+    background: transparent;
+    padding: 10px 0;
+    font-family: inherit;
+
+    &::placeholder {
+      opacity: 50%;
+      font-size: 16px;
+    }
+  }
+
+  &__send-btn {
+    width: 30px;
+    height: 30px;
+    background: none;
+    border: none;
+    padding: 0;
+    margin-top: 17px;
+    margin-bottom: 13px;
+    margin-left: 7px;
+    cursor: pointer;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+  }
+}

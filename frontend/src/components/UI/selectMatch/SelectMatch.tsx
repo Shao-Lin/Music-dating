@@ -17,15 +17,11 @@ export const SelectMatch = ({ meId, feedId }: SelectMatchProps) => {
     },
   };
 
-  const handleClickLike = async () => {
-    test1.userMe.meMatch = true;
-    try {
-      await selectMatchAction(test1).unwrap();
-    } catch (error) {
-      console.error("Match selection failed:", error);
+  const handleSwipe = async (action: "like" | "dislike") => {
+    if (action === "like") {
+      test1.userMe.meMatch = true;
     }
-  };
-  const handleClickDislike = async () => {
+
     try {
       await selectMatchAction(test1).unwrap();
     } catch (error) {
@@ -35,10 +31,10 @@ export const SelectMatch = ({ meId, feedId }: SelectMatchProps) => {
   return (
     <div className="spacer-container">
       <div className="centered-buttons">
-        <button onClick={handleClickDislike} className="image-button">
+        <button onClick={() => handleSwipe("dislike")} className="image-button">
           <img src={dislike} alt="Button 1" />
         </button>
-        <button onClick={handleClickLike} className="image-button">
+        <button onClick={() => handleSwipe("like")} className="image-button">
           <img src={like} alt="Button 2" />
         </button>
       </div>
