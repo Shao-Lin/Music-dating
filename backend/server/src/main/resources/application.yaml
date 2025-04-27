@@ -1,5 +1,6 @@
 server:
   port: 8088
+  shutdown: graceful
 spring:
   application:
     name: vibe-auth-server
