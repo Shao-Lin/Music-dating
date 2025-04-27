@@ -33,6 +33,7 @@ dependencies {
 	runtimeOnly("org.postgresql:postgresql")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 	implementation("io.jsonwebtoken:jjwt:0.12.6")
+	implementation("software.amazon.awssdk:s3:2.31.30")
 }
 
 tasks.withType<Test> {

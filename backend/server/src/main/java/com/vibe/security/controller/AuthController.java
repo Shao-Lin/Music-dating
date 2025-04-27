@@ -2,6 +2,7 @@ package com.vibe.security.controller;
 
 import com.vibe.security.payload.AuthRequest;
 import com.vibe.security.payload.AuthResponse;
+import com.vibe.security.payload.RegisterRequest;
 import com.vibe.security.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +14,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/register")
-    public String register(@RequestBody AuthRequest request) {
+    public String register(@ModelAttribute RegisterRequest request) {
         authService.register(request);
         return "User register successfully";
     }
