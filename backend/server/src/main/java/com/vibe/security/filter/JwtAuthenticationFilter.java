@@ -1,7 +1,6 @@
 package com.vibe.security.filter;
 
 import com.vibe.security.util.JwtUtils;
-import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
