@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { UserData, UserId } from "../components/userCard/userType";
+import { UserData } from "../components/userCard/userType";
 
 export const userApi = createApi({
   reducerPath: "userApi",
@@ -19,11 +19,7 @@ export const userApi = createApi({
       query: () => "users/me",
       providesTags: ["User"],
     }),
-    getUserId: build.query<UserId, void>({
-      query: () => "users/me",
-      providesTags: ["User"],
-    }),
   }),
 });
 
-export const { useGetUserDataQuery, useGetUserIdQuery } = userApi;
+export const { useGetUserDataQuery } = userApi;

@@ -4,6 +4,7 @@ type AvatarProps = {
   avatar: string;
   size: number;
   online: boolean;
+  isChat?: boolean;
 };
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
@@ -38,10 +39,19 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
   },
 }));
 
-export const CustomAvatar = ({ avatar, online, size = 50 }: AvatarProps) => {
+export const CustomAvatar = ({
+  avatar,
+  online,
+  size = 50,
+  isChat = false,
+}: AvatarProps) => {
   const avatarComponent = (
     <Avatar alt="User Avatar" src={avatar} sx={{ width: size, height: size }} />
   );
+
+  if (isChat) {
+    return avatarComponent;
+  }
 
   return online ? (
     <StyledBadge
