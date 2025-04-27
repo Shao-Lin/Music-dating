@@ -1,10 +1,16 @@
 import { useEffect, useRef, useState } from "react";
 import Stop from "../../../../assets/musicButton/Stop.svg"; // иконки
 import Play from "../../../../assets/musicButton/Play.svg"; // иконки
-import coverImage from "../../../../assets/musicButton/cover.png"; // или строкой как пропс
-import sound from "../../../../assets/testMusic/linkin-park-in-the-end-original_(bobamuz.online).mp3"; // путь к mp3
+//import coverImage from "../../../../assets/musicButton/cover.png"; // или строкой как пропс
+//import sound from "../../../../assets/testMusic/linkin-park-in-the-end-original_(bobamuz.online).mp3"; // путь к mp3
 
-export const AudioButton = () => {
+type MusicData = {
+  name: string;
+  cover: string;
+  music: string;
+};
+
+export const AudioButton = ({ name, cover, music }: MusicData) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -32,7 +38,7 @@ export const AudioButton = () => {
   }, []);
 
   useEffect(() => {
-    audioRef.current = new Audio(sound);
+    audioRef.current = new Audio(music);
     audioRef.current.addEventListener("ended", () => setIsPlaying(false));
     return () => {
       audioRef.current?.pause();
@@ -59,7 +65,7 @@ export const AudioButton = () => {
           onClick={handleTogglePlay}
         >
           <img
-            src={coverImage}
+            src={cover}
             style={{ width: `${containerSize}px` }}
             alt="cover"
           />
@@ -72,7 +78,7 @@ export const AudioButton = () => {
 
         <div className="track-title">
           <button onClick={handleTogglePlay}>
-            <div className="label">A ray of hope </div>
+            <div className="label">{name}</div>
           </button>
         </div>
       </div>
