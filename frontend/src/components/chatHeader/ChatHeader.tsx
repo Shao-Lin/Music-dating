@@ -3,7 +3,7 @@ import { CustomAvatar } from "../UI/avatar/CustomAvatar";
 import arrowBack from "../../assets/ArrowBack.svg";
 import type { HeaderType } from "./headerType";
 
-export const ChatHeader = ({ avatar, name, isOnline }: HeaderType) => {
+export const ChatHeader = ({ name, avatar, isOnline }: HeaderType) => {
   // const name = "Anastasia";
   // const isOnline = true;
 

@@ -8,18 +8,15 @@ import type { MessageType } from "../components/UI/message/messageType";
 // import { useGetDataMatchQuery } from "../api/matchesApi";
 import { HeaderType } from "../components/chatHeader/headerType";
 import defaultAvatar from "../assets/testAvatar.png";
-import { boolean, string } from "yup";
 
 export const ChatPage = () => {
   // const { data } = useGetDataMatchQuery();
-  const data = { Анастасия: string, defaultAvatar, false: boolean };
-  const headerData: HeaderType | undefined = data
-    ? {
-        name: data.name ?? "Гость",
-        avatar: data.avatar ?? defaultAvatar,
-        isOnline: data.isOnline ?? false,
-      }
-    : undefined;
+  const data = { name: "Анастасия", avatar: defaultAvatar, isOnline: true };
+  const headerData: HeaderType = {
+    name: data?.name ?? "Гость",
+    avatar: data?.avatar ?? defaultAvatar,
+    isOnline: data?.isOnline ?? false,
+  };
   //const { data: messages = [] } = useGetMessagesQuery();
   // const [liveMessages, setLiveMessages] = useState<MessageType[]>([]);
 
