@@ -1,10 +1,11 @@
 import { CustomAvatar } from "../UI/avatar/CustomAvatar";
-import testAvatar from "../../assets/testAvatar.png";
+//import avatar from "../../assets/testAvatar.png";
 import arrowBack from "../../assets/ArrowBack.svg";
+import type { HeaderType } from "./headerType";
 
-export const ChatHeader = () => {
-  const name = "Anastasia";
-  const isOnline = true;
+export const ChatHeader = ({ avatar, name, isOnline }: HeaderType) => {
+  // const name = "Anastasia";
+  // const isOnline = true;
 
   return (
     <header className="chat-header">
@@ -12,12 +13,7 @@ export const ChatHeader = () => {
         <img src={arrowBack} alt="назад" />
       </button>
 
-      <CustomAvatar
-        avatar={testAvatar}
-        online={isOnline}
-        size={40}
-        isChat={true}
-      />
+      <CustomAvatar avatar={avatar} online={isOnline} size={40} isChat={true} />
 
       <div className="chat-header__info">
         <div className="chat-header__name">{name}</div>

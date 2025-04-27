@@ -9,13 +9,12 @@ import sound from "../assets/testMusic/linkin-park-in-the-end-original_(bobamuz.
 import coverImage from "../assets/musicButton/cover.png";
 import { MusicData } from "../components/userCard/userType";
 import { UserData } from "../components/userCard/userType";
+//import { useAppSelector } from "../hooks/reduxHook";
 
-//import { useGetUserIdQuery } from "../api/userApi";
 //import { useGetUserFeedDataQuery } from "../api/userFeedApi";
 export const MatchFeed = () => {
-  //const {data: userID} = useGetUserIdQuery()
   //const {data: userFeed} = useGetUserFeedDataQuery()
-
+  //const userID = useAppSelector((state) => state.setDataUser.id);
   const photos2 = [one, two, three];
 
   const musicdata: MusicData = {

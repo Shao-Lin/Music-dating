@@ -2,39 +2,44 @@ import { useRef, useState } from "react";
 import { Formik, Form, Field, FormikHelpers } from "formik";
 import photoIcon from "../../assets/addImage.png";
 import sendIcon from "../../assets/sendMessage.png";
+import { useAppSelector } from "../../hooks/reduxHook";
+import { useAddMessageMutation } from "../../api/messagesApi";
 
 type FormValues = {
-  message: string;
+  message: string | null;
   file: File | null;
 };
 
 export const ChatFooter = () => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const id = useAppSelector((state) => state.setDataUser.id);
+  const [addMessage, { isLoading }] = useAddMessageMutation();
 
   const initialValues: FormValues = { message: "", file: null };
 
-  const handleSubmit = (
+  const handleSubmit = async (
     values: FormValues,
     { resetForm }: FormikHelpers<FormValues>
   ) => {
     const formData = new FormData();
-    formData.append("message", values.message);
+    if (id !== null) {
+      formData.append("senderId", id.toString());
+    }
+
+    if (values.message) {
+      formData.append("message", values.message);
+    }
+
     if (values.file) {
       formData.append("file", values.file);
     }
-
-    // Пример отправки
-    console.log("Сообщение:", values.message);
-    if (values.file) {
-      console.log("Файл:", values.file.name);
+    console.log(formData);
+    try {
+      await addMessage(formData).unwrap();
+    } catch (error) {
+      console.error(error);
     }
-
-    // Отправка может быть например так:
-    // await fetch('/api/send-message', {
-    //   method: 'POST',
-    //   body: formData,
-    // });
 
     resetForm();
     setImagePreview(null);
@@ -50,42 +55,53 @@ export const ChatFooter = () => {
 
       <div className="chat-footer">
         <Formik initialValues={initialValues} onSubmit={handleSubmit}>
-          {({ setFieldValue }) => (
-            <Form className="chat-footer__form">
-              <button
-                type="button"
-                className="chat-footer__photo-btn"
-                onClick={() => fileInputRef.current?.click()}
-              >
-                <img src={photoIcon} alt="add" />
-              </button>
+          {({ setFieldValue, values, isSubmitting }) => {
+            const isButtonDisabled =
+              isLoading ||
+              isSubmitting ||
+              (!values.message?.trim() && !values.file);
 
-              <input
-                type="file"
-                accept="image/*"
-                ref={fileInputRef}
-                style={{ display: "none" }}
-                onChange={(e) => {
-                  const file = e.target.files?.[0];
-                  if (file) {
-                    setFieldValue("file", file);
-                    const url = URL.createObjectURL(file);
-                    setImagePreview(url);
-                  }
-                }}
-              />
+            return (
+              <Form className="chat-footer__form">
+                <button
+                  type="button"
+                  className="chat-footer__photo-btn"
+                  onClick={() => fileInputRef.current?.click()}
+                >
+                  <img src={photoIcon} alt="add" />
+                </button>
 
-              <Field
-                name="message"
-                placeholder="Введите сообщение..."
-                className="chat-footer__input"
-              />
+                <input
+                  type="file"
+                  accept="image/*"
+                  ref={fileInputRef}
+                  style={{ display: "none" }}
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                      setFieldValue("file", file);
+                      const url = URL.createObjectURL(file);
+                      setImagePreview(url);
+                    }
+                  }}
+                />
 
-              <button type="submit" className="chat-footer__send-btn">
-                <img src={sendIcon} alt="send" />
-              </button>
-            </Form>
-          )}
+                <Field
+                  name="message"
+                  placeholder="Введите сообщение..."
+                  className="chat-footer__input"
+                />
+
+                <button
+                  disabled={isButtonDisabled}
+                  type="submit"
+                  className="chat-footer__send-btn"
+                >
+                  <img src={sendIcon} alt="send" />
+                </button>
+              </Form>
+            );
+          }}
         </Formik>
       </div>
     </>

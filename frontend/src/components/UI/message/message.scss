@@ -1,0 +1,43 @@
+// Message.scss
+.message {
+  max-width: 70%;
+  border-radius: 20px;
+  display: inline-block;
+  word-break: break-word;
+  margin-top: 11px;
+
+  &__text {
+    padding: 10px 14px;
+    height: auto;
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+  }
+
+  &__image {
+    width: 250px;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 20px;
+  }
+
+  &--own {
+    align-self: flex-end;
+    background-color: #ff9eb0;
+    margin-right: 6px;
+  }
+
+  &--other {
+    align-self: flex-start;
+    background-color: #ffc7e4;
+    margin-left: 6px;
+  }
+
+  &--same-sender {
+    margin-top: 3px;
+  }
+
+  &--new-sender {
+    margin-top: 9px;
+  }
+}

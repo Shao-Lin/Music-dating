@@ -1,18 +1,20 @@
 import { CustomAvatar } from "../UI/avatar/CustomAvatar";
-import testAvatar from "../../assets/testAvatar.png";
-export const ChatItem = () => {
+import type { ChatItemPropsType } from "./chatItemType";
+export const ChatItem = ({
+  name,
+  avatar,
+  isOnline,
+  lastMessage,
+}: ChatItemPropsType) => {
   return (
     <button className="chat-item">
       <div className="chat-item__avatar">
-        <CustomAvatar avatar={testAvatar} online={true} size={60} />
+        <CustomAvatar avatar={avatar} online={isOnline} size={60} />
       </div>
 
       <div className="chat-item__content">
-        <div className="chat-item__name">Имя Пользователя</div>
-        <div className="chat-item__message">
-          Последнее сообщение, которое может быть очень длинным, поэтому оно
-          обрежется...
-        </div>
+        <div className="chat-item__name">{name}</div>
+        <div className="chat-item__message">{lastMessage}</div>
       </div>
 
       <div className="chat-item__unread-dot" />
