@@ -18,15 +18,15 @@ jobs:
           ref: tpproj-21
           fetch-depth: 0
 
-      - name: 🧹 Clean backend directory on server
+      - name: 🧹 Clean backend/server directory on server
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S rm -rf /home/deployer/music-dating/backend/server
-            echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S mkdir -p /home/deployer/music-dating/backend/server
+            # Очищаем содержимое папки server, но оставляем саму папку
+            echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S rm -rf /home/deployer/music-dating/backend/server/*
             echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S chown -R deployer:deployer /home/deployer/music-dating/backend/server
 
       - name: 🚚 Copy backend to server
@@ -37,8 +37,9 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: "backend/server/**"
           target: "/home/deployer/music-dating/backend/server/"
-          strip_components: 1
+          strip_components: 2
           overwrite: true
+          tar_tmp_path: "/tmp"
 
       - name: 🔄 Restart Backend via Docker-Compose
         uses: appleboy/ssh-action@v1.0.0
