@@ -41,6 +41,18 @@ jobs:
           overwrite: true
           tar_tmp_path: "/tmp"
 
+      - name: 🚚 Copy .env file to server
+        uses: appleboy/scp-action@v0.1.3
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: ".github/env-files/backend.server.env"
+          target: "/home/deployer/music-dating/backend/server/.env"
+          strip_components: 0
+          overwrite: true
+          tar_tmp_path: "/tmp"
+
       - name: 🔄 Restart Backend via Docker-Compose
         uses: appleboy/ssh-action@v1.0.0
         with:
