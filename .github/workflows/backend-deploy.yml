@@ -22,13 +22,13 @@ jobs:
       - name: 🧹 Clean Server Directory
         uses: appleboy/ssh-action@v1.0.0
         with:
-          host: ${{ secrets.SERVER_IP }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            echo "Очистка рабочей директории..."
-            sudo rm -rf /home/deployer/music-dating/backend/server/*
-            sudo chown -R deployer:deployer /home/deployer/music-dating/backend/server
+            host: ${{ secrets.SERVER_IP }}
+            username: ${{ secrets.SSH_USER }}
+            key: ${{ secrets.SSH_PRIVATE_KEY }}
+            script: |
+              echo "Очистка рабочей директории..."
+              echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S rm -rf /home/deployer/music-dating/backend/server/* || true
+              echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S chown -R deployer:deployer /home/deployer/music-dating/backend/server
 
       - name: 🚚 Deploy Source Code
         uses: appleboy/scp-action@master
