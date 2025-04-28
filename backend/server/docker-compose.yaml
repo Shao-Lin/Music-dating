@@ -1,25 +1,6 @@
 version: "3.9"
 
 services:
-  backend:
-    image: eclipse-temurin:21-jre-jammy
-    container_name: music-dating-backend
-    restart: unless-stopped
-    env_file: .env
-    volumes:
-      - ./build/libs:/app
-    ports:
-      - "8080:8080"
-    command: java -jar /app/*.jar
-    depends_on:
-      postgres:
-        condition: service_healthy
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-
   postgres:
     image: postgres:16
     container_name: dev-db
@@ -27,16 +8,30 @@ services:
     environment:
       POSTGRES_DB: music_dating_db
       POSTGRES_USER: user
-      POSTGRES_PASSWORD: "123"
+      POSTGRES_PASSWORD: 123
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U user"]
-      interval: 5s
-      timeout: 5s
-      retries: 10
+
+  backend:
+    container_name: music-dating-backend
+    image: openjdk:21-jdk-slim
+    working_dir: /app
+    volumes:
+      - ./:/app            # код Spring Boot из папки server
+    env_file:
+      - .env               # переменные окружения
+    ports:
+      - "8080:8080"      # порт приложения
+    depends_on:
+      - postgres
+    command: sh -c "chmod +x ./gradlew && ./gradlew bootRun"
+    restart: unless-stopped
 
 volumes:
   postgres_data:
+
+networks:
+  default:
+    driver: bridge
