@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { Formik, Form, Field, FormikHelpers } from "formik";
-import photoIcon from "../../assets/addImage.png";
-import sendIcon from "../../assets/sendMessage.png";
+import photoIcon from "../../assets/chat/addImage.png";
+import sendIcon from "../../assets/chat/sendMessage.png";
 import { useAppSelector } from "../../hooks/reduxHook";
 import { useAddMessageMutation } from "../../api/messagesApi";
 

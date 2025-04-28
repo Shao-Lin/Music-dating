@@ -9,7 +9,7 @@
     position: fixed;
     bottom: 0;
     left: 0;
-    height: 65px;
+    height: 60px;
     width: 100%;
     background-color: var(--color-accent);
     color: #ffffff;
@@ -39,12 +39,12 @@
   }
 
   &.large-left img {
-    width: 60px;
-    height: 60px;
+    width: 45px;
+    height: 45px;
   }
 
   &.large-center img {
-    width: 41px;
-    height: 41px;
+    width: 45px;
+    height: 45px;
   }
 }

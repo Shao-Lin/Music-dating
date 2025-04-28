@@ -1,5 +1,5 @@
-import dislike from "../../../assets/dislike.png";
-import like from "../../../assets/like.png";
+import dislike from "../../../assets/cancle.svg";
+import like from "../../../assets/heart.svg";
 import "./_selectMatch.scss";
 import { SelectMatchType, SelectMatchProps } from "./selectMatchTypes";
 import { useSelectMatchMutation } from "../../../api/matchesApi";

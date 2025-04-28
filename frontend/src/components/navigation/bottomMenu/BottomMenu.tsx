@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import LentMatch from "../../../assets/bottomMenuIcon/LentMatch.png";
-import LentMatchActive from "../../../assets/bottomMenuIcon/LentMatchActive.png";
-import ListChat from "../../../assets/bottomMenuIcon/ListChat.png";
-import ListChatActive from "../../../assets/bottomMenuIcon/ListChatActive.png";
-import ListYourMatch from "../../../assets/bottomMenuIcon/ListYourMatch.svg";
-import ListYourMatchActive from "../../../assets/bottomMenuIcon/ListYourMatchActive.svg";
-import Profile from "../../../assets/bottomMenuIcon/Profile.png";
-import ProfileActive from "../../../assets/bottomMenuIcon/ProfileActive.png";
+import LentMatch from "../../../assets/bottomMenuIconNew/music.svg";
+import LentMatchActive from "../../../assets/bottomMenuIconNew/musicActive.svg";
+import ListChat from "../../../assets/bottomMenuIconNew/chat.svg";
+import ListChatActive from "../../../assets/bottomMenuIconNew/chatActive.svg";
+import ListYourMatch from "../../../assets/bottomMenuIconNew/match.svg";
+import ListYourMatchActive from "../../../assets/bottomMenuIconNew/matchActive.svg";
+import Profile from "../../../assets/bottomMenuIconNew/profile.svg";
+import ProfileActive from "../../../assets/bottomMenuIconNew/profileActive.svg";
 import { BottomNavBtn } from "../../UI/buttons/bottomNavBtn/BottomNavBtn";
 import { Outlet, useLocation, useNavigate } from "react-router";
 export const BottomMenu = () => {

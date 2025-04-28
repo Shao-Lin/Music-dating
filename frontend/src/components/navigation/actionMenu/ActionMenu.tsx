@@ -1,5 +1,5 @@
 import addPhoto from "../../../assets/actionMenu/addPhoto.png";
-import editProfile from "../../../assets/actionMenu/EditProfile.png";
+import editProfile from "../../../assets/actionMenu/profile.png";
 import settings from "../../../assets/actionMenu/settings.png";
 
 export const ActionMenu = () => {
