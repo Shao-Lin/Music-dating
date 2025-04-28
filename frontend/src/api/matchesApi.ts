@@ -1,6 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { MatchItemType } from "../components/matchItem/matchItemType";
 import { SelectMatchType } from "../components/UI/selectMatch/selectMatchTypes";
+<<<<<<< HEAD
+=======
+import type { HeaderType } from "../components/chatHeader/headerType";
+>>>>>>> 47c2cb4ade45b2dd244898924fe7d8e90a6a0159
 
 export const matchesApi = createApi({
   reducerPath: "matchesApi",
@@ -17,6 +21,14 @@ export const matchesApi = createApi({
   tagTypes: ["Matches", "UserFeed"], // Объявляем используемые теги
 
   endpoints: (build) => ({
+<<<<<<< HEAD
+=======
+    getDataMatch: build.query<HeaderType, void>({
+      query: () => "matches",
+      providesTags: ["Matches"],
+    }),
+
+>>>>>>> 47c2cb4ade45b2dd244898924fe7d8e90a6a0159
     getListUserMatches: build.query<MatchItemType[], void>({
       query: () => "matches/list",
       providesTags: ["Matches"],
@@ -49,4 +61,8 @@ export const {
   useGetListUserMatchesQuery,
   useSelectMatchMutation,
   useDeleteMatchMutation,
+<<<<<<< HEAD
+=======
+  useGetDataMatchQuery,
+>>>>>>> 47c2cb4ade45b2dd244898924fe7d8e90a6a0159
 } = matchesApi;

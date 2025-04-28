@@ -1,3 +1,4 @@
+#todo разбить по разным ченжлогам
 databaseChangeLog:
   - changeSet:
       id: 001-create-user-table
@@ -27,6 +28,25 @@ databaseChangeLog:
                   name: created_at
                   type: TIMESTAMP
                   defaultValueComputed: CURRENT_TIMESTAMP
+              - column:
+                  name: name
+                  type: varchar(32)
+              - column:
+                  name: about
+                  type: text
+              - column:
+                  name: birth_date
+                  type: date
+              - column:
+                  name: city
+                  type: varchar(50)
+              - column:
+                  name: gender
+                  type: varchar(6)
+              - column:
+                  name: avatar_url
+                  type: text #todo узнать размер ссылки s3
+
 
   - changeSet:
       id: 002-create-refresh-tokens-table
@@ -127,3 +147,43 @@ databaseChangeLog:
               - column:
                   name: name
                   value: USER
+
+  - changeSet:
+      id: 006-create-tracks-table
+      author: David Chernykh
+      changes:
+        - createTable:
+            tableName: track
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: url
+                  type: TEXT #todo узнать размер url в s3
+                  constraints:
+                    nullable: false
+
+        - addForeignKeyConstraint:
+            constraintName: fk_track_user
+            baseTableName: track
+            baseColumnNames: user_id
+            referencedTableName: users
+            referencedColumnNames: id
+            onDelete: CASCADE
+
+        - createIndex:
+            indexName: idx_track_user
+            tableName: track
+            columns:
+              - column:
+                  name: user_id
+

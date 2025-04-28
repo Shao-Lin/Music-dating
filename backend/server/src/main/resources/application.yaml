@@ -1,5 +1,6 @@
 server:
   port: 8088
+  shutdown: graceful
 spring:
   application:
     name: vibe-auth-server
@@ -29,3 +30,15 @@ jwt:
   secret: ${JWT_SECRET}
   expiration-minutes: ${AT_EXP_MIN}
   refresh-expiration-days: ${RT_EXP_DAYS}
+
+cloud:
+  s3:
+    endpoint: https://s3.twcstorage.ru
+    region: ru-1
+    accessKey: ${S3_ACCESS_KEY}
+    secretKey: ${S3_SECRET_KEY}
+    bucket: edafb68b-vibe-data
+
+logging:
+  level:
+    software.amazon.awssdk: debug

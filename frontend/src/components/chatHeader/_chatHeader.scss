@@ -1,0 +1,52 @@
+.chat-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 66px;
+  display: flex;
+  align-items: center;
+  background-color: var(--background-color);
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+  z-index: 10;
+
+  &__back {
+    width: 38px;
+    height: 38px;
+    margin: 14px 26px 14px 11px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    outline: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+
+    img {
+      width: 38px;
+      height: 38px;
+      object-fit: contain;
+    }
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 15px;
+    margin-top: 11px;
+    line-height: 1.2;
+  }
+
+  &__name {
+    font-size: 18px;
+    font-family: "Roboto-SemiBold";
+  }
+
+  &__status {
+    font-size: 14px;
+    color: #aaa; // серый
+    margin-top: 2px;
+  }
+}

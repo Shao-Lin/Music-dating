@@ -15,6 +15,7 @@ export const authApi = createApi({
       }),
     }),
     sendingEmail: build.mutation({
+<<<<<<< HEAD
       query: (credentials) => ({
         url: "saveEmail",
         method: "POST",
@@ -27,11 +28,40 @@ export const authApi = createApi({
       providesTags: ["AuthCode"], // ✅ обязательно
     }),
     signupUser: build.mutation({
+=======
+>>>>>>> 47c2cb4ade45b2dd244898924fe7d8e90a6a0159
       query: (credentials) => ({
-        url: "register",
+        url: "saveEmail",
         method: "POST",
         body: credentials,
       }),
+      invalidatesTags: ["AuthCode"], // ✅ добавили это
+    }),
+    getAuthCode: build.query<string, void>({
+      query: () => "authCode",
+      providesTags: ["AuthCode"], // ✅ обязательно
+    }),
+    signupUser: build.mutation({
+      query: (credentials) => {
+        const formData = new FormData();
+        formData.append("name", credentials.name);
+        formData.append("about", credentials.about);
+        formData.append("birthDate", credentials.birthDate.toISOString()); // дату в строку
+        formData.append("city", credentials.city);
+        formData.append("gender", credentials.gender);
+        formData.append("login", credentials.login);
+        formData.append("password", credentials.password);
+
+        if (credentials.image) {
+          formData.append("image", credentials.image);
+        }
+
+        return {
+          url: "register",
+          method: "POST",
+          body: formData,
+        };
+      },
     }),
   }),
 });

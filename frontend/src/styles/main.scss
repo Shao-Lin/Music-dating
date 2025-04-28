@@ -34,3 +34,10 @@
 @use "../components/UI/inputs/codeInput/codeInput";
 
 @use "../components/UI/inputs/dateInput/datePicker";
+
+@use "../components/chatHeader/chatHeader";
+@use "../components/chatFooter/chatFooter";
+
+@use "../components/chatMain/chatMain.scss";
+@use "../components/UI/message/message.scss";
+@use "./blocks/components/chat";

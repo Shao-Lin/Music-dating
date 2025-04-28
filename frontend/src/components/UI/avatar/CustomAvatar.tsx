@@ -4,6 +4,10 @@ type AvatarProps = {
   avatar: string;
   size: number;
   online: boolean;
+<<<<<<< HEAD
+=======
+  isChat?: boolean;
+>>>>>>> 47c2cb4ade45b2dd244898924fe7d8e90a6a0159
 };
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
@@ -38,11 +42,27 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
   },
 }));
 
+<<<<<<< HEAD
 export const CustomAvatar = ({ avatar, online, size = 50 }: AvatarProps) => {
+=======
+export const CustomAvatar = ({
+  avatar,
+  online,
+  size = 50,
+  isChat = false,
+}: AvatarProps) => {
+>>>>>>> 47c2cb4ade45b2dd244898924fe7d8e90a6a0159
   const avatarComponent = (
     <Avatar alt="User Avatar" src={avatar} sx={{ width: size, height: size }} />
   );
 
+<<<<<<< HEAD
+=======
+  if (isChat) {
+    return avatarComponent;
+  }
+
+>>>>>>> 47c2cb4ade45b2dd244898924fe7d8e90a6a0159
   return online ? (
     <StyledBadge
       overlap="circular"

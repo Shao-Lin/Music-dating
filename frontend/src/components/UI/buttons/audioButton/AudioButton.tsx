@@ -21,7 +21,7 @@ export const AudioButton = ({ name, cover, music }: MusicData) => {
     const handleResize = () => {
       const screenWidth = window.innerWidth;
       const baseWidth = 390;
-      const baseSize = 90;
+      const baseSize = 80;
 
       // Пропорциональное масштабирование от базовой ширины 390px
       const scaledSize = (screenWidth / baseWidth) * baseSize;

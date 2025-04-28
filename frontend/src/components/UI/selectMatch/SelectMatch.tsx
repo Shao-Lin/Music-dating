@@ -1,5 +1,5 @@
-import dislike from "../../../assets/dislike.png";
-import like from "../../../assets/like.png";
+import dislike from "../../../assets/cancle.svg";
+import like from "../../../assets/heart.svg";
 import "./_selectMatch.scss";
 import { SelectMatchType, SelectMatchProps } from "./selectMatchTypes";
 import { useSelectMatchMutation } from "../../../api/matchesApi";
@@ -17,6 +17,7 @@ export const SelectMatch = ({ meId, feedId }: SelectMatchProps) => {
     },
   };
 
+<<<<<<< HEAD
   const handleClickLike = async () => {
     test1.userMe.meMatch = true;
     try {
@@ -26,6 +27,13 @@ export const SelectMatch = ({ meId, feedId }: SelectMatchProps) => {
     }
   };
   const handleClickDislike = async () => {
+=======
+  const handleSwipe = async (action: "like" | "dislike") => {
+    if (action === "like") {
+      test1.userMe.meMatch = true;
+    }
+
+>>>>>>> 47c2cb4ade45b2dd244898924fe7d8e90a6a0159
     try {
       await selectMatchAction(test1).unwrap();
     } catch (error) {
@@ -35,10 +43,17 @@ export const SelectMatch = ({ meId, feedId }: SelectMatchProps) => {
   return (
     <div className="spacer-container">
       <div className="centered-buttons">
+<<<<<<< HEAD
         <button onClick={handleClickDislike} className="image-button">
           <img src={dislike} alt="Button 1" />
         </button>
         <button onClick={handleClickLike} className="image-button">
+=======
+        <button onClick={() => handleSwipe("dislike")} className="image-button">
+          <img src={dislike} alt="Button 1" />
+        </button>
+        <button onClick={() => handleSwipe("like")} className="image-button">
+>>>>>>> 47c2cb4ade45b2dd244898924fe7d8e90a6a0159
           <img src={like} alt="Button 2" />
         </button>
       </div>
