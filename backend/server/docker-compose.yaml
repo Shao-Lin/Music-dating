@@ -18,7 +18,9 @@ services:
       retries: 10
 
   backend:
-    build: ./server
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: music-dating-backend
     env_file: .env
     ports:
