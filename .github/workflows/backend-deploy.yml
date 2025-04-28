@@ -37,9 +37,9 @@ jobs:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "backend/server/**"
+          source: "backend/server/*"
           target: "/home/deployer/music-dating/backend/server"
-          strip_components: 2
+          strip_components: 1
           overwrite: true
 
       - name: 📦 Deploy Environment File
