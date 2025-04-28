@@ -49,10 +49,8 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: "backend/server/.env"
-          target: "/home/deployer/music-dating/backend/server/"
-          strip_components: 2
+          target: "/home/deployer/music-dating/backend/server/.env"
           overwrite: true
-          tar_tmp_path: "/tmp"
 
       - name: 🔄 Restart Backend via Docker-Compose
         uses: appleboy/ssh-action@v1.0.0
