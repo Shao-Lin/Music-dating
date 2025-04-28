@@ -9,7 +9,7 @@ export const ChatItem = ({
   return (
     <button className="chat-item">
       <div className="chat-item__avatar">
-        <CustomAvatar avatar={avatar} online={isOnline} size={60} />
+        <CustomAvatar avatar={avatar} online={isOnline} size={55} />
       </div>
 
       <div className="chat-item__content">

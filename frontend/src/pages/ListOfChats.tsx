@@ -19,7 +19,17 @@ export const ListOfChats = () => {
     messages,
   };
 
-  const chatData = [chatItem, chatItem, chatItem];
+  const chatData = [
+    chatItem,
+    chatItem,
+    chatItem,
+    chatItem,
+    chatItem,
+    chatItem,
+    chatItem,
+    chatItem,
+    chatItem,
+  ];
 
   return (
     <main className="content">

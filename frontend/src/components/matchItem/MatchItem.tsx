@@ -1,6 +1,6 @@
 import { CustomAvatar } from "../UI/avatar/CustomAvatar";
 import { AudioButton } from "../UI/buttons/audioButtonMatchItem/AudioButtonMatchItem";
-import dislike from "../../assets/dislike.png";
+import dislike from "../../assets/cancleListMatch.png";
 import { RemoveMatch } from "../modals/RemoveMatch";
 import { useState } from "react";
 import { MatchItemType } from "./matchItemType";
@@ -44,7 +44,7 @@ export const MatchItem = ({ item }: Props) => {
 
         <div className="match-item__content">
           <div className="match-item__avatar" onClick={onClick}>
-            <CustomAvatar avatar={avatar} online={online} size={70} />
+            <CustomAvatar avatar={avatar} online={online} size={50} />
           </div>
 
           <AudioButton {...music} />

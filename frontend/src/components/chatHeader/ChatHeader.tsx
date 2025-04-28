@@ -1,6 +1,6 @@
 import { CustomAvatar } from "../UI/avatar/CustomAvatar";
 //import avatar from "../../assets/testAvatar.png";
-import arrowBack from "../../assets/ArrowBack.svg";
+import arrowBack from "../../assets/chat/ArrowBack.svg";
 import type { HeaderType } from "./headerType";
 
 export const ChatHeader = ({ name, avatar, isOnline }: HeaderType) => {
