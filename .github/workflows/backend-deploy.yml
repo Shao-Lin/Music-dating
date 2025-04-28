@@ -48,9 +48,9 @@ jobs:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: ".github/env-files/backend.server.env"
-          target: "/home/deployer/music-dating/backend/server/.env"
-          strip_components: 0
+          source: "backend/server/.env"
+          target: "/home/deployer/music-dating/backend/server/"
+          strip_components: 2
           overwrite: true
           tar_tmp_path: "/tmp"
 
