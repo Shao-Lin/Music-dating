@@ -1,4 +1,4 @@
-name: 🚀 Deploy Backend
+name: 🚀 Deploy Backend (Production)
 
 on:
   push:
@@ -8,30 +8,32 @@ on:
 
 jobs:
   deploy:
+    name: Deploy Backend
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 30
 
     steps:
-      - name: 🔄 Checkout code
+      # Шаг 1: Загрузка кода из репозитория
+      - name: 🔄 Checkout Code
         uses: actions/checkout@v4
-
-      - name: 🛠 Setup Java
-        uses: actions/setup-java@v3
         with:
-          java-version: '21'
-          distribution: 'temurin'
+          ref: tpproj-21
+          fetch-depth: 0
 
-      - name: 🧹 Clean server directory
+      # Шаг 2: Очистка серверной директории
+      - name: 🧹 Clean Server Directory
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
+            echo "Очистка рабочей директории..."
             rm -rf /home/deployer/music-dating/backend/server/*
             rm -f /home/deployer/music-dating/backend/server/.env
 
-      - name: 🚚 Deploy backend code
+      # Шаг 3: Копирование исходного кода
+      - name: 🚚 Deploy Source Code
         uses: appleboy/scp-action@v0.1.3
         with:
           host: ${{ secrets.SERVER_IP }}
@@ -40,23 +42,61 @@ jobs:
           source: "backend/server/**"
           target: "/home/deployer/music-dating/backend/server"
           strip_components: 2
+          overwrite: true
+          tar_tmp_path: "/tmp"
 
-      - name: 📝 Deploy .env
+      # Шаг 4: Копирование .env файла
+      - name: 📦 Deploy Environment File
         uses: appleboy/scp-action@v0.1.3
         with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: "backend/.github/env-files/backend.server.env"
           target: "/home/deployer/music-dating/backend/server/.env"
+          overwrite: true
 
-      - name: 🐳 Rebuild containers
+      # Шаг 5: Установка прав доступа
+      - name: 🔑 Set Permissions
         uses: appleboy/ssh-action@v1.0.0
         with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            chown -R deployer:deployer /home/deployer/music-dating/backend/server
+            chmod 644 /home/deployer/music-dating/backend/server/.env
+
+      # Шаг 6: Сборка и запуск контейнеров
+      - name: 🐳 Build & Start Containers
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd /home/deployer/music-dating/backend/server
-            docker-compose down -v
-            docker-compose up -d --build
+            docker-compose down --remove-orphans
+            docker-compose up -d --build --force-recreate
+            sleep 20  # Ожидание инициализации
 
-      - name: ✅ Health check
+      # Шаг 7: Проверка работоспособности
+      - name: ✅ Health Check
         uses: appleboy/ssh-action@v1.0.0
         with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            docker exec music-dating-backend curl -s http://localhost:8080/actuator/health | grep "UP"
+            docker exec music-dating-backend curl -sSf http://localhost:8080/actuator/health > /dev/null || exit 1
+
+      # Шаг 8: Логи при ошибке (опционально)
+      - name: 📜 Failure Logs
+        if: ${{ failure() }}
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            docker-compose -f /home/deployer/music-dating/backend/server/docker-compose.yaml logs --tail=200
