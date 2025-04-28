@@ -30,7 +30,7 @@ jobs:
           script: |
             echo "Очистка рабочей директории..."
             rm -rf /home/deployer/music-dating/backend/server/*
-            rm -f /home/deployer/music-dating/backend/server/.env
+            rm -rf /home/deployer/music-dating/backend/server/.env
 
       # Шаг 3: Копирование исходного кода
       - name: "🚚 Deploy Source Code"
@@ -52,7 +52,6 @@ jobs:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          # Убедитесь, что путь к файлу .env правильный относительно корня репозитория:
           source: ".github/env-files/backend.server.env"
           target: "/home/deployer/music-dating/backend/server/.env"
           overwrite: true
