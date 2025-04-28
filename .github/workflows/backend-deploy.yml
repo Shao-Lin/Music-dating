@@ -1,3 +1,4 @@
+# File: .github/workflows/deploy-backend.yaml
 name: "🚀 Deploy Backend (Production)"
 
 on:
@@ -31,6 +32,7 @@ jobs:
             echo "Очистка рабочей директории..."
             rm -rf /home/deployer/music-dating/backend/server/*
             rm -rf /home/deployer/music-dating/backend/server/.env
+            rm -rf /home/deployer/music-dating/backend/server/docker-compose.yaml
 
       # Шаг 3: Копирование исходного кода
       - name: "🚚 Deploy Source Code"
@@ -52,11 +54,22 @@ jobs:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: ".github/env-files/backend.server.env"
+          source: "backend/.github/env-files/backend.server.env"
           target: "/home/deployer/music-dating/backend/server/.env"
           overwrite: true
 
-      # Шаг 5: Установка прав доступа
+      # Шаг 5: Копирование docker-compose.yaml
+      - name: "🚚 Deploy Docker Compose File"
+        uses: appleboy/scp-action@v0.1.3
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: "backend/docker-compose.yaml"
+          target: "/home/deployer/music-dating/backend/server/docker-compose.yaml"
+          overwrite: true
+
+      # Шаг 6: Установка прав доступа
       - name: "🔑 Set Permissions"
         uses: appleboy/ssh-action@v1.0.0
         with:
@@ -66,8 +79,9 @@ jobs:
           script: |
             chown -R deployer:deployer /home/deployer/music-dating/backend/server
             chmod 644 /home/deployer/music-dating/backend/server/.env
+            chmod 644 /home/deployer/music-dating/backend/server/docker-compose.yaml
 
-      # Шаг 6: Сборка и запуск контейнеров
+      # Шаг 7: Сборка и запуск контейнеров
       - name: "🐳 Build & Start Containers"
         uses: appleboy/ssh-action@v1.0.0
         with:
@@ -78,9 +92,9 @@ jobs:
             cd /home/deployer/music-dating/backend/server
             docker-compose down --remove-orphans
             docker-compose up -d --build --force-recreate
-            sleep 20  # Ожидание инициализации
+            sleep 20
 
-      # Шаг 7: Проверка работоспособности
+      # Шаг 8: Проверка работоспособности
       - name: "✅ Health Check"
         uses: appleboy/ssh-action@v1.0.0
         with:
@@ -90,7 +104,7 @@ jobs:
           script: |
             docker exec music-dating-backend curl -sSf http://localhost:8080/actuator/health > /dev/null || exit 1
 
-      # Шаг 8: Логи при ошибке (опционально)
+      # Шаг 9: Логи при ошибке
       - name: "📜 Failure Logs"
         if: ${{ failure() }}
         uses: appleboy/ssh-action@v1.0.0
@@ -99,4 +113,5 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            docker-compose -f /home/deployer/music-dating/backend/server/docker-compose.yaml logs --tail=200
+            cd /home/deployer/music-dating/backend/server
+            docker-compose logs --tail=200
