@@ -8,30 +8,25 @@ services:
     environment:
       POSTGRES_DB: music_dating_db
       POSTGRES_USER: user
-      POSTGRES_PASSWORD: 123
-    ports:
-      - "5432:5432"
+      POSTGRES_PASSWORD: "123"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
 
   backend:
+    build: ./server
     container_name: music-dating-backend
-    image: openjdk:21-jdk-slim
-    working_dir: /app
-    volumes:
-      - ./:/app            # код Spring Boot из папки server
-    env_file:
-      - .env               # переменные окружения
+    env_file: .env
     ports:
-      - "8080:8080"      # порт приложения
+      - "8080:8080"
     depends_on:
-      - postgres
-    command: sh -c "chmod +x ./gradlew && ./gradlew bootRun"
+      postgres:
+        condition: service_healthy
     restart: unless-stopped
 
 volumes:
   postgres_data:
-
-networks:
-  default:
-    driver: bridge

@@ -1,4 +1,4 @@
-name: 🚀 Deploy Backend (dev)
+name: 🚀 Deploy Backend
 
 on:
   push:
@@ -8,15 +8,18 @@ on:
 
 jobs:
   deploy:
-    name: Deploy Backend to Server
     runs-on: ubuntu-latest
+    timeout-minutes: 25
 
     steps:
       - name: 🔄 Checkout code
         uses: actions/checkout@v4
+
+      - name: 🛠 Setup Java
+        uses: actions/setup-java@v3
         with:
-          ref: tpproj-21
-          fetch-depth: 0
+          java-version: '21'
+          distribution: 'temurin'
 
       - name: 🧹 Clean server directory
         uses: appleboy/ssh-action@v1.0.0
@@ -26,47 +29,34 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             rm -rf /home/deployer/music-dating/backend/server/*
-            rm -rf /home/deployer/music-dating/backend/server/.env
+            rm -f /home/deployer/music-dating/backend/server/.env
 
-      - name: 🚚 Copy backend files
+      - name: 🚚 Deploy backend code
         uses: appleboy/scp-action@v0.1.3
         with:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: "backend/server/**"
-          target: "/home/deployer/music-dating/backend/server/"
+          target: "/home/deployer/music-dating/backend/server"
           strip_components: 2
-          overwrite: true
 
-      - name: 🚚 Deploy .env
+      - name: 📝 Deploy .env
         uses: appleboy/scp-action@v0.1.3
         with:
-          host: ${{ secrets.SERVER_IP }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: "backend/.github/env-files/backend.server.env"
           target: "/home/deployer/music-dating/backend/server/.env"
-          overwrite: true
 
-      - name: 🔧 Set permissions
-        uses: appleboy/ssh-action@v1.0.0
-        with:
-          script: |
-            chown -R deployer:deployer /home/deployer/music-dating/backend/server
-            chmod 644 /home/deployer/music-dating/backend/server/.env
-
-      - name: 🐳 Start containers
+      - name: 🐳 Rebuild containers
         uses: appleboy/ssh-action@v1.0.0
         with:
           script: |
             cd /home/deployer/music-dating/backend/server
-            docker-compose -f docker-compose.yaml down
-            docker-compose -f docker-compose.yaml up -d --build
+            docker-compose down -v
+            docker-compose up -d --build
 
-      - name: 📜 Check logs
-        if: ${{ failure() }}
+      - name: ✅ Health check
         uses: appleboy/ssh-action@v1.0.0
         with:
           script: |
-            docker-compose -f /home/deployer/music-dating/backend/server/docker-compose.yaml logs --tail=100
+            docker exec music-dating-backend curl -s http://localhost:8080/actuator/health | grep "UP"
