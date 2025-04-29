@@ -25,17 +25,6 @@ jobs:
           echo "Файлы в backend/server:"
           find backend/server -type f -name "*.kt" -o -name "*.gradle" -o -name "*.yaml"
 
-      # 📦 Шаг 3: Копирование .env на сервер
-      - name: 📦 Copy .env File
-        uses: appleboy/scp-action@v1.0.0
-        with:
-          host: ${{ secrets.SERVER_IP }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "backend/backend.server.env"
-          target: "/home/deployer/music-dating/backend/server/backend/server/.env"
-          overwrite: true
-
       # 🧹 Шаг 4: Очистка и подготовка сервера
       - name: 🧹 Prepare Server Environment
         uses: appleboy/ssh-action@v1.0.0
