@@ -33,7 +33,7 @@ jobs:
         run: |
           chmod +x ./gradlew
           ./gradlew --no-daemon clean build bootJar
-          ls -la build/libs/  # Проверяем, создан ли JAR-файл
+          ls -la build/libs/  # Диагностика: убедиться, что JAR создан
 
       # 🧹 Очистка целевой директории на сервере
       - name: 🧹 Clean target directory on server
@@ -46,8 +46,8 @@ jobs:
             echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S rm -rf /home/deployer/music-dating/backend || true
             mkdir -p /home/deployer/music-dating/backend/server
 
-      # 📂 Копируем JAR и Docker-файлы на сервер
-      - name: 🚚 Copy JAR and Docker files
+      # 🚚 Копируем JAR, Dockerfile и docker-compose.yaml
+      - name: 📂 Copy JAR and Docker files
         uses: appleboy/scp-action@v1.0.0
         with:
           host: ${{ secrets.SERVER_IP }}
