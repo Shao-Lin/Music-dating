@@ -17,6 +17,3 @@ ENTRYPOINT ["java", "-jar", "app.jar"]
 # Добавьте хелсчек для мониторинга
 HEALTHCHECK CMD curl -f http://localhost:8080/actuator/health || exit 1
 
-# Метаданные
-LABEL maintainer="your-email@example.com"
-LABEL org.opencontainers.image.source=https://github.com/yourusername/yourrepo

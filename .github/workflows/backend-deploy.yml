@@ -79,7 +79,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /home/deployer/music-dating/backend/server
+            cd /home/deployer/music-dating/backend/server/backend/server
 
             echo "Остановка старых контейнеров..."
             docker-compose down
