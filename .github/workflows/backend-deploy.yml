@@ -29,8 +29,8 @@ jobs:
           echo "JAR-файлы:"
           ls -la backend/server/build/libs/
 
-          echo "Dockerfile и docker-compose.yaml:"
-          ls -la backend/server/Dockerfile backend/server/docker-compose.yaml
+          echo "dockerfile и docker-compose.yaml:"
+          ls -la backend/server/dockerfile backend/server/docker-compose.yaml
 
       # 🛠 Установка Java и Gradle
       - name: 🧰 Setup JDK & Gradle
@@ -66,8 +66,8 @@ jobs:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: backend/server/Dockerfile
-          target: "/home/deployer/music-dating/backend/server/Dockerfile"
+          source: backend/server/dockerfile
+          target: "/home/deployer/music-dating/backend/server/dockerfile"
           overwrite: true
 
       - name: 📦 Copy docker-compose.yaml
