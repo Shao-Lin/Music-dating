@@ -2,65 +2,57 @@ name: 🚀 Deploy Backend
 
 on:
   push:
-    branches: [tpproj-21]  # или ваша рабочая ветка
+    branches: [tpproj-21]
     paths:
       - 'backend/**'
 
 jobs:
   deploy:
-    name: Deploy Backend Service
     runs-on: ubuntu-latest
-    timeout-minutes: 30
-
     steps:
-      # 🔄 Шаг 1: Проверка кода
+      # 🔄 Шаг 1: Загрузка кода
       - name: 🔄 Checkout Repository
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0  # Все история для git log
 
-      # 📁 Шаг 2: Диагностика (проверка файлов локально)
-      - name: 📁 Check Files Locally
+      # 🧪 Шаг 2: Диагностика
+      - name: 🧪 Check Files Locally
         run: |
           echo "Файлы в backend/server:"
-          find backend/server -type f -name "*.kt" -o -name "*.gradle" -o -name "*.yaml"
+          ls -la backend/server/
 
-      # 🧹 Шаг 4: Очистка и подготовка сервера
-      - name: 🧹 Prepare Server Environment
+      # 🧹 Шаг 3: Подготовка сервера
+      - name: 🧹 Prepare Server Directories
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            echo "Очистка старых файлов..."
-            sudo rm -rf /home/deployer/music-dating/backend/server/*
-            sudo chown -R deployer:deployer /home/deployer/music-dating/backend/server
+            sudo rm -rf /home/deployer/music-dating/backend || true
+            mkdir -p /home/deployer/music-dating/backend/server
 
-            echo "Установка зависимостей (если нужно)..."
-            # sudo apt install -y openjdk-21-jdk gradle  # Если не установлено
-
-      # 🌐 Шаг 5: Клонирование репозитория на сервер
-      - name: 🌐 Clone Repo on Server
-        uses: appleboy/ssh-action@v1.0.0
+      # 📂 Шаг 4: Копируем файлы
+      - name: 📂 Copy Dockerfile
+        uses: appleboy/scp-action@v1.0.0
         with:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            cd /home/deployer/music-dating/backend/server
+          source: backend/server/Dockerfile
+          target: "/home/deployer/music-dating/backend/server/Dockerfile"
+          overwrite: true
 
-            echo "Клонирование репозитория..."
-            git init
-            git remote add origin git@github.com:<ваш-логин>/<ваш-репозиторий>.git
-            git fetch origin main
-            git reset --hard FETCH_HEAD
-            git checkout main
+      - name: 📂 Copy docker-compose.yaml
+        uses: appleboy/scp-action@v1.0.0
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: backend/server/docker-compose.yaml
+          target: "/home/deployer/music-dating/backend/server/docker-compose.yaml"
+          overwrite: true
 
-            echo "Проверка структуры..."
-            ls -la
-
-      # 🏗️ Шаг 6: Сборка и запуск
+      # 🛠️ Шаг 5: Сборка и запуск
       - name: 🐳 Build & Start Containers
         uses: appleboy/ssh-action@v1.0.0
         with:
@@ -68,13 +60,8 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /home/deployer/music-dating/backend/server/backend/server
-
-            echo "Остановка старых контейнеров..."
+            cd /home/deployer/music-dating/backend/server
             docker-compose down
-
-            echo "Запуск новых контейнеров..."
-            docker-compose up -d --build --force-recreate
-
-            echo "Проверка состояния..."
+            docker-compose build --no-cache
+            docker-compose up -d
             docker ps -a
