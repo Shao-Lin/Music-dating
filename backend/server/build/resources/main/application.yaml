@@ -1,0 +1,44 @@
+server:
+  port: 8088
+  shutdown: graceful
+spring:
+  application:
+    name: vibe-auth-server
+
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: ${HP_MAX_POOL_SIZE:10}
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+
+  liquibase:
+    enabled: true
+    change-log: classpath:/db/liquibase/init-changelog.yaml
+
+  docker:
+    compose:
+      enabled: false
+
+jwt:
+  secret: ${JWT_SECRET}
+  expiration-minutes: ${AT_EXP_MIN}
+  refresh-expiration-days: ${RT_EXP_DAYS}
+
+cloud:
+  s3:
+    endpoint: https://s3.twcstorage.ru
+    region: ru-1
+    accessKey: ${S3_ACCESS_KEY}
+    secretKey: ${S3_SECRET_KEY}
+    bucket: edafb68b-vibe-data
+
+logging:
+  level:
+    software.amazon.awssdk: debug
