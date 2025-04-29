@@ -13,8 +13,8 @@ jobs:
     timeout-minutes: 30
 
     steps:
-      # 🔍 Проверка репозитория (только для получения .env)
-      - name: 🔄 Checkout Code (for .env file only)
+      # 🔍 Проверка репозитория (для получения .env)
+      - name: 🔄 Checkout Code (for .env only)
         uses: actions/checkout@v4
         with:
           ref: tpproj-21
