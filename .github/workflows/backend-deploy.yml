@@ -1,4 +1,4 @@
-name: 🚀 Deploy Backend (dev)
+name: 🚀 Deploy Backend (Production)
 
 on:
   push:
@@ -13,45 +13,45 @@ jobs:
     timeout-minutes: 30
 
     steps:
+      # 🔍 Проверка репозитория
       - name: 🔄 Checkout Code
         uses: actions/checkout@v4
         with:
           ref: tpproj-21
           fetch-depth: 0
 
+      # 📁 Диагностический шаг: вывод структуры проекта
+      - name: 📁 Check Local Files (Debug)
+        run: |
+          echo "Структура проекта:"
+          find . -type f -path "*/server/*" -name "*.kt" -o -name "*.gradle" -o -name "*.yaml" -o -name "*.jar"
+
+      # 🧹 Очистка директории на сервере
       - name: 🧹 Clean Server Directory
-        uses: appleboy/ssh-action@v1.0.0
-        with:
-            host: ${{ secrets.SERVER_IP }}
-            username: ${{ secrets.SSH_USER }}
-            key: ${{ secrets.SSH_PRIVATE_KEY }}
-            script: |
-              echo "Очистка рабочей директории..."
-              echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S rm -rf /home/deployer/music-dating/backend/server/* || true
-              echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S chown -R deployer:deployer /home/deployer/music-dating/backend/server
-
-      - name: 🚚 Deploy Source Code
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.SERVER_IP }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "backend/server/"
-          target: "/home/deployer/music-dating/backend/server"
-          overwrite: true
-
-      - name: 📁 Check Files on Server
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /home/deployer/music-dating/backend/server
-            ls -la
+            echo "Очистка /home/deployer/music-dating/backend/server..."
+            echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S rm -rf /home/deployer/music-dating/backend/server/* || true
+            echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S chown -R deployer:deployer /home/deployer/music-dating/backend/server
 
+            # 🚚 Копирование исходников на сервер
+      - name: 🚚 Deploy Source Code
+        uses: appleboy/scp-action@v1.0.0
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: "backend/server/"         # 📁 Источник: директория с кодом
+          target: "/home/deployer/music-dating/backend/server"  # 📁 Цель: путь на сервере
+          overwrite: true                   # ✅ Перезапись существующих файлов
+
+      # 📦 Копирование .env файла
       - name: 📦 Deploy Environment File
-        uses: appleboy/scp-action@master
+        uses: appleboy/scp-action@v1.0.0
         with:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SSH_USER }}
@@ -60,6 +60,7 @@ jobs:
           target: "/home/deployer/music-dating/backend/server/.env"
           overwrite: true
 
+      # 🔑 Настройка прав доступа
       - name: 🔑 Set Permissions
         uses: appleboy/ssh-action@v1.0.0
         with:
@@ -67,10 +68,12 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            chmod 644 /home/deployer/music-dating/backend/server/.env
-            find /home/deployer/music-dating/backend/server -type d -exec chmod 755 {} \;
-            find /home/deployer/music-dating/backend/server -type f -exec chmod 644 {} \;
+            cd /home/deployer/music-dating/backend/server
+            chmod 644 .env
+            find . -type d -exec chmod 755 {} \;
+            find . -type f -exec chmod 644 {} \;
 
+      # 🐳 Сборка и запуск контейнеров
       - name: 🐳 Build & Start Containers
         uses: appleboy/ssh-action@v1.0.0
         with:
@@ -79,5 +82,8 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd /home/deployer/music-dating/backend/server
+            echo "Остановка старых контейнеров..."
             docker-compose down --remove-orphans
+
+            echo "Запуск новой сборки..."
             docker-compose up -d --build --force-recreate
