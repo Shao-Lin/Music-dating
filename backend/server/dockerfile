@@ -1,9 +1,22 @@
-FROM gradle:8.4-jdk21 AS build
+# Stage 1: Build
+FROM sdkman/gradle:8.4-jdk-21 AS build
 WORKDIR /app
 COPY . .
-RUN gradle build --no-daemon
+RUN gradle build --no-daemon --no-scan
 
-FROM eclipse-temurin:21-jre-jammy
+# Stage 2: Runtime
+FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 COPY --from=build /app/build/libs/*.jar app.jar
-CMD ["java", "-jar", "app.jar"]
+
+# Рекомендуемые улучшения:
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+USER appuser
+ENTRYPOINT ["java", "-jar", "app.jar"]
+
+# Добавьте хелсчек для мониторинга
+HEALTHCHECK CMD curl -f http://localhost:8080/actuator/health || exit 1
+
+# Метаданные
+LABEL maintainer="your-email@example.com"
+LABEL org.opencontainers.image.source=https://github.com/yourusername/yourrepo
