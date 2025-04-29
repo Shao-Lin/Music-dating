@@ -1,4 +1,4 @@
-name: 🚀 Deploy Backend
+name: 🚀 Deploy Backend (dev)
 
 on:
   push:
@@ -8,52 +8,71 @@ on:
 
 jobs:
   deploy:
+    name: Deploy Backend to Server
     runs-on: ubuntu-latest
+
     steps:
-      # 🔄 Шаг 1: Загрузка кода
+      # 🔄 Checkout кода
       - name: 🔄 Checkout Repository
         uses: actions/checkout@v4
+        with:
+          ref: tpproj-21
+          fetch-depth: 0
 
-      # 🧪 Шаг 2: Диагностика
-      - name: 🧪 Check Files Locally
+      # 🔧 Установка Java и Gradle
+      - name: 🛠 Setup JDK & Gradle
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: 'gradle'
+
+      # 📦 Установка зависимостей и сборка проекта
+      - name: 🏗 Build Project
+        working-directory: ./backend/server
         run: |
-          echo "Файлы в backend/server:"
-          ls -la backend/server/
+          chmod +x ./gradlew
+          ./gradlew --no-daemon clean build bootJar
+          ls -la build/libs/  # Проверяем, создан ли JAR-файл
 
-      # 🧹 Шаг 3: Подготовка сервера
-      - name: 🧹 Prepare Server Directories
+      # 🧹 Очистка целевой директории на сервере
+      - name: 🧹 Clean target directory on server
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            sudo rm -rf /home/deployer/music-dating/backend || true
+            echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S rm -rf /home/deployer/music-dating/backend || true
             mkdir -p /home/deployer/music-dating/backend/server
 
-      # 📂 Шаг 4: Копируем файлы
-      - name: 📂 Copy Dockerfile
+      # 📂 Копируем JAR и Docker-файлы на сервер
+      - name: 🚚 Copy JAR and Docker files
         uses: appleboy/scp-action@v1.0.0
         with:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: backend/server/Dockerfile
-          target: "/home/deployer/music-dating/backend/server/Dockerfile"
+          source: |
+            backend/server/build/libs/*.jar
+            backend/server/Dockerfile
+            backend/server/docker-compose.yaml
+          target: "/home/deployer/music-dating/backend/server/"
           overwrite: true
 
-      - name: 📂 Copy docker-compose.yaml
+      # 📦 Копируем .env
+      - name: 📂 Copy .env file
         uses: appleboy/scp-action@v1.0.0
         with:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: backend/server/docker-compose.yaml
-          target: "/home/deployer/music-dating/backend/server/docker-compose.yaml"
+          source: "backend/server/backend.server.env"
+          target: "/home/deployer/music-dating/backend/server/.env"
           overwrite: true
 
-      # 🛠️ Шаг 5: Сборка и запуск
-      - name: 🐳 Build & Start Containers
+      # 🐳 Перезапуск контейнеров
+      - name: 🔄 Restart Backend Containers
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.SERVER_IP }}
@@ -62,6 +81,16 @@ jobs:
           script: |
             cd /home/deployer/music-dating/backend/server
             docker-compose down
-            docker-compose build --no-cache
-            docker-compose up -d
+            docker-compose up -d --build --force-recreate
             docker ps -a
+
+      # 📜 Логи при ошибке
+      - name: 📜 Check Logs on Failure
+        if: ${{ failure() }}
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            docker-compose logs --tail=100
