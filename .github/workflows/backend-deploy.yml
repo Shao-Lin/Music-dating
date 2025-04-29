@@ -33,7 +33,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: ".github/env-files/backend.server.env"
-          target: "/home/deployer/music-dating/backend/server/.env"
+          target: "/home/deployer/music-dating/backend/server/backend/server/.env"
           overwrite: true
 
       # 🧹 Шаг 4: Очистка и подготовка сервера
