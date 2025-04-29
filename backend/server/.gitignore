@@ -1,22 +1,11 @@
-# Игнорировать глобально
 HELP.md
-*.log
-*.lock
-*.class
-*.jar
-*.war
-*.iml
-*.ipr
-*.iws
+.gradle
+!build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
 
-# VS Code
-.vscode/
-
-# IntelliJ IDEA
-.idea/
-out/
-
-# Eclipse STS
+### STS ###
 .apt_generated
 .classpath
 .factorypath
@@ -25,23 +14,27 @@ out/
 .springBeans
 .sts4-cache
 bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
 
-# NetBeans
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+### NetBeans ###
 /nbproject/private/
 /nbbuild/
 /dist/
 /nbdist/
 /.nb-gradle/
 
-# Gradle wrapper (сохраняем только wrapper)
-!/gradle/wrapper/gradle-wrapper.jar
-!/gradle/wrapper/gradle-wrapper.properties
+### VS Code ###
+.vscode/
 
-# Исключить build/, но сохранить src/ и ключевые файлы
-/build/
-!src/
-!build.gradle.kts
-!settings.gradle.kts
-!docker-compose.yaml
-!Dockerfile
-!.env
+!./docker-compose.yaml
+!dockerfile

@@ -1,54 +1,58 @@
-name: 🚀 Deploy Backend (dev)
+name: 🚀 Deploy Backend
 
 on:
   push:
-    branches: [tpproj-21]
+    branches: [tpproj-21]  # или ваша рабочая ветка
     paths:
       - 'backend/**'
 
 jobs:
   deploy:
-    name: Deploy Backend
+    name: Deploy Backend Service
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
     steps:
-      # 🔍 Проверка репозитория (для получения .env)
-      - name: 🔄 Checkout Code (for .env only)
+      # 🔄 Шаг 1: Проверка кода
+      - name: 🔄 Checkout Repository
         uses: actions/checkout@v4
         with:
-          ref: tpproj-21
-          fetch-depth: 1
+          fetch-depth: 0  # Все история для git log
 
-      # 📦 Копирование .env файла
-      - name: 📦 Deploy Environment File
+      # 📁 Шаг 2: Диагностика (проверка файлов локально)
+      - name: 📁 Check Files Locally
+        run: |
+          echo "Файлы в backend/server:"
+          find backend/server -type f -name "*.kt" -o -name "*.gradle" -o -name "*.yaml"
+
+      # 📦 Шаг 3: Копирование .env на сервер
+      - name: 📦 Copy .env File
         uses: appleboy/scp-action@v1.0.0
         with:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "backend/.github/env-files/backend.server.env"
+          source: ".github/env-files/backend.server.env"
           target: "/home/deployer/music-dating/backend/server/.env"
           overwrite: true
 
-      # 🧹 Подготовка сервера: установка зависимостей
-      - name: 🧹 Prepare Server for Build
+      # 🧹 Шаг 4: Очистка и подготовка сервера
+      - name: 🧹 Prepare Server Environment
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            echo "Очистка директории сборки..."
-            echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S rm -rf /home/deployer/music-dating/backend/server/* || true
-            echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S chown -R deployer:deployer /home/deployer/music-dating/backend/server
+            echo "Очистка старых файлов..."
+            sudo rm -rf /home/deployer/music-dating/backend/server/*
+            sudo chown -R deployer:deployer /home/deployer/music-dating/backend/server
 
-            echo "Установка зависимостей..."
-            echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S apt update -y
-            echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S apt install -y git openjdk-21-jdk gradle docker.io docker-compose
+            echo "Установка зависимостей (если нужно)..."
+            # sudo apt install -y openjdk-21-jdk gradle  # Если не установлено
 
-      # 🌐 Клонирование репозитория на сервер
-      - name: 🌐 Clone Repository on Server
+      # 🌐 Шаг 5: Клонирование репозитория на сервер
+      - name: 🌐 Clone Repo on Server
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.SERVER_IP }}
@@ -60,30 +64,14 @@ jobs:
             echo "Клонирование репозитория..."
             git init
             git remote add origin git@github.com:<ваш-логин>/<ваш-репозиторий>.git
-            git fetch origin tpproj-21
+            git fetch origin main
             git reset --hard FETCH_HEAD
-            git checkout tpproj-21
+            git checkout main
 
-      # 🏗️ Сборка проекта на сервере
-      - name: 🛠 Build Project on Server
-        uses: appleboy/ssh-action@v1.0.0
-        with:
-          host: ${{ secrets.SERVER_IP }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            cd /home/deployer/music-dating/backend/server
-
-            echo "Проверка структуры после клонирования..."
+            echo "Проверка структуры..."
             ls -la
 
-            echo "Установка прав на gradlew..."
-            chmod +x gradlew
-
-            echo "Запуск сборки Gradle..."
-            ./gradlew build --no-daemon
-
-      # 🐳 Запуск контейнеров
+      # 🏗️ Шаг 6: Сборка и запуск
       - name: 🐳 Build & Start Containers
         uses: appleboy/ssh-action@v1.0.0
         with:
@@ -94,7 +82,10 @@ jobs:
             cd /home/deployer/music-dating/backend/server
 
             echo "Остановка старых контейнеров..."
-            docker-compose down --remove-orphans
+            docker-compose down
 
             echo "Запуск новых контейнеров..."
             docker-compose up -d --build --force-recreate
+
+            echo "Проверка состояния..."
+            docker ps -a
