@@ -1,42 +1,50 @@
-name: 🚀 Deploy Backend (dev)
+name: 🚀 Deploy Backend to Server
 
 on:
   push:
-    branches: [tpproj-21]
+    branches: [tpproj-21]  # или ваша ветка
     paths:
       - 'backend/**'
 
 jobs:
   deploy:
-    name: Deploy Backend to Server
+    name: Deploy Music-Dating Backend
     runs-on: ubuntu-latest
 
     steps:
-      # 🔄 Checkout кода
-      - name: 🔄 Checkout Repository
+      # 🔄 Шаг 1: Загрузка кода
+      - name: 🔁 Checkout Repository
         uses: actions/checkout@v4
         with:
           ref: tpproj-21
           fetch-depth: 0
 
-      # 🔧 Установка Java и Gradle
-      - name: 🛠 Setup JDK & Gradle
+      # 🧪 Диагностика: показываем, какие файлы доступны
+      - name: 📁 Check files in backend/server
+        run: |
+          echo "Файлы в backend/server:"
+          ls -la backend/server/
+          echo "JAR-файлы:"
+          ls -la backend/server/build/libs/ || true
+
+      # 🛠 Установка JDK и Gradle
+      - name: 🧰 Setup Java & Gradle
         uses: actions/setup-java@v4
         with:
           java-version: '21'
           distribution: 'temurin'
           cache: 'gradle'
 
-      # 📦 Установка зависимостей и сборка проекта
-      - name: 🏗 Build Project
+      # 🏗 Сборка проекта
+      - name: 🛠 Build Project
         working-directory: ./backend/server
         run: |
           chmod +x ./gradlew
           ./gradlew --no-daemon clean build bootJar
-          ls -la build/libs/  # Диагностика: убедиться, что JAR создан
+          ls -la build/libs/  # Проверяем, создан ли JAR
 
       # 🧹 Очистка целевой директории на сервере
-      - name: 🧹 Clean target directory on server
+      - name: 🧼 Clean target directory on server
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.SERVER_IP }}
@@ -46,33 +54,49 @@ jobs:
             echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S rm -rf /home/deployer/music-dating/backend || true
             mkdir -p /home/deployer/music-dating/backend/server
 
-      # 🚚 Копируем JAR, Dockerfile и docker-compose.yaml
-      - name: 📂 Copy JAR and Docker files
+      # 🚚 Копируем нужные файлы на сервер
+      - name: 📂 Copy Dockerfile
         uses: appleboy/scp-action@v1.0.0
         with:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: |
-            backend/server/build/libs/*.jar
-            backend/server/Dockerfile
-            backend/server/docker-compose.yaml
-          target: "/home/deployer/music-dating/backend/server/"
+          source: backend/server/Dockerfile
+          target: "/home/deployer/music-dating/backend/server/Dockerfile"
           overwrite: true
 
-      # 📦 Копируем .env
-      - name: 📂 Copy .env file
+      - name: 📦 Copy docker-compose.yaml
         uses: appleboy/scp-action@v1.0.0
         with:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "backend/server/backend.server.env"
+          source: backend/server/docker-compose.yaml
+          target: "/home/deployer/music-dating/backend/server/docker-compose.yaml"
+          overwrite: true
+
+      - name: 📄 Copy .env file
+        uses: appleboy/scp-action@v1.0.0
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: backend/server/backend.server.env
           target: "/home/deployer/music-dating/backend/server/.env"
           overwrite: true
 
+      - name: 📁 Copy JAR file
+        uses: appleboy/scp-action@v1.0.0
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: backend/server/build/libs/*.jar
+          target: "/home/deployer/music-dating/backend/server/app.jar"
+          overwrite: true
+
       # 🐳 Перезапуск контейнеров
-      - name: 🔄 Restart Backend Containers
+      - name: 🔄 Restart Containers via SSH
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.SERVER_IP }}
@@ -85,7 +109,7 @@ jobs:
             docker ps -a
 
       # 📜 Логи при ошибке
-      - name: 📜 Check Logs on Failure
+      - name: 📜 Show Logs on Failure
         if: ${{ failure() }}
         uses: appleboy/ssh-action@v1.0.0
         with:
@@ -93,4 +117,5 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            docker-compose logs --tail=100
+            cd /home/deployer/music-dating/backend/server
+            docker-compose logs --tail=50
