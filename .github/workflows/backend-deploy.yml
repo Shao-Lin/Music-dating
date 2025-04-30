@@ -66,9 +66,10 @@ jobs:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: backend/server/dockerfile
-          target: "/home/deployer/music-dating/backend/server/dockerfile"
+          source: backend/server/Dockerfile
+          target: "/home/deployer/music-dating/backend/server/"
           overwrite: true
+          strip_components: 2
 
       - name: 📦 Copy docker-compose.yaml
         uses: appleboy/scp-action@v1.0.0
@@ -77,8 +78,9 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: backend/server/docker-compose.yaml
-          target: "/home/deployer/music-dating/backend/server/docker-compose.yaml"
+          target: "/home/deployer/music-dating/backend/server/"
           overwrite: true
+          strip_components: 2
 
       - name: 📦 Copy .env file
         uses: appleboy/scp-action@v1.0.0
@@ -87,8 +89,9 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: backend/server/backend.server.env
-          target: "/home/deployer/music-dating/backend/server/.env"
+          target: "/home/deployer/music-dating/backend/server/"
           overwrite: true
+          strip_components: 2
 
       - name: 📦 Copy JAR file
         uses: appleboy/scp-action@v1.0.0
@@ -97,8 +100,9 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: backend/server/build/libs/*.jar
-          target: "/home/deployer/music-dating/backend/server/app.jar"
+          target: "/home/deployer/music-dating/backend/server/"
           overwrite: true
+          strip_components: 3
 
       # 🐳 Запуск контейнеров
       - name: 🔄 Restart Docker Containers
