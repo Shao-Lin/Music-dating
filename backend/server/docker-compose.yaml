@@ -25,7 +25,7 @@ services:
       dockerfile: Dockerfile
     container_name: music-dating_backend
     env_file:
-      - .env
+      - backend.server.env
     ports:
       - "8080:8080"
     depends_on:
