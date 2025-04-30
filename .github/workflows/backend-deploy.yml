@@ -108,7 +108,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /home/deployer/music-dating/backend/server/docker-compose
+            cd /home/deployer/music-dating/backend/server/docker-compose.yaml/backend/server
             docker-compose down
             docker-compose build --no-cache
             docker-compose up -d
