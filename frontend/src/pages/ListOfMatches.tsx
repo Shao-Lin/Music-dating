@@ -37,9 +37,6 @@ export const ListOfMatches = () => {
     online: false,
     music: musicTest,
   };
-<<<<<<< HEAD
-  const testList = [test1, test2, test3];
-=======
   const test4: MatchItemType = {
     id: 4,
     name: "Маша",
@@ -69,7 +66,6 @@ export const ListOfMatches = () => {
     music: musicTest,
   };
   const testList = [test1, test2, test3, test4, test5, test6, test7];
->>>>>>> 47c2cb4ade45b2dd244898924fe7d8e90a6a0159
   return (
     <main className="content">
       <div className="content-inner">
