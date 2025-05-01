@@ -56,18 +56,6 @@ jobs:
             echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S rm -rf /home/deployer/music-dating/backend || true
             mkdir -p /home/deployer/music-dating/backend/server
 
-      # 📂 Копируем нужные файлы на сервер
-      - name: 📦 Copy Dockerfile
-        uses: appleboy/scp-action@v1.0.0
-        with:
-          host: ${{ secrets.SERVER_IP }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: backend/server/dockerfile
-          target: "/home/deployer/music-dating/backend/server/"
-          overwrite: true
-          strip_components: 2
-
       - name: 📦 Copy JAR file
         uses: appleboy/scp-action@v1.0.0
         with:
