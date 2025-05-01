@@ -9,7 +9,7 @@ import type { HeaderType } from "../components/chatHeader/headerType";
 export const matchesApi = createApi({
   reducerPath: "matchesApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "/v1",
+    baseUrl: "api/v1",
     prepareHeaders: (headers) => {
       const token = localStorage.getItem("token");
       if (token) {

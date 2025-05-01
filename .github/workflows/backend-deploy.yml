@@ -29,9 +29,6 @@ jobs:
           echo "JAR-файлы:"
           ls -la backend/server/build/libs/
 
-          echo "dockerfile и docker-compose.yaml:"
-          ls -la backend/server/dockerfile backend/server/docker-compose.yaml
-
       # 🛠 Установка Java и Gradle
       - name: 🧰 Setup JDK & Gradle
         uses: actions/setup-java@v4
@@ -71,28 +68,6 @@ jobs:
           overwrite: true
           strip_components: 2
 
-      - name: 📦 Copy docker-compose.yaml
-        uses: appleboy/scp-action@v1.0.0
-        with:
-          host: ${{ secrets.SERVER_IP }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: backend/server/docker-compose.yaml
-          target: "/home/deployer/music-dating/backend/server/"
-          overwrite: true
-          strip_components: 2
-
-      - name: 📦 Copy .env file
-        uses: appleboy/scp-action@v1.0.0
-        with:
-          host: ${{ secrets.SERVER_IP }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: backend/server/backend.server.env
-          target: "/home/deployer/music-dating/backend/server/"
-          overwrite: true
-          strip_components: 2
-
       - name: 📦 Copy JAR file
         uses: appleboy/scp-action@v1.0.0
         with:
@@ -112,7 +87,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /home/deployer/music-dating/backend/server
+            cd /home/deployer/music-dating
             docker-compose down
             docker-compose build --no-cache
             docker-compose up -d
@@ -127,5 +102,5 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /home/deployer/music-dating/backend/server
+            cd /home/deployer/music-dating
             docker-compose logs --tail=50

@@ -5,7 +5,7 @@ info:
   description: API для мобильного дейтинг-приложения Vibe с интеграцией музыкального ИИ.
 
 servers:
-  - url: https://api.vibe-app.com/v1
+  - url: https://api.vibe-app.com/api/v1
 
 tags:
   - name: User API

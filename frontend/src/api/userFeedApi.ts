@@ -5,7 +5,7 @@ import { UserData } from "../components/userCard/userType";
 export const userFeedApi = createApi({
   reducerPath: "userFeedApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "/v1",
+    baseUrl: "api/v1",
     prepareHeaders: (headers) => {
       const token = localStorage.getItem("token");
       if (token) {
