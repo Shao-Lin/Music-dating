@@ -63,7 +63,7 @@ jobs:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: backend/server/dockerfile
+          source: backend/server/Dockerfile
           target: "/home/deployer/music-dating/backend/server/"
           overwrite: true
           strip_components: 2
