@@ -29,9 +29,6 @@ jobs:
           echo "JAR-файлы:"
           ls -la backend/server/build/libs/
 
-          echo "dockerfile и docker-compose.yaml:"
-          ls -la backend/server/dockerfile backend/server/docker-compose.yaml
-
       # 🛠 Установка Java и Gradle
       - name: 🧰 Setup JDK & Gradle
         uses: actions/setup-java@v4
@@ -101,7 +98,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /home/deployer/music-dating/backend/server
+            cd /home/deployer/music-dating
             docker-compose down
             docker-compose build --no-cache
             docker-compose up -d
