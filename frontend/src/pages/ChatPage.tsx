@@ -34,19 +34,19 @@ export const ChatPage = () => {
 
   const fakeImageFile = new File([""], "testImage.png", { type: "image/png" });
   const message1: MessageType = {
-    senderId: 111,
+    senderId: "111",
 
     text: "Привет",
     image: fakeImageFile,
   };
   const message2: MessageType = {
-    senderId: 112,
+    senderId: "112",
 
     text: "дарова",
     image: null,
   };
   const message3: MessageType = {
-    senderId: 111,
+    senderId: "111",
 
     text: "Всё переплетено. Море нитей, но Потяни за нить, за ней потянется клубок Этот мир - веретено, совпадений ноль Нитью быть или струной, или для битвы тетивой.",
     image: null,

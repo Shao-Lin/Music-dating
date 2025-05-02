@@ -1,5 +1,5 @@
 export type MessageType = {
-  senderId: number;
+  senderId: string;
   text: string | null;
   image: File | null;
 };

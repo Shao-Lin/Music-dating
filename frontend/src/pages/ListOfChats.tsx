@@ -5,7 +5,7 @@ import { ChatItemType } from "../components/chatItem/chatItemType";
 
 export const ListOfChats = () => {
   const message: MessageType = {
-    senderId: 1,
+    senderId: "1",
     text: "Последнее сообщение, которое может быть очень длинным, поэтому оно обрежется...",
     image: null,
   };

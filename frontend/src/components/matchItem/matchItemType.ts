@@ -4,7 +4,7 @@ export type MusicDataMatchItem = {
 };
 
 export type MatchItemType = {
-  id: number;
+  id: string;
   name: string;
   avatar: string;
   online: boolean;

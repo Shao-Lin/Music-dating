@@ -1,17 +1,15 @@
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router";
+import { useSendingAuthCodeMutation } from "../../../../api/authApi";
 
-type CodeInputProps = {
-  onComplete?: (code: string) => boolean; // callback, когда все 4 цифры введены
-};
-
-export const CodeInput = ({ onComplete }: CodeInputProps) => {
+export const CodeInput = () => {
   const [code, setCode] = useState(["", "", "", ""]);
   const inputsRef = useRef<(HTMLInputElement | null)[]>([]);
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const [sendingCode] = useSendingAuthCodeMutation();
 
-  const handleChange = (value: string, index: number) => {
+  const handleChange = async (value: string, index: number) => {
     if (!/^\d?$/.test(value)) return; // только цифры или пусто
 
     const newCode = [...code];
@@ -27,11 +25,17 @@ export const CodeInput = ({ onComplete }: CodeInputProps) => {
     // если код полный, вызываем onComplete
     const fullCode = newCode.join("");
     if (fullCode.length === 4 && !newCode.includes("")) {
-      const success = onComplete?.(fullCode);
-      if (!success) {
-        setError("Неверный код. Попробуйте снова.");
-      } else {
-        navigate("/questionnaire");
+      try {
+        const response = await sendingCode(fullCode).unwrap();
+        console.log("Успех:", response);
+        if (response.data) {
+          navigate("/questionnaire");
+        } else {
+          setError("Неверный код. Попробуйте снова.");
+        }
+      } catch (error) {
+        console.error("Ошибка:", error);
+        setError("Ошибка сервера");
       }
     }
   };

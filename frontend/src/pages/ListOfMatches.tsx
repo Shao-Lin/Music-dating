@@ -17,49 +17,49 @@ export const ListOfMatches = () => {
     cover: coverImage,
   };
   const test1: MatchItemType = {
-    id: 1,
+    id: "1",
     name: "Екатерина",
     avatar: testAvatar,
     online: false,
     music: musicTest,
   };
   const test2: MatchItemType = {
-    id: 2,
+    id: "2",
     name: "Даша",
     avatar: testAvatar,
     online: true,
     music: musicTest,
   };
   const test3: MatchItemType = {
-    id: 3,
+    id: "3",
     name: "Маша",
     avatar: testAvatar,
     online: false,
     music: musicTest,
   };
   const test4: MatchItemType = {
-    id: 4,
+    id: "4",
     name: "Маша",
     avatar: testAvatar,
     online: false,
     music: musicTest,
   };
   const test5: MatchItemType = {
-    id: 5,
+    id: "5",
     name: "Маша",
     avatar: testAvatar,
     online: false,
     music: musicTest,
   };
   const test6: MatchItemType = {
-    id: 6,
+    id: "6",
     name: "Маша",
     avatar: testAvatar,
     online: false,
     music: musicTest,
   };
   const test7: MatchItemType = {
-    id: 7,
+    id: "7",
     name: "Маша",
     avatar: testAvatar,
     online: false,

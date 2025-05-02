@@ -12,8 +12,6 @@ import { isFetchBaseQueryError } from "../../../utils/errorChecker";
 
 const validationSchema = Yup.object({
   login: Yup.string()
-    .min(3, "Длина от 3 до 20 символов")
-    .max(20, "Длина от 3 до 20 символов")
     .email("Введите корректный email")
     .required("Обязательное поле"),
   password: Yup.string()
@@ -114,7 +112,11 @@ export const SignUpForm = () => {
             />
 
             <div className="form-button">
-              <ClassicButton name="Войти" type="submit" isLoading={isLoading} />
+              <ClassicButton
+                name="Отправить код"
+                type="submit"
+                isLoading={isLoading}
+              />
               {sendEmailError && (
                 <div className="form-error">{sendEmailError}</div>
               )}

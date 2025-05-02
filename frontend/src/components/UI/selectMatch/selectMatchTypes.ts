@@ -1,13 +1,13 @@
 export type SelectMatchProps = {
-  meId: number;
-  feedId: number;
+  meId: string;
+  feedId: string;
 };
 export type SelectMatchType = {
   userMe: {
-    MeId: number;
+    MeId: string;
     meMatch: boolean;
   };
   userFeed: {
-    userFeedId: number;
+    userFeedId: string;
   };
 };

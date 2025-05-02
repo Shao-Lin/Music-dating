@@ -25,7 +25,7 @@ export const MatchFeed = () => {
   const birthDate: Date = new Date(2006, 11, 21);
 
   const test1: UserData = {
-    id: 1,
+    id: "1",
     photos: photos2,
     name: "Алина",
     birthday: birthDate,
@@ -33,7 +33,7 @@ export const MatchFeed = () => {
     music: musicdata,
   };
   const userId = {
-    id: 123,
+    id: "123",
   };
   return (
     <main>
