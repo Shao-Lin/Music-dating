@@ -3,9 +3,9 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const authApi = createApi({
   reducerPath: "authApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "/v1",
+    baseUrl: "http://localhost:8088/api/auth",
   }),
-  tagTypes: ["AuthCode"], // ✅ обязательно указываем здесь список всех тегов
+  tagTypes: ["AuthCode"],
   endpoints: (build) => ({
     loginUser: build.mutation({
       query: (credentials) => ({
@@ -16,7 +16,7 @@ export const authApi = createApi({
     }),
     sendingEmail: build.mutation({
       query: (credentials) => ({
-        url: "saveEmail",
+        url: "request-code",
         method: "POST",
         body: credentials,
       }),
@@ -24,7 +24,7 @@ export const authApi = createApi({
     }),
     sendingAuthCode: build.mutation({
       query: (code) => ({
-        url: "authCode",
+        url: "verify-code",
         method: "POST",
         body: code,
       }),

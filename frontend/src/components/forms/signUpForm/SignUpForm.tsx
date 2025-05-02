@@ -84,7 +84,7 @@ export const SignUpForm = () => {
           <form onSubmit={handleSubmit} className="form">
             <div className="form-title">Регистрация</div>
 
-            <div className="form-label">Логин</div>
+            <div className="form-label">E-mail</div>
             <ClassicInput
               name="login"
               value={values.login}
