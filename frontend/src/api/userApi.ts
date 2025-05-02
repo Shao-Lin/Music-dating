@@ -4,7 +4,7 @@ import { UserData } from "../components/userCard/userType";
 export const userApi = createApi({
   reducerPath: "userApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:8088/api/user",
+    baseUrl: "https://vibedating.ru/api/user",
     prepareHeaders: (headers) => {
       const token = localStorage.getItem("token");
       if (token) {
