@@ -18,7 +18,7 @@ export const authApi = createApi({
       query: (credentials) => ({
         url: "request-code",
         method: "POST",
-        body: credentials,
+        params: credentials,
       }),
       invalidatesTags: ["AuthCode"], // ✅ добавили это
     }),
@@ -26,7 +26,7 @@ export const authApi = createApi({
       query: (code) => ({
         url: "verify-code",
         method: "POST",
-        body: code,
+        params: code,
       }),
       invalidatesTags: ["AuthCode"], // ✅ добавили это
     }),

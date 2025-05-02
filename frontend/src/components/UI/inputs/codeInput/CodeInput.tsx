@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import { useSendingAuthCodeMutation } from "../../../../api/authApi";
+import { useAppSelector } from "../../../../hooks/reduxHook";
 
 export const CodeInput = () => {
   const [code, setCode] = useState(["", "", "", ""]);
@@ -8,6 +9,7 @@ export const CodeInput = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const [sendingCode] = useSendingAuthCodeMutation();
+  const login = useAppSelector((state) => state.authUsers.login);
 
   const handleChange = async (value: string, index: number) => {
     if (!/^\d?$/.test(value)) return; // только цифры или пусто
@@ -25,8 +27,12 @@ export const CodeInput = () => {
     // если код полный, вызываем onComplete
     const fullCode = newCode.join("");
     if (fullCode.length === 4 && !newCode.includes("")) {
+      const codeWithEmail = {
+        email: login,
+        code: fullCode,
+      };
       try {
-        const response = await sendingCode(fullCode).unwrap();
+        const response = await sendingCode(codeWithEmail).unwrap();
         console.log("Успех:", response);
         if (response.data) {
           navigate("/questionnaire");
