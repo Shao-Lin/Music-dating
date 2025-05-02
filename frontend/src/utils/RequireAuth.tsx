@@ -2,11 +2,11 @@
 import { Navigate, Outlet } from "react-router-dom";
 
 export const RequireAuth = () => {
-  const token = localStorage.getItem("token"); // или sessionStorage, или useSelector(...) если храните в Redux
+  const token = localStorage.getItem("token");
 
-  if (!token) {
-    return <Navigate to="/login" replace />;
-  }
+  //if (!token) {
+  //return <Navigate to="/login" replace />;
+  //}
 
   return <Outlet />;
 };

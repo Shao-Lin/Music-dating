@@ -14,5 +14,5 @@ export type UserData = {
 };
 
 export type UserId = {
-  id: number;
+  id: string;
 };

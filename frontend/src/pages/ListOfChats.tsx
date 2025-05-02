@@ -13,13 +13,20 @@ export const ListOfChats = () => {
   const messages = [message, message, message];
 
   const chatItem: ChatItemType = {
-    name: "Анастасия",
+    name: "Маша",
+    avatar: testAvatar,
+    isOnline: true,
+    messages,
+  };
+  const chatItem2: ChatItemType = {
+    name: "Екатерина",
     avatar: testAvatar,
     isOnline: true,
     messages,
   };
 
   const chatData = [
+    chatItem2,
     chatItem,
     chatItem,
     chatItem,

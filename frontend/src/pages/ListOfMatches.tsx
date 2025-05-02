@@ -7,14 +7,15 @@ import {
 } from "../components/matchItem/matchItemType";
 import testAvatar from "../assets/testAvatar.png";
 import sound from "../assets/testMusic/linkin-park-in-the-end-original_(bobamuz.online).mp3";
-import coverImage from "../assets/musicButton/cover.png";
+//import coverImage from "../assets/musicButton/cover.png";
+import cov8 from "../assets/testMusic/cov8.png";
 
 export const ListOfMatches = () => {
   //const { data: listUsers } = useGetListUserMatchesQuery();
 
   const musicTest: MusicDataMatchItem = {
     music: sound,
-    cover: coverImage,
+    cover: cov8,
   };
   const test1: MatchItemType = {
     id: "1",

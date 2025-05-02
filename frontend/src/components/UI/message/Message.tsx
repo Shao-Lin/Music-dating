@@ -10,7 +10,7 @@ interface MessageProps {
 
 export const Message = ({ message, isSameSender }: MessageProps) => {
   //const currentUserId = useAppSelector((state) => state.authUsers.id);
-  const currentUserId = 111;
+  const currentUserId = "111";
 
   const isOwnMessage = message.senderId === currentUserId;
 

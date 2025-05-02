@@ -2,14 +2,14 @@ import "../styles/main.scss";
 import { UserCard } from "../components/userCard/UserCard";
 import { ActionMenu } from "../components/navigation/actionMenu/ActionMenu";
 
-import one from "../assets/testCarousel/one.webp";
-import two from "../assets/testCarousel/two.png";
-import three from "../assets/testCarousel/three.png";
+import four from "../assets/testCarousel/four.webp";
+import five from "../assets/testCarousel/five.jpg";
+import six from "../assets/testCarousel/six.jpg";
 
-import sound from "../assets/testMusic/linkin-park-in-the-end-original_(bobamuz.online).mp3";
-import coverImage from "../assets/musicButton/cover.png";
+import sound from "../assets/testMusic/mind.mp3";
 import { MusicData } from "../components/userCard/userType";
 import { UserData } from "../components/userCard/userType";
+import cov5 from "../assets/testMusic/cov5.jpg";
 
 //import { useGetUserDataQuery } from "../api/userApi";
 export const Profile = () => {
@@ -17,11 +17,11 @@ export const Profile = () => {
 
   //if (isLoading) return <div>Загрузка...</div>;
 
-  const photos2 = [one, two, three];
+  const photos2 = [four, five, six];
 
   const musicdata: MusicData = {
-    name: "In the end",
-    cover: coverImage,
+    name: "Mind",
+    cover: cov5,
     music: sound,
   };
   const birthDate: Date = new Date(2006, 11, 21);
@@ -29,9 +29,9 @@ export const Profile = () => {
   const test1: UserData = {
     id: "1",
     photos: photos2,
-    name: "Алина",
+    name: "Тайлер",
     birthday: birthDate,
-    city: "Воронеж",
+    city: "г.Воронеж",
     music: musicdata,
   };
 

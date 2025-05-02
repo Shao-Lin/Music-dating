@@ -1,11 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 type InitialStateType = {
-  id: number | null;
+  id: string | null;
 };
 
 type PayloadType = {
-  id: number | null;
+  id: string | null;
 };
 
 const initialState: InitialStateType = {
