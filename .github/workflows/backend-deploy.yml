@@ -2,7 +2,7 @@ name: 🚀 Deploy Backend
 
 on:
   push:
-    branches: [tpproj-21]
+    branches: [dev]
     paths:
       - 'backend/**'
 
@@ -17,7 +17,7 @@ jobs:
       - name: 🔄 Checkout Repository
         uses: actions/checkout@v4
         with:
-          ref: tpproj-21
+          ref: dev
           fetch-depth: 0
 
       # 🧪 Диагностика: проверяем файлы локально
