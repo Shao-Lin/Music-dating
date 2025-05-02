@@ -1,38 +1,97 @@
-name: Deploy Backend
+name: 🚀 Deploy Backend
 
 on:
   push:
-    branches: [TPPROJ-21]
+    branches: [dev]
     paths:
       - 'backend/**'
 
 jobs:
   deploy:
+    name: Deploy Music-Dating Backend
     runs-on: ubuntu-latest
+    timeout-minutes: 30
 
     steps:
-      - uses: actions/checkout@v4
+      # 🔄 Шаг 1: Получаем код
+      - name: 🔄 Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          ref: dev
+          fetch-depth: 0
 
-      - name: Set up JDK 21
-        uses: actions/setup-java@v3
+      # 🧪 Диагностика: проверяем файлы локально
+      - name: 🧪 Check files locally
+        run: |
+          echo "Файлы в backend/server:"
+          ls -la backend/server/
+
+          echo "JAR-файлы:"
+          ls -la backend/server/build/libs/
+
+      # 🛠 Установка Java и Gradle
+      - name: 🧰 Setup JDK & Gradle
+        uses: actions/setup-java@v4
         with:
           java-version: '21'
-          distribution: 'temurin'  # Исправлено: добавлен обязательный параметр
+          distribution: 'temurin'
+          cache: 'gradle'
 
-      - name: Build with Gradle
-        working-directory: ./backend
-        run: ./gradlew build -x test
+      # 🏗 Сборка проекта
+      - name: 🔨 Build Project
+        working-directory: ./backend/server
+        run: |
+          chmod +x gradlew
+          ./gradlew --no-daemon clean build bootJar
+          ls -la build/libs/  # Проверяем, создан ли JAR
 
-      - name: Deploy to Server
-        uses: appleboy/scp-action@v0.1.3
+      # 🧹 Подготовка директории на сервере
+      - name: 🧹 Clean target dir on server
+        uses: appleboy/ssh-action@v1.0.0
         with:
-          host: ${{ secrets.SERVER_IP }}  
+          host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "backend/build/libs/*.jar"
-          target: "/home/deployer/music-dating/backend"
+          script: |
+            echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S rm -rf /home/deployer/music-dating/backend || true
+            mkdir -p /home/deployer/music-dating/backend/server
 
-      - name: Restart Services
+      # 📂 Копируем нужные файлы на сервер
+      - name: 📦 Copy Dockerfile
+        uses: appleboy/scp-action@v1.0.0
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: backend/server/Dockerfile
+          target: "/home/deployer/music-dating/backend/server/"
+          overwrite: true
+          strip_components: 2
+
+      - name: 📦 Copy .env file
+        uses: appleboy/scp-action@v1.0.0
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: backend/server/backend.server.env
+          target: "/home/deployer/music-dating/backend/server/"
+          overwrite: true
+          strip_components: 2
+
+      - name: 📦 Copy JAR file
+        uses: appleboy/scp-action@v1.0.0
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: backend/server/build/libs/*.jar
+          target: "/home/deployer/music-dating/backend/server/"
+          overwrite: true
+          strip_components: 3
+
+      # 🐳 Запуск контейнеров
+      - name: 🔄 Restart Docker Containers
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.SERVER_IP }}
@@ -41,4 +100,18 @@ jobs:
           script: |
             cd /home/deployer/music-dating
             docker-compose down
+            docker-compose build --no-cache
             docker-compose up -d
+            docker ps -a
+
+      # 📜 Логи при ошибке
+      - name: 📜 Show Logs on Failure
+        if: ${{ failure() }}
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /home/deployer/music-dating/backend/server
+            docker-compose logs --tail=50
