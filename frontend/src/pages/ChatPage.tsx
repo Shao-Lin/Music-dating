@@ -11,7 +11,7 @@ import defaultAvatar from "../assets/testAvatar.png";
 
 export const ChatPage = () => {
   // const { data } = useGetDataMatchQuery();
-  const data = { name: "Анастасия", avatar: defaultAvatar, isOnline: true };
+  const data = { name: "Екатерина", avatar: defaultAvatar, isOnline: true };
   const headerData: HeaderType = {
     name: data?.name ?? "Гость",
     avatar: data?.avatar ?? defaultAvatar,
@@ -32,37 +32,40 @@ export const ChatPage = () => {
   //   };
   // }, []);
 
-  const fakeImageFile = new File([""], "testImage.png", { type: "image/png" });
+  //const fakeImageFile = new File([""], "testImage.png", { type: "image/png" });
   const message1: MessageType = {
-    senderId: 111,
+    senderId: "111",
 
     text: "Привет",
-    image: fakeImageFile,
+    image: null,
   };
   const message2: MessageType = {
-    senderId: 112,
+    senderId: "112",
 
-    text: "дарова",
+    text: "Ты очень красивая",
     image: null,
   };
   const message3: MessageType = {
-    senderId: 111,
+    senderId: "111",
 
-    text: "Всё переплетено. Море нитей, но Потяни за нить, за ней потянется клубок Этот мир - веретено, совпадений ноль Нитью быть или струной, или для битвы тетивой.",
+    text: "Спасибо ты тоже!",
     image: null,
   };
 
-  const arrMessage = [
-    message1,
-    message2,
-    message3,
-    message3,
-    message3,
-    message3,
-    message3,
-    message3,
-    message2,
-  ];
+  const message4: MessageType = {
+    senderId: "112",
+
+    text: "Какое у тебя любимое приложение?",
+    image: null,
+  };
+  const message5: MessageType = {
+    senderId: "111",
+
+    text: "Конечно же Vibe",
+    image: null,
+  };
+
+  const arrMessage = [message1, message2, message3, message4, message5];
   return (
     <div className="chat">
       {/* {headerData && <ChatHeader {...headerData} />} */}

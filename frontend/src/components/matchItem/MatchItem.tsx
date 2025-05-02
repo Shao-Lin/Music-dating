@@ -5,17 +5,15 @@ import { RemoveMatch } from "../modals/RemoveMatch";
 import { useState } from "react";
 import { MatchItemType } from "./matchItemType";
 import { useDeleteMatchMutation } from "../../api/matchesApi";
+import { useNavigate } from "react-router";
 
 type Props = {
   item: MatchItemType; // Явно указываем, что ожидаем пропс `item`
 };
 export const MatchItem = ({ item }: Props) => {
   const { id, name, avatar, online, music } = item;
-
+  const navigate = useNavigate();
   const [deleteMatch] = useDeleteMatchMutation();
-  const onClick = () => {
-    console.log("111");
-  };
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -37,14 +35,17 @@ export const MatchItem = ({ item }: Props) => {
   const handleClose = () => {
     setIsModalOpen(false);
   };
+  const handleClick = () => {
+    navigate("/chat");
+  };
   return (
     <>
       <div className="match-item">
         <div className="match-item__name">{name}</div>
 
         <div className="match-item__content">
-          <div className="match-item__avatar" onClick={onClick}>
-            <CustomAvatar avatar={avatar} online={online} size={50} />
+          <div className="match-item__avatar" onClick={handleClick}>
+            <CustomAvatar avatar={avatar} online={online} size={60} />
           </div>
 
           <AudioButton {...music} />

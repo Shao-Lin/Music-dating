@@ -5,7 +5,7 @@ export type MusicData = {
 };
 
 export type UserData = {
-  id: number;
+  id: string;
   photos: string[];
   name: string;
   birthday: Date;
@@ -14,5 +14,5 @@ export type UserData = {
 };
 
 export type UserId = {
-  id: number;
+  id: string;
 };

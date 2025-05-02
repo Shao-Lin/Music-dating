@@ -22,9 +22,13 @@ export const authApi = createApi({
       }),
       invalidatesTags: ["AuthCode"], // ✅ добавили это
     }),
-    getAuthCode: build.query<string, void>({
-      query: () => "authCode",
-      providesTags: ["AuthCode"], // ✅ обязательно
+    sendingAuthCode: build.mutation({
+      query: (code) => ({
+        url: "authCode",
+        method: "POST",
+        body: code,
+      }),
+      invalidatesTags: ["AuthCode"], // ✅ добавили это
     }),
     signupUser: build.mutation({
       query: (credentials) => {
@@ -55,5 +59,5 @@ export const {
   useLoginUserMutation,
   useSignupUserMutation,
   useSendingEmailMutation,
-  useGetAuthCodeQuery,
+  useSendingAuthCodeMutation,
 } = authApi;
