@@ -2,7 +2,7 @@ import { useState } from "react";
 import { UserCard } from "../components/userCard/UserCard";
 import { SelectMatch } from "../components/UI/selectMatch/SelectMatch";
 
-import one from "../assets/testCarousel/one.webp";
+import one from "../assets/testCarousel/one.jpg";
 import two from "../assets/testCarousel/two.png";
 import three from "../assets/testCarousel/three.jpg";
 

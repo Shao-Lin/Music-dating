@@ -4,7 +4,7 @@ import { UserData } from "../components/userCard/userType";
 export const userApi = createApi({
   reducerPath: "userApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "/v1",
+    baseUrl: "http://localhost:8088/api/user",
     prepareHeaders: (headers) => {
       const token = localStorage.getItem("token");
       if (token) {
@@ -16,7 +16,7 @@ export const userApi = createApi({
   tagTypes: ["User"],
   endpoints: (build) => ({
     getUserData: build.query<UserData, void>({
-      query: () => "users/me",
+      query: () => "me",
       providesTags: ["User"],
     }),
   }),
