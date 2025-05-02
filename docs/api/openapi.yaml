@@ -1,262 +1,19 @@
-openapi: 3.0.0
+openapi: 3.0.3
 info:
-  title: Vibe API
+  title: Vibe Security API
   version: 1.0.0
-  description: API для мобильного дейтинг-приложения Vibe с интеграцией музыкального ИИ.
+  description: |
+    REST‑API for authentication and user profile in the **Vibe** service.
 
 servers:
-  - url: https://api.vibe-app.com/v1
+  - url: http://localhost:8088
+    description: Local development server
 
 tags:
-  - name: User API
-    description: Эндпоинты для обычных пользователей приложения.
-  - name: Admin API
-    description: Эндпоинты для администраторов приложения.
-
-paths:
-  /register:
-    post:
-      tags:
-        - User API
-      summary: Регистрация нового пользователя
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - login
-                - password
-                - name
-                - age
-                - gender
-                - city
-                - about
-                - photo
-              properties:
-                login:
-                  type: string
-                password:
-                  type: string
-                name:
-                  type: string
-                age:
-                  type: integer
-                gender:
-                  type: string
-                city:
-                  type: string
-                about:
-                  type: string
-                photo:
-                  type: string
-      responses:
-        '201':
-          description: Пользователь успешно зарегистрирован
-
-  /login:
-    post:
-      tags:
-        - User API
-      summary: Аутентификация пользователя
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - login
-                - password
-              properties:
-                login:
-                  type: string
-                password:
-                  type: string
-      responses:
-        '200':
-          description: JWT токен
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  token:
-                    type: string
-
-  /users/me:
-    get:
-      tags:
-        - User API
-      summary: Получение информации о текущем авторизованном пользователе
-      security:
-        - BearerAuth: []
-      responses:
-        '200':
-          description: Информация о пользователе
-
-    put:
-      tags:
-        - User API
-      summary: Редактирование информации о себе
-      security:
-        - BearerAuth: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                age:
-                  type: integer
-                gender:
-                  type: string
-                city:
-                  type: string
-                about:
-                  type: string
-      responses:
-        '200':
-          description: Профиль успешно обновлён
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  track1:
-                    type: string
-                    description: Ссылка на первый сгенерированный трек
-                  track2:
-                    type: string
-                    description: Ссылка на второй сгенерированный трек
-                  
-  /users/{userId}:
-    get:
-      tags:
-        - User API
-      summary: Получить информацию о пользователе по его ID
-      parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Информация о пользователе
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  id:
-                    type: string
-                  name:
-                    type: string
-                  age:
-                    type: integer
-                  gender:
-                    type: string
-                  city:
-                    type: string
-                  about:
-                    type: string
-                  photo:
-                    type: string
-
-  /matches:
-    post:
-      tags:
-        - User API
-      summary: Регистрация нового мэтча
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                targetUserId:
-                  type: string
-      responses:
-        '201':
-          description: Мэтч успешно зарегистрирован
-
-  /matches/list:
-    get:
-      tags:
-        - User API
-      summary: Получить список мэтчей
-      responses:
-        '200':
-          description: Список мэтчей
-
-  /matches/{matchId}:
-    delete:
-      tags:
-        - User API
-      summary: Удалить мэтч
-      parameters:
-        - name: matchId
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Удалено
-
-  /admin/users:
-    get:
-      tags:
-        - Admin API
-      summary: Получить список всех пользователей
-      description: Только для администратора.
-      security:
-        - BearerAuth: []
-      responses:
-        '200':
-          description: Список всех пользователей
-
-  /admin/users/{userId}:
-    delete:
-      tags:
-        - Admin API
-      summary: Удалить пользователя
-      description: Удаляет пользователя по его ID. Только для администратора.
-      security:
-        - BearerAuth: []
-      parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Пользователь успешно удалён
-
-  /admin/users/{userId}/block:
-    post:
-      tags:
-        - Admin API
-      summary: Заблокировать пользователя
-      description: Блокировка пользователя по ID. Только для администратора.
-      security:
-        - BearerAuth: []
-      parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Пользователь успешно заблокирован
+  - name: Auth
+    description: Registration, login and token management
+  - name: User
+    description: End‑points that require an authenticated user
 
 components:
   securitySchemes:
@@ -264,5 +21,245 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
-security:
-  - BearerAuth: []
+
+  schemas:
+    RegisterRequest:
+      type: object
+      required: [name, birthDate, city, gender, login, password]
+      properties:
+        name:
+          type: string
+        about:
+          type: string
+        birthDate:
+          type: string
+          format: date
+        city:
+          type: string
+        gender:
+          type: string
+          description: e.g. *MALE* / *FEMALE*.  
+        login:
+          type: string
+        password:
+          type: string
+          format: password
+        image:
+          type: string
+          format: binary
+
+    AuthRequest:
+      type: object
+      required: [username, password]
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+          format: password
+
+    AuthResponse:
+      type: object
+      required: [accessToken, refreshToken]
+      properties:
+        accessToken:
+          type: string
+        refreshToken:
+          type: string
+
+    RefreshTokenRequest:
+      type: object
+      required: [refreshToken]
+      properties:
+        refreshToken:
+          type: string
+
+    TrackDto:
+      type: object
+      required: [url, name]
+      properties:
+        url:
+          type: string
+          format: uri
+        name:
+          type: string
+
+    UserDto:
+      type: object
+      required: [name, city, gender, avatarUrl, birthDate, tracks]
+      properties:
+        name:
+          type: string
+        about:
+          type: string
+        city:
+          type: string
+        gender:
+          type: string
+        avatarUrl:
+          type: string
+          format: uri
+        birthDate:
+          type: string
+          format: date
+        tracks:
+          type: array
+          items:
+            $ref: '#/components/schemas/TrackDto'
+
+    ErrorMessage:
+      type: object
+      required: [message]
+      properties:
+        message:
+          type: string
+
+paths:
+
+  /auth/register:
+    post:
+      tags: [Auth]
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+      responses:
+        '200':
+          description: User created
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: User register successfully
+
+  /auth/login:
+    post:
+      tags: [Auth]
+      summary: Obtain access & refresh token pair
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthRequest'
+      responses:
+        '200':
+          description: Authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '401':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+
+  /auth/refresh:
+    post:
+      tags: [Auth]
+      summary: Exchange a refresh token for a new access‑token pair
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefreshTokenRequest'
+      responses:
+        '200':
+          description: Tokens refreshed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '401':
+          description: Invalid or expired refresh token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+
+  /auth/logout:
+    delete:
+      tags: [Auth]
+      summary: Revoke refresh token (logout)
+      parameters:
+        - in: query
+          name: refreshToken
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Logged out
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Logout successfully
+
+  /auth/request-code:
+    post:
+      tags: [Auth]
+      summary: Send one‑time verification code to an email address
+      parameters:
+        - in: query
+          name: email
+          required: true
+          schema:
+            type: string
+            format: email
+      responses:
+        '200':
+          description: Code sent
+
+  /auth/verify-code:
+    post:
+      tags: [Auth]
+      summary: Verify one‑time email code
+      parameters:
+        - in: query
+          name: email
+          required: true
+          schema:
+            type: string
+            format: email
+        - in: query
+          name: code
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Verified
+        '401':
+          description: Invalid code
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Invalid code
+
+  /user/me:
+    get:
+      tags: [User]
+      summary: Get the authenticated user profile
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Current user information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDto'
+        '401':
+          description: Missing or invalid JWT
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
