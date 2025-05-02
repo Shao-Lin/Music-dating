@@ -2,7 +2,7 @@ name: 🚀 Deploy Frontend (dev)
 
 on:
   push:
-    branches: [tpproj-21]
+    branches: [dev]
     paths:
       - 'frontend/**'
 
@@ -15,7 +15,7 @@ jobs:
       - name: 🔄 Checkout code
         uses: actions/checkout@v4
         with:
-          ref: tpproj-21
+          ref: dev
           fetch-depth: 0
 
       - name: 🛠 Setup Node.js
@@ -66,8 +66,10 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd /home/deployer/music-dating
-            docker-compose -f docker-compose.yaml down
-            docker-compose -f docker-compose.yaml up -d --build
+            docker-compose down
+            docker-compose build --no-cache
+            docker-compose up -d
+            docker ps -a
 
       - name: 📜 Check Logs on Failure
         if: ${{ failure() }}

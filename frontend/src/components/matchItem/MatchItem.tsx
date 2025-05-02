@@ -44,11 +44,7 @@ export const MatchItem = ({ item }: Props) => {
 
         <div className="match-item__content">
           <div className="match-item__avatar" onClick={onClick}>
-<<<<<<< HEAD
-            <CustomAvatar avatar={avatar} online={online} size={70} />
-=======
             <CustomAvatar avatar={avatar} online={online} size={50} />
->>>>>>> 47c2cb4ade45b2dd244898924fe7d8e90a6a0159
           </div>
 
           <AudioButton {...music} />

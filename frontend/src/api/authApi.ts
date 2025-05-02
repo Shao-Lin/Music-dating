@@ -15,21 +15,6 @@ export const authApi = createApi({
       }),
     }),
     sendingEmail: build.mutation({
-<<<<<<< HEAD
-      query: (credentials) => ({
-        url: "saveEmail",
-        method: "POST",
-        body: credentials,
-      }),
-      invalidatesTags: ["AuthCode"], // ✅ добавили это
-    }),
-    getAuthCode: build.query<string, void>({
-      query: () => "authCode",
-      providesTags: ["AuthCode"], // ✅ обязательно
-    }),
-    signupUser: build.mutation({
-=======
->>>>>>> 47c2cb4ade45b2dd244898924fe7d8e90a6a0159
       query: (credentials) => ({
         url: "saveEmail",
         method: "POST",
