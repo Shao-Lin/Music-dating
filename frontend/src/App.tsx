@@ -9,7 +9,7 @@ import { ListOfChats } from "./pages/ListOfChats";
 import { ListOfMatches } from "./pages/ListOfMatches";
 import { InputCode } from "./pages/InputCodePage";
 import { ChatPage } from "./pages/ChatPage";
-import { RequireAuth } from "./utils/RequireAuth";
+//import { RequireAuth } from "./utils/RequireAuth";
 
 function App() {
   return (
@@ -24,13 +24,11 @@ function App() {
 
         <Route path="/chat" element={<ChatPage />} />
 
-        <Route path="/" element={<RequireAuth />}>
-          <Route element={<BottomMenu />}>
-            <Route path="matchFeed" element={<MatchFeed />} />
-            <Route path="listChat" element={<ListOfChats />} />
-            <Route path="listMatch" element={<ListOfMatches />} />
-            <Route path="profile" element={<Profile />} />
-          </Route>
+        <Route element={<BottomMenu />}>
+          <Route path="matchFeed" element={<MatchFeed />} />
+          <Route path="listChat" element={<ListOfChats />} />
+          <Route path="listMatch" element={<ListOfMatches />} />
+          <Route path="profile" element={<Profile />} />
         </Route>
       </Routes>
     </BrowserRouter>

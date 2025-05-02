@@ -1,12 +1,12 @@
 // components/auth/RequireAuth.tsx
-import { Navigate, Outlet } from "react-router-dom";
+//import { Navigate, Outlet } from "react-router-dom";
 
-export const RequireAuth = () => {
-  const token = localStorage.getItem("token");
+//export const RequireAuth = () => {
+//const token = localStorage.getItem("token");
 
-  //if (!token) {
-  //return <Navigate to="/login" replace />;
-  //}
+//if (!token) {
+//return <Navigate to="/login" replace />;
+//}
 
-  return <Outlet />;
-};
+//return <Outlet />;
+//};
