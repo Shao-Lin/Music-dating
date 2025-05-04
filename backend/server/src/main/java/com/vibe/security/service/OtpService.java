@@ -15,7 +15,7 @@ public class OtpService {
     private final CacheManager cacheManager;
 
     public void sendCode(String email) {
-        String code = String.format("%06d", RND.nextInt(1_000_000));
+        String code = String.format("%04d", RND.nextInt(10_000));
 
         cacheManager.getCache("otp").put(email, code);
         mail.sendOtp(email, code);
