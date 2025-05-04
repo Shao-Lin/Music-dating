@@ -38,6 +38,9 @@ export const QuestionnaireForm = () => {
   const login = useAppSelector((state) => state.authUsers.login);
   const password = useAppSelector((state) => state.authUsers.password);
 
+  //const login = "bauйqn2004@mail.ru";
+  //const password = "1234567";
+
   const handleSubmit = async (values: FormValues) => {
     setIsLoading(true);
     if (
@@ -64,9 +67,9 @@ export const QuestionnaireForm = () => {
 
     try {
       const response = await singUp(formData).unwrap();
-
-      const { accessToken } = response;
       console.log(response);
+      const { accessToken } = response;
+
       localStorage.setItem("token", accessToken);
       dispatch(deleteCredentials());
 

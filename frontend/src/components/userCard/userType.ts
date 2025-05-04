@@ -10,7 +10,7 @@ export type UserData = {
   name: string;
   birthday: Date;
   city: string;
-  music: MusicData;
+  tracks: MusicData[];
 };
 
 export type UserId = {

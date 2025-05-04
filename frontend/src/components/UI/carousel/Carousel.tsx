@@ -1,6 +1,4 @@
 import { useState, useRef, useEffect } from "react";
-import { useAppSelector } from "../../../hooks/reduxHook";
-import { useAppDispatch } from "../../../hooks/reduxHook";
 
 interface CarouselProps {
   images: string[];
@@ -11,10 +9,9 @@ export const Carousel = ({ images }: CarouselProps) => {
   const [containerSize, setContainerSize] = useState(350); // Начальный размер
   const containerRef = useRef<HTMLDivElement>(null);
   const touchStartX = useRef<number | null>(null);
-  const activeIndexImage = useAppSelector(
-    (state) => state.setDataUser.activeIndexImage
-  );
-  const dispatch = useAppDispatch();
+
+  const arrImages = [images];
+
   // Ресайз обработчик
   useEffect(() => {
     const handleResize = () => {
@@ -60,7 +57,7 @@ export const Carousel = ({ images }: CarouselProps) => {
         }}
       >
         <div className="carousel-indicator">
-          {images.map((_, index) => (
+          {arrImages.map((_, index) => (
             <div
               key={index}
               className={`indicator-segment ${
