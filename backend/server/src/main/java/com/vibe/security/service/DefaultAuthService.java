@@ -84,7 +84,7 @@ public class DefaultAuthService implements AuthService {
 
     @Override
     public AuthResponse login(AuthRequest request) {
-        String username = request.username();
+        String username = request.login();
         UserEntity userEntity = userRepository.findByUsername(username).orElseThrow(() ->
                 new UsernameNotFoundException(USER_NOT_FOUND.getMessage()));
 
