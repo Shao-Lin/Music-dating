@@ -37,9 +37,6 @@ const manifest: Partial<ManifestOptions> | false = {
   short_name: "Vibe",
 };
 export default defineConfig({
-  server: {
-    host: "0.0.0.0", // разрешаем доступ со всех IP
-  },
   plugins: [
     qrcode(),
     react(),
