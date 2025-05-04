@@ -38,9 +38,6 @@ export const QuestionnaireForm = () => {
   const login = useAppSelector((state) => state.authUsers.login);
   const password = useAppSelector((state) => state.authUsers.password);
 
-  //const login = "baulin2004@bk.ru";
-  //const password = "1234567";
-
   const handleSubmit = async (values: FormValues) => {
     setIsLoading(true);
     if (
@@ -58,7 +55,7 @@ export const QuestionnaireForm = () => {
     const formData = new FormData();
     formData.append("name", values.name);
     formData.append("about", values.about);
-    formData.append("birthDate", values.birthDate.toISOString()); // дату в строку
+    formData.append("birthDate", values.birthDate.toISOString().split("T")[0]); // дату в строку
     formData.append("city", values.city.label);
     formData.append("gender", values.gender);
     formData.append("login", login);
@@ -66,11 +63,11 @@ export const QuestionnaireForm = () => {
     formData.append("image", values.image);
 
     try {
-      console.log("Данные формы:", formData);
       const response = await singUp(formData).unwrap();
-      const { token } = response;
 
-      localStorage.setItem("token", token);
+      const { accessToken } = response;
+      console.log(response);
+      localStorage.setItem("token", accessToken);
       dispatch(deleteCredentials());
 
       console.log(`login ${localStorage.getItem("token")}`);
