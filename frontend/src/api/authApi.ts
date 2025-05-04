@@ -15,40 +15,28 @@ export const authApi = createApi({
       }),
     }),
     sendingEmail: build.mutation({
-      query: (credentials) => ({
+      query: (email) => ({
         url: "request-code",
         method: "POST",
-        params: credentials,
+        params: { email },
       }),
       invalidatesTags: ["AuthCode"], // ✅ добавили это
     }),
     sendingAuthCode: build.mutation({
       query: (code) => ({
-        url: "verify-code",
+        url: `verify-code?email=${encodeURIComponent(
+          code.email
+        )}&code=${encodeURIComponent(code.code)}`,
         method: "POST",
-        params: code,
       }),
       invalidatesTags: ["AuthCode"], // ✅ добавили это
     }),
     signupUser: build.mutation({
-      query: (credentials) => {
-        const formData = new FormData();
-        formData.append("name", credentials.name);
-        formData.append("about", credentials.about);
-        formData.append("birthDate", credentials.birthDate.toISOString()); // дату в строку
-        formData.append("city", credentials.city);
-        formData.append("gender", credentials.gender);
-        formData.append("login", credentials.login);
-        formData.append("password", credentials.password);
-
-        if (credentials.image) {
-          formData.append("image", credentials.image);
-        }
-
+      query: (data) => {
         return {
           url: "register",
           method: "POST",
-          body: formData,
+          body: data,
         };
       },
     }),

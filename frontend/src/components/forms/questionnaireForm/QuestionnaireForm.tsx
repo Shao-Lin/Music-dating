@@ -18,7 +18,6 @@ import { isFetchBaseQueryError } from "../../../utils/errorChecker";
 import { isSerializedError } from "../../../utils/errorChecker";
 import { useAppSelector } from "../../../hooks/reduxHook";
 import type { FormValues } from "./types";
-import type { SubmitData } from "./types";
 
 export const QuestionnaireForm = () => {
   const [, setImagePreview] = useState<string | null>(null);
@@ -39,6 +38,9 @@ export const QuestionnaireForm = () => {
   const login = useAppSelector((state) => state.authUsers.login);
   const password = useAppSelector((state) => state.authUsers.password);
 
+  //const login = "baulin2004@bk.ru";
+  //const password = "1234567";
+
   const handleSubmit = async (values: FormValues) => {
     setIsLoading(true);
     if (
@@ -53,19 +55,19 @@ export const QuestionnaireForm = () => {
       return;
     }
 
-    const submitData: SubmitData = {
-      name: values.name,
-      about: values.about,
-      birthDate: values.birthDate,
-      city: values.city.label,
-      gender: values.gender,
-      image: values.image,
-      login,
-      password,
-    };
+    const formData = new FormData();
+    formData.append("name", values.name);
+    formData.append("about", values.about);
+    formData.append("birthDate", values.birthDate.toISOString()); // дату в строку
+    formData.append("city", values.city.label);
+    formData.append("gender", values.gender);
+    formData.append("login", login);
+    formData.append("password", password);
+    formData.append("image", values.image);
+
     try {
-      console.log("Данные формы:", submitData);
-      const response = await singUp(submitData).unwrap();
+      console.log("Данные формы:", formData);
+      const response = await singUp(formData).unwrap();
       const { token } = response;
 
       localStorage.setItem("token", token);
