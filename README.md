@@ -60,6 +60,8 @@
 
 ## 📝 Отчеты PM
 
++ Отчет PM для 2 аттестации [(DOCX)](https://github.com/Shao-Lin/Music-dating/blob/dev/documentation/Отчет%20PM%202%20аттестация.docx)[(PDF)](https://github.com/Shao-Lin/Music-dating/blob/dev/documentation/Отчет%20PM%202%20аттестация.pdf)
+
 + [Отчет за 31.03-06.04](https://github.com/Shao-Lin/Music-dating/blob/dev/documentation/Отчет%20за%2031.03-06.04.pdf)
 + [Отчет за 07.04-13.04](https://github.com/Shao-Lin/Music-dating/blob/dev/documentation/Отчет%20за%2007.04-13.04.pdf)
 + [Отчет за 14.04-20.04](https://github.com/Shao-Lin/Music-dating/blob/dev/documentation/Отчет%20за%2014.04-20.04.pdf)
