@@ -64,3 +64,9 @@
 + [Отчет за 07.04-13.04](https://github.com/Shao-Lin/Music-dating/blob/dev/documentation/Отчет%20за%2007.04-13.04.pdf)
 + [Отчет за 14.04-20.04](https://github.com/Shao-Lin/Music-dating/blob/dev/documentation/Отчет%20за%2014.04-20.04.pdf)
 + [Отчет за 21.04-27.04](https://github.com/Shao-Lin/Music-dating/blob/dev/documentation/Отчет%20за%2007.04-13.04.pdf)
+
+## 🛠️ Тестирование проекта
+
++ [Отчет о стратегии тестирования](https://github.com/Shao-Lin/Music-dating/blob/dev/documentation/Тестирование/Vibe_Test_Strategy.pdf)
++ [Отчет о тестировании MVP](https://github.com/Shao-Lin/Music-dating/blob/dev/documentation/Тестирование/Vibe_Test_Report.pdf)
++ [Ручные тест-кейсы (Google Sheets)](https://docs.google.com/spreadsheets/d/1WqaMqZJQChEn_A-zCa8EsXzBj4dKdWQN1Ttog2PfY_c/edit?usp=sharing)
