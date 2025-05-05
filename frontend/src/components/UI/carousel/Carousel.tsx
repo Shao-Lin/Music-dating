@@ -10,6 +10,8 @@ export const Carousel = ({ images }: CarouselProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const touchStartX = useRef<number | null>(null);
 
+  const arrImages = [images];
+
   // Ресайз обработчик
   useEffect(() => {
     const handleResize = () => {
@@ -55,7 +57,7 @@ export const Carousel = ({ images }: CarouselProps) => {
         }}
       >
         <div className="carousel-indicator">
-          {images.map((_, index) => (
+          {arrImages.map((_, index) => (
             <div
               key={index}
               className={`indicator-segment ${

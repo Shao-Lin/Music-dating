@@ -39,35 +39,38 @@ export const MatchFeed = () => {
     cover: cov6,
     music: sound,
   };
-  const birthDate: Date = new Date(2006, 11, 21);
-  const birthDate2: Date = new Date(2002, 11, 21);
-  const birthDate3: Date = new Date(2004, 11, 21);
+  const arrMusic1 = [musicdata];
+  const arrMusic2 = [musicdata2];
+  const arrMusic3 = [musicdata3];
+  const birthDate = "2007-05-02";
+  const birthDate2 = "2002-05-02";
+  const birthDate3 = "2004-05-02";
 
   const test1: UserData = {
     id: "1",
     photos: photos2,
     name: "Алина",
-    birthday: birthDate,
-    city: "г.Воронеж",
-    music: musicdata,
+    birthDate: birthDate,
+    city: "Воронеж",
+    tracks: arrMusic1,
   };
 
   const test2: UserData = {
     id: "2",
     photos: photos3,
     name: "Дарья",
-    birthday: birthDate2,
-    city: "г.Москва",
-    music: musicdata2,
+    birthDate: birthDate2,
+    city: "Москва",
+    tracks: arrMusic2,
   };
 
   const test3: UserData = {
     id: "3",
     photos: photos4,
     name: "Ксения",
-    birthday: birthDate3,
-    city: "г.Нижний Новгород",
-    music: musicdata3,
+    birthDate: birthDate3,
+    city: "Нижний Новгород",
+    tracks: arrMusic3,
   };
 
   const arrTest = [test1, test2, test3];

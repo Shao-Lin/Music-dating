@@ -6,28 +6,33 @@ import { calculateAge } from "../../utils/calculateAge";
 
 import { UserData } from "./userType";
 import { setId } from "../../slices/userData";
+import { useEffect } from "react";
 export const UserCard = ({
   id,
   photos,
   name,
-  birthday,
+  birthDate,
   city,
-  music,
+  tracks,
 }: UserData) => {
   const dispatch = useAppDispatch();
-  const age = calculateAge(birthday);
-  dispatch(setId({ id }));
+  const parseToDate = new Date(birthDate);
+  const age = calculateAge(parseToDate);
+
+  useEffect(() => {
+    dispatch(setId({ id }));
+  }, [dispatch, id]);
 
   return (
     <>
-      <Carousel images={photos} />
+      <Carousel key={id} images={photos} />
       <div className="human-data">
         <div className="name-age">
           {name} {age}
         </div>
-        <div className="city">{city}</div>
+        <div className="city">г.{city}</div>
       </div>
-      <AudioButton {...music} />
+      <AudioButton {...tracks[0]} />
     </>
   );
 };

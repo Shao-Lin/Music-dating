@@ -33,15 +33,11 @@ export const CodeInput = () => {
       };
       try {
         const response = await sendingCode(codeWithEmail).unwrap();
+        navigate("/questionnaire");
         console.log("Успех:", response);
-        if (response.data) {
-          navigate("/questionnaire");
-        } else {
-          setError("Неверный код. Попробуйте снова.");
-        }
       } catch (error) {
         console.error("Ошибка:", error);
-        setError("Ошибка сервера");
+        setError("Неверный код. Попробуйте снова.");
       }
     }
   };

@@ -32,13 +32,12 @@ export const authApi = createApi({
       invalidatesTags: ["AuthCode"], // ✅ добавили это
     }),
     signupUser: build.mutation({
-      query: (data) => {
-        return {
-          url: "register",
-          method: "POST",
-          body: data,
-        };
-      },
+      query: (formData) => ({
+        url: "register",
+        method: "POST",
+        body: formData,
+        responseHandler: (response) => response.text(), // обработать как обычный текст
+      }),
     }),
   }),
 });
