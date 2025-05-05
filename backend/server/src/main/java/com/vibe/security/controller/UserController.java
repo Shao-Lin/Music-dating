@@ -31,7 +31,7 @@ public class UserController {
                 user.getAvatarUrl(),
                 user.getBirthDate(),
                 user.getTracks().stream()
-                        .map(trackEntity -> new TrackDto(trackEntity.getUrl(), "mock-name"))
+                        .map(trackEntity -> new TrackDto(trackEntity.getUrl(), "mock-name", "https://s3.twcstorage.ru/edafb68b-vibe-data/cover.jpg"))
                         .collect(Collectors.toSet())
         );
     }
