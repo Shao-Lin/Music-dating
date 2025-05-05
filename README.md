@@ -22,6 +22,10 @@
 - Чат при взаимной симпатии
 - Прослушивание треков потенциальных пар
 
+## 🔍 Наше приложение
+Находится по ссылке : https://vibedating.ru
+Как установить PWA-приложение себе на телефон [(Ссылка)](https://docs.bearpass.ru/user-guide/pwa.html)
+ 
 ## 🛠️ Сервисы командной разработки
 + [Figma](https://www.figma.com/design/ZNCX9T8B8aIeirZFfgory6/Дизайн-приложения?node-id=0-1&t=A3FxiTbCTv6Qw3si-0)
 + [Jira - доска задач](https://dianakr.atlassian.net/jira/software/projects/TPPROJ/boards/3)
@@ -34,6 +38,7 @@
 
 + [Miro (RoadMap здесь)](https://miro.com/app/board/uXjVIXQqGTw=/)
 + [OPEN-API](https://shao-lin.github.io/Music-dating/docs/api/#/)
++ [Swaggwer](https://shao-lin.github.io/Music-dating/docs/api/)
 
 ## 📂 Документация проекта
 + Предпроектное исследование [(DOCX)](https://github.com/Shao-Lin/Music-dating/blob/main/documentation/Предпроектное%20исследование.docx) [(PDF)](https://github.com/Shao-Lin/Music-dating/blob/main/documentation/Предпроектное%20исследование.pdf)
@@ -42,10 +47,11 @@
 + Брендбук [(PDF)](https://github.com/Shao-Lin/Music-dating/blob/main/documentation/Брендбук.pdf)
 + Инструкция по коммитам [(PDF)](https://github.com/Shao-Lin/Music-dating/blob/dev/documentation/Инструкция%20по%20коммитам%20для%20разработчиков.pdf)
 + [SWOT-анализ](https://github.com/Shao-Lin/Music-dating/blob/main/documentation/SWOT%20анализ.jpeg)
++ [CI/CD пайплайн](https://github.com/Shao-Lin/Music-dating/actions/runs/14836229994/job/41648046284)
 
 ## 🖥️ Презентация проекта
-+ Презентация ТЗ [(PDF)](https://github.com/Shao-Lin/Music-dating/blob/dev/documentation/Презентация%20Проекта.pdf)[(PPTX)](https://github.com/Shao-Lin/Music-dating/blob/main/documentation/Презентация%20Проекта.pptx)
-+ Презентация проекта 2 аттестация [(PDF)](https://github.com/Shao-Lin/Music-dating/blob/dev/documentation/Презентация%20Проекта%202%20Атта.pdf)[(PPTX)](https://github.com/Shao-Lin/Music-dating/blob/dev/documentation/Презентация%20Проекта%202%20Атта.pptx)
++ Презентация ТЗ [(PDF)](https://github.com/Shao-Lin/Music-dating/blob/dev/documentation/Презентация%20Проекта.pdf) [(PPTX)](https://github.com/Shao-Lin/Music-dating/blob/main/documentation/Презентация%20Проекта.pptx)
++ Презентация проекта 2 аттестация [(PDF)](https://github.com/Shao-Lin/Music-dating/blob/dev/documentation/Презентация%20Проекта%202%20Атта.pdf) [(PPTX)](https://github.com/Shao-Lin/Music-dating/blob/dev/documentation/Презентация%20Проекта%202%20Атта.pptx)
 
 ## 🎥 Видео по проекту
 + [Видео-презентация проекта 1 аттестация](https://rutube.ru/video/private/058c2bd30da10fb4d47675282fce108a/?p=AwybtGvjN346jdHVNj1k1w)
@@ -63,7 +69,7 @@
 
 ## 📝 Отчеты PM
 
-+ Отчет PM для 2 аттестации [(DOCX)](https://github.com/Shao-Lin/Music-dating/blob/dev/documentation/Отчет%20PM%202%20аттестация.docx)[(PDF)](https://github.com/Shao-Lin/Music-dating/blob/dev/documentation/Отчет%20PM%202%20аттестация.pdf)
++ Отчет PM для 2 аттестации [(DOCX)](https://github.com/Shao-Lin/Music-dating/blob/dev/documentation/Отчет%20PM%202%20аттестация.docx) [(PDF)](https://github.com/Shao-Lin/Music-dating/blob/dev/documentation/Отчет%20PM%202%20аттестация.pdf)
 
 + [Отчет за 31.03-06.04](https://github.com/Shao-Lin/Music-dating/blob/dev/documentation/Отчет%20за%2031.03-06.04.pdf)
 + [Отчет за 07.04-13.04](https://github.com/Shao-Lin/Music-dating/blob/dev/documentation/Отчет%20за%2007.04-13.04.pdf)
