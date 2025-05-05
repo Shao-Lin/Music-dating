@@ -8,7 +8,7 @@ export type UserData = {
   id: string;
   photos: string[];
   name: string;
-  birthday: Date;
+  birthDate: string;
   city: string;
   tracks: MusicData[];
 };

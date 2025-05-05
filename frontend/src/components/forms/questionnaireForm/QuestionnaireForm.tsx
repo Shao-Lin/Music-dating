@@ -9,7 +9,10 @@ import { RadioButton } from "../../UI/buttons/radioButton/RadioButton";
 import { ImageUploader } from "../../UI/buttons/imageUploaderButton/ImageUploaderButton";
 import { ClassicButton } from "../../UI/buttons/classicButton/ClassicButton";
 
-import { useSignupUserMutation } from "../../../api/authApi";
+import {
+  useLoginUserMutation,
+  useSignupUserMutation,
+} from "../../../api/authApi";
 import { useNavigate } from "react-router";
 import { deleteCredentials } from "../../../slices/authSlice";
 import { useAppDispatch } from "../../../hooks/reduxHook";
@@ -38,8 +41,9 @@ export const QuestionnaireForm = () => {
   const login = useAppSelector((state) => state.authUsers.login);
   const password = useAppSelector((state) => state.authUsers.password);
 
-  //const login = "bauйqn2004@mail.ru";
+  //const login = "bagit2003@mail.ru";
   //const password = "1234567";
+  const [singIn] = useLoginUserMutation();
 
   const handleSubmit = async (values: FormValues) => {
     setIsLoading(true);
@@ -66,16 +70,15 @@ export const QuestionnaireForm = () => {
     formData.append("image", values.image);
 
     try {
-      const response = await singUp(formData).unwrap();
-      console.log(response);
-      const { accessToken } = response;
+      await singUp(formData).unwrap();
+      //console.log(response);
+      //const { accessToken } = response;
 
-      localStorage.setItem("token", accessToken);
-      dispatch(deleteCredentials());
+      //localStorage.setItem("token", accessToken);
 
-      console.log(`login ${localStorage.getItem("token")}`);
+      //console.log(`login ${localStorage.getItem("token")}`);
 
-      navigate("/profile");
+      //navigate("/profile");
     } catch (err) {
       if (isFetchBaseQueryError(err)) {
         // Ошибка от сервера
@@ -95,6 +98,32 @@ export const QuestionnaireForm = () => {
       }
     } finally {
       setIsLoading(false);
+    }
+
+    try {
+      const { accessToken } = await singIn({ login, password }).unwrap();
+      localStorage.setItem("token", accessToken);
+      console.log(`login ${localStorage.getItem("token")}`);
+      dispatch(deleteCredentials());
+
+      navigate("/profile");
+    } catch (err) {
+      if (isFetchBaseQueryError(err)) {
+        // Ошибка от сервера
+        if (err.status === 401) {
+          setAuthError("Неверный логин или пароль");
+        } else if (err.status === 400) {
+          setAuthError("Некорректный запрос");
+        } else {
+          setAuthError(`Ошибка сервера: ${err.status}`);
+        }
+      } else if (isSerializedError(err)) {
+        // Ошибка сериализации
+        setAuthError(err.message || "Неизвестная ошибка");
+      } else {
+        // Другие ошибки
+        setAuthError("Что-то пошло не так");
+      }
     }
   };
 

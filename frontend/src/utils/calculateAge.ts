@@ -1,9 +1,13 @@
-export const calculateAge = (birthDate: Date): number => {
+export const calculateAge = (birthday: Date): number => {
   const today = new Date();
-  let age = today.getFullYear() - birthDate.getFullYear();
-  const m = today.getMonth() - birthDate.getMonth();
+  let age = today.getFullYear() - birthday.getFullYear();
 
-  if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+  const isBeforeBirthday =
+    today.getMonth() < birthday.getMonth() ||
+    (today.getMonth() === birthday.getMonth() &&
+      today.getDate() < birthday.getDate());
+
+  if (isBeforeBirthday) {
     age--;
   }
 

@@ -14,6 +14,7 @@ import cov5 from "../assets/testMusic/cov5.jpg";
 
 import { useGetUserDataQuery } from "../api/userApi";
 import { normalizeUserData } from "../utils/normalizeUser";
+import { calculateAge } from "../utils/calculateAge";
 export const Profile = () => {
   const { data, isLoading, isSuccess } = useGetUserDataQuery();
   console.log(data);
@@ -29,7 +30,10 @@ export const Profile = () => {
     music: sound,
   };
   const arrMusic = [musicdata, musicdata];
-  const birthDate: Date = new Date(2006, 11, 21);
+  const birthDate: Date = new Date(1985, 1, 4);
+  const newDate = birthDate.toISOString().split("T")[0];
+  const parsedDate = new Date(newDate);
+  console.log(calculateAge(parsedDate));
 
   //const test1: UserData = {
   //id: "1",
@@ -40,7 +44,7 @@ export const Profile = () => {
   //tracks: arrMusic,
   //};
 
-  const normalizeUser = normalizeUserData(data, arrMusic, birthDate);
+  const normalizeUser = normalizeUserData(data, arrMusic);
 
   //if (!data.photos || !Array.isArray(data.tracks)) {
   //return <div>Данные пользователя неполные</div>;

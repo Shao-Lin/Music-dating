@@ -36,6 +36,7 @@ export const authApi = createApi({
         url: "register",
         method: "POST",
         body: formData,
+        responseHandler: (response) => response.text(), // обработать как обычный текст
       }),
     }),
   }),

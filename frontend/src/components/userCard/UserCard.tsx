@@ -11,19 +11,21 @@ export const UserCard = ({
   id,
   photos,
   name,
-  birthday,
+  birthDate,
   city,
   tracks,
 }: UserData) => {
   const dispatch = useAppDispatch();
-  const age = calculateAge(birthday);
+  const parseToDate = new Date(birthDate);
+  const age = calculateAge(parseToDate);
+
   useEffect(() => {
     dispatch(setId({ id }));
-  }, [dispatch, id]); // вызывается только при первом монтировании или изменении id
+  }, [dispatch, id]);
 
   return (
     <>
-      <Carousel images={photos} />
+      <Carousel key={id} images={photos} />
       <div className="human-data">
         <div className="name-age">
           {name} {age}
