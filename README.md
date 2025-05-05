@@ -44,7 +44,7 @@
 + [SWOT-анализ](https://github.com/Shao-Lin/Music-dating/blob/main/documentation/SWOT%20анализ.jpeg)
 
 ## 🖥️ Презентация проекта
-+ [Презентация ТЗ] [(PDF)](https://github.com/Shao-Lin/Music-dating/blob/dev/documentation/Презентация%20Проекта.pdf)[(PPTX)](https://github.com/Shao-Lin/Music-dating/blob/main/documentation/Презентация%20Проекта.pptx)
++ Презентация ТЗ [(PDF)](https://github.com/Shao-Lin/Music-dating/blob/dev/documentation/Презентация%20Проекта.pdf)[(PPTX)](https://github.com/Shao-Lin/Music-dating/blob/main/documentation/Презентация%20Проекта.pptx)
 + Презентация проекта 2 аттестация [(PDF)](https://github.com/Shao-Lin/Music-dating/blob/dev/documentation/Презентация%20Проекта%202%20Атта.pdf)[(PPTX)](https://github.com/Shao-Lin/Music-dating/blob/dev/documentation/Презентация%20Проекта%202%20Атта.pptx)
 
 ## 🎥 Видео по проекту
