@@ -21,7 +21,8 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
-    "types": ["vite-plugin-pwa/client"]
+    "composite": true,
+    "types": ["vite-plugin-pwa/client", "jest", "@testing-library/jest-dom"]
   },
-  "include": ["src"]
+  "include": ["src", "jest.setup.ts", "**/*.ts", "**/*.tsx"]
 }

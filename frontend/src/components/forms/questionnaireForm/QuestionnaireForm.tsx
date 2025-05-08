@@ -178,6 +178,7 @@ export const QuestionnaireForm = () => {
               onChange={handleChange}
               name="about"
               error={touched.about ? errors.about : ""}
+              minRows={5}
             />
 
             <div className="form-label">Пол</div>
