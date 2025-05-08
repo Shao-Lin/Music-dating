@@ -8,9 +8,15 @@ type MusicData = {
   name: string;
   cover: string;
   music: string;
+  isEditProfile?: boolean;
 };
 
-export const AudioButton = ({ name, cover, music }: MusicData) => {
+export const AudioButton = ({
+  name,
+  cover,
+  music,
+  isEditProfile = false,
+}: MusicData) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -61,7 +67,11 @@ export const AudioButton = ({ name, cover, music }: MusicData) => {
       <div className="audio-box-wrapper">
         <div
           className="cover"
-          style={{ width: `${containerSize}px`, height: `${containerSize}px` }}
+          style={
+            !isEditProfile
+              ? { width: `${containerSize}px`, height: `${containerSize}px` }
+              : { width: "60px", height: "60px" }
+          }
           onClick={handleTogglePlay}
         >
           <img
@@ -77,8 +87,15 @@ export const AudioButton = ({ name, cover, music }: MusicData) => {
         </div>
 
         <div className="track-title">
-          <button onClick={handleTogglePlay}>
-            <div className="label">{name}</div>
+          <button type="button" onClick={handleTogglePlay}>
+            <div
+              className="label"
+              style={
+                !isEditProfile ? { fontSize: "24px" } : { fontSize: "20px" }
+              }
+            >
+              {name}
+            </div>
           </button>
         </div>
       </div>

@@ -7,9 +7,16 @@ interface TextAreaProps {
   onChange: (e: ChangeEvent<HTMLTextAreaElement>) => void;
   name: string;
   error?: string | null;
+  minRows: number;
 }
 
-export const TextArea = ({ value, onChange, name, error }: TextAreaProps) => {
+export const TextArea = ({
+  value,
+  onChange,
+  name,
+  error,
+  minRows,
+}: TextAreaProps) => {
   return (
     <FormControl
       error={!!error}
@@ -22,8 +29,8 @@ export const TextArea = ({ value, onChange, name, error }: TextAreaProps) => {
         name={name}
         value={value}
         onChange={onChange}
-        minRows={5}
-        maxRows={5}
+        minRows={minRows}
+        maxRows={minRows}
         placeholder="Расскажите о себе"
         style={{
           border: `1px solid ${error ? "#d32f2f" : "rgba(0, 0, 0, 0.23)"}`, // MUI по умолчанию

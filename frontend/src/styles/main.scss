@@ -41,3 +41,6 @@
 @use "../components/chatMain/chatMain.scss";
 @use "../components/UI/message/message.scss";
 @use "./blocks/components/chat";
+
+@use "./blocks/layouts/headerEditProfile";
+@use "../components/forms/editProfileForm/editProfileForm.scss";

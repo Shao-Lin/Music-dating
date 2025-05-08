@@ -9,6 +9,7 @@ import { ListOfChats } from "./pages/ListOfChats";
 import { ListOfMatches } from "./pages/ListOfMatches";
 import { InputCode } from "./pages/InputCodePage";
 import { ChatPage } from "./pages/ChatPage";
+import { EditProfile } from "./pages/EditProfile";
 //import { RequireAuth } from "./utils/RequireAuth";
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
         <Route path="/questionnaire" element={<QuestionnairePage />} />
 
         <Route path="/chat" element={<ChatPage />} />
+        <Route path="editProfile" element={<EditProfile />} />
 
         <Route element={<BottomMenu />}>
           <Route path="matchFeed" element={<MatchFeed />} />
