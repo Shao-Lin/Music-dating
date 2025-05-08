@@ -59,14 +59,15 @@
 + [Видео-презентация проекта 2 аттестация](https://rutube.ru/video/private/666fdeb7622e23982c9cb5cefc320206/?p=-gygOuOWLCIJwNuFg_s9iQ)
 
 ## ✅ Чек-листы
-+ Чек-лист [(PDF)](https://github.com/Shao-Lin/Music-dating/blob/main/documentation/ВГУ-ТП.%20Чеклист%201%20этап%203.1%20команда.pdf)
++ Чек-лист 1 этап [(PDF)](https://github.com/Shao-Lin/Music-dating/blob/main/documentation/ВГУ-ТП.%20Чеклист%201%20этап%203.1%20команда.pdf)
++ Чек-лист 2 этап [(PDF)](https://github.com/Shao-Lin/Music-dating/blob/dev/documentation/ВГУ-ТП.Чеклист%202%20этап%203.1%20команда.pdf)
 
 Нас проверили:
 
-+ 2 группа 2 команда - [(Git)](https://github.com/GoshaNumberOne/escadre.io?tab=readme-ov-file) [(PDF)](https://github.com/GoshaNumberOne/escadre.io/blob/main/documentation/Кросс-ревью%20(1%20аттестация).pdf)
-+ 3 группа 2 команда - [(Git)](https://github.com/dnlksnvv/Trainova) [(PDF)](https://github.com/dnlksnvv/Trainova/blob/main/docs/оценивание.pdf)
-+ 3 группа 4 команда - [(Git)](https://github.com/dnlksnvv/Trainova) [(PDF)](https://github.com/uyrtryu/MindCard/blob/main/Documentation/checklist1atta.pdf)
-+ 10 группа 4 команда - [(Git)](https://github.com/LUFFPUFF/TPProduct) [(PDF)](https://github.com/LUFFPUFF/TPProduct/blob/main/Чеклист%201%20этап%20-%20чеклист.pdf)
++ 2 группа 2 команда - [(Git)](https://github.com/GoshaNumberOne/escadre.io?tab=readme-ov-file) 1 этап - [(PDF)](https://github.com/GoshaNumberOne/escadre.io/blob/main/Documentation/Кросс-ревью%20(1%20аттестация).pdf) 2 этап - [(PDF)](https://github.com/GoshaNumberOne/escadre.io/blob/main/Documentation/Кросс-ревью%20(2%20аттестация).pdf)
++ 3 группа 2 команда - [(Git)](https://github.com/dnlksnvv/Trainova) 1 этап - [(PDF)](https://github.com/dnlksnvv/Trainova/blob/main/docs/оценивание.pdf) 2 этап - [(PDF)](https://github.com/dnlksnvv/Trainova/blob/develop/docs/оценивание2атта.pdf)
++ 3 группа 4 команда - [(Git)](https://github.com/dnlksnvv/Trainova) 1 этап - [(PDF)](https://github.com/uyrtryu/MindCard/blob/main/Documentation/checklist1atta.pdf) 2 этап - [(PDF)](https://github.com/uyrtryu/MindCard/blob/main/Documentation/checklist2atta.pdf)
++ 10 группа 4 команда - [(Git)](https://github.com/LUFFPUFF/TPProduct) 1 этап - [(PDF)](https://github.com/LUFFPUFF/TPProduct/blob/main/docs/check_list/Чеклист%201%20этап%20-%20чеклист.pdf) 2 этап - [(PDF)](https://github.com/LUFFPUFF/TPProduct/blob/main/docs/check_list/ТПЧеклист2этап.pdf)
 
 ## 📝 Отчеты PM
 
