@@ -6,14 +6,12 @@ import settings from "../../../assets/actionMenu/settings.png";
 export const ActionMenu = () => {
   const navigate = useNavigate();
 
-  const handleClickProfile = () => navigate("/EditProfile");
-
   return (
     <div className="button-box">
-      <button className="btn">
+      <button className="btn" onClick={() => navigate("/settings")}>
         <img src={settings} alt="кнопка 1" />
       </button>
-      <button className="btn top" onClick={handleClickProfile}>
+      <button className="btn top" onClick={() => navigate("/editProfile")}>
         <img src={editProfile} alt="кнопка 2" />
       </button>
       <button className="btn">

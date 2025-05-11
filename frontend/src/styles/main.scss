@@ -27,7 +27,7 @@
 @use "../components/matchItem/matchItem";
 @use "../components/UI/buttons/audioButtonMatchItem/audioButtonMatchItem";
 
-@use "../components/modals/removeMatch";
+@use "../components/modals/customModal.scss";
 @use "./blocks/layouts/mainContent";
 
 @use "./blocks/layouts/headerInputCode";
@@ -44,3 +44,6 @@
 
 @use "./blocks/layouts/headerEditProfile";
 @use "../components/forms/editProfileForm/editProfileForm.scss";
+
+@use "./blocks/layouts/headerSettings";
+@use "../components/settings/settings";

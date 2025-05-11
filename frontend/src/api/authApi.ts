@@ -39,6 +39,13 @@ export const authApi = createApi({
         responseHandler: (response) => response.text(), // обработать как обычный текст
       }),
     }),
+    logout: build.mutation({
+      query: (token) => ({
+        url: `logout?refreshToken=${encodeURIComponent(token)}`,
+        method: "DELETE",
+        responseHandler: (response) => response.text(),
+      }),
+    }),
   }),
 });
 
@@ -47,4 +54,5 @@ export const {
   useSignupUserMutation,
   useSendingEmailMutation,
   useSendingAuthCodeMutation,
+  useLogoutMutation,
 } = authApi;
