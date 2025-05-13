@@ -11,6 +11,7 @@ import { InputCode } from "./pages/InputCodePage";
 import { ChatPage } from "./pages/ChatPage";
 import { EditProfile } from "./pages/EditProfile";
 import { SettingsPage } from "./pages/SettingsPage";
+import { PremiumSubscription } from "./pages/PremiumSubscription";
 //import { RequireAuth } from "./utils/RequireAuth";
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
         <Route path="chat" element={<ChatPage />} />
         <Route path="editProfile" element={<EditProfile />} />
         <Route path="settings" element={<SettingsPage />} />
+        <Route path="premiumSubscription" element={<PremiumSubscription />} />
 
         <Route element={<BottomMenu />}>
           <Route path="matchFeed" element={<MatchFeed />} />

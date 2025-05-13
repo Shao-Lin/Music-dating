@@ -1,0 +1,52 @@
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 999;
+
+  &__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+  }
+
+  &__content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 300px;
+    padding: 20px;
+    background: white;
+    border-radius: 12px;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    text-align: center;
+
+    p {
+      margin-bottom: 20px;
+      font-size: 18px;
+      font-weight: 500;
+    }
+  }
+
+  &__buttons {
+    display: flex;
+    justify-content: space-around;
+
+    &.single {
+      justify-content: center;
+    }
+
+    button {
+      padding: 8px 16px;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      background: var(--color-accent);
+      color: var(--color-dark);
+    }
+  }
+}

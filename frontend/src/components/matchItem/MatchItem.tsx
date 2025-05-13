@@ -1,7 +1,7 @@
 import { CustomAvatar } from "../UI/avatar/CustomAvatar";
 import { AudioButton } from "../UI/buttons/audioButtonMatchItem/AudioButtonMatchItem";
 import dislike from "../../assets/cancleListMatch.png";
-import { RemoveMatch } from "../modals/CustomModal";
+import { CustomModal } from "../modals/questionModal/CustomModal";
 import { useState } from "react";
 import { MatchItemType } from "./matchItemType";
 import { useDeleteMatchMutation } from "../../api/matchesApi";
@@ -59,7 +59,7 @@ export const MatchItem = ({ item }: Props) => {
       </div>
 
       {isModalOpen && (
-        <RemoveMatch
+        <CustomModal
           onClose={handleClose}
           onDelete={handleDelete}
           description="Удалить свой мэтч?"

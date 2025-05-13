@@ -27,7 +27,7 @@
 @use "../components/matchItem/matchItem";
 @use "../components/UI/buttons/audioButtonMatchItem/audioButtonMatchItem";
 
-@use "../components/modals/customModal.scss";
+@use "../components/modals/questionModal/customModal.scss";
 @use "./blocks/layouts/mainContent";
 
 @use "./blocks/layouts/headerInputCode";
@@ -47,3 +47,6 @@
 
 @use "./blocks/layouts/headerSettings";
 @use "../components/settings/settings";
+
+@use "../components/premiumSub/buyPremium";
+@use "../components/modals/successModal/successModal";

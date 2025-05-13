@@ -14,7 +14,7 @@ import premiumIcon from "../../assets/settingsIcon/Premium.png";
 import { ClassicButton } from "../UI/buttons/classicButton/ClassicButton";
 import * as Yup from "yup";
 import { Formik } from "formik";
-import { RemoveMatch } from "../modals/CustomModal";
+import { CustomModal } from "../modals/questionModal/CustomModal";
 import { useLogoutMutation } from "../../api/authApi";
 import { useNavigate } from "react-router";
 import type { userSettingsProps } from "../../pages/SettingsPage";
@@ -115,7 +115,10 @@ export const Settings = ({
       </div>
 
       {/* Купить подписку */}
-      <div className="settings__option">
+      <div
+        className="settings__option"
+        onClick={() => navigate("/premiumSubscription")}
+      >
         <img
           src={premiumIcon}
           alt="Подписка премиум"
@@ -134,7 +137,7 @@ export const Settings = ({
         />
       </div>
       {isModalOpen && (
-        <RemoveMatch
+        <CustomModal
           onClose={() => setIsModalOpen(false)}
           onDelete={handleExit}
           description="Вы действительно хотите выйти?"
