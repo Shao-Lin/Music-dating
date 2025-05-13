@@ -1,0 +1,128 @@
+.premium {
+  position: relative;
+  text-align: center;
+
+  .wrap-header {
+    margin-bottom: 75px;
+    padding-top: 30px;
+  }
+
+  &__back-button {
+    position: absolute;
+    top: 11px;
+    left: 11px;
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    border: none;
+    background: none;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+  }
+
+  &__title {
+    text-align: center;
+    font-size: 48px;
+    font-family: "Emilys Candy";
+    color: var(--color-accent);
+    line-height: normal;
+  }
+
+  &__option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+    padding: 0 15px;
+    margin-bottom: 10px;
+    width: 100%;
+    box-sizing: border-box;
+
+    &__label {
+      flex: 1;
+      font-size: 20px;
+      text-align: left;
+      line-height: normal;
+    }
+
+    &__icon {
+      margin-right: 15px;
+    }
+  }
+
+  &__plans {
+    display: flex;
+    flex-direction: column;
+    margin-top: 50px;
+  }
+
+  &__plan {
+    display: flex;
+    align-items: center;
+    height: 65px;
+    padding: 0 15px;
+    border-radius: 12px;
+    cursor: pointer;
+
+    input[type="radio"] {
+      margin-right: 30px;
+      width: 18px;
+      height: 18px;
+    }
+
+    &__content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+
+      .top-row {
+        display: flex;
+        align-items: center; // ДОБАВЛЕНО: выравнивание по вертикали
+        justify-content: space-between;
+
+        .plan-name {
+          font-size: 20px;
+          line-height: 1; // ДОБАВЛЕНО: чтобы все тексты имели одинаковую высоту строки
+        }
+
+        .plan-discount {
+          font-size: 16px;
+          color: #fe6d87;
+          margin-right: 17px;
+          line-height: 1; // ДОБАВЛЕНО
+        }
+
+        .plan-monthly {
+          font-size: 16px;
+          color: rgba(0, 0, 0, 0.5);
+          margin-right: 17px; // одинаково для обоих случаев
+          line-height: 1;
+          text-align: end;
+        }
+
+        &.center {
+          gap: 17px;
+        }
+      }
+
+      .bottom-row {
+        text-align: start;
+
+        .plan-yearly {
+          font-size: 14px;
+          color: rgba(0, 0, 0, 0.5);
+        }
+      }
+    }
+  }
+  &__bottom-button {
+    position: fixed;
+    bottom: 60px;
+    left: 30px;
+    right: 30px;
+  }
+}

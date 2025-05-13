@@ -6,7 +6,7 @@ interface ModalProps {
   action: string;
 }
 
-export const RemoveMatch = ({
+export const CustomModal = ({
   onClose,
   onDelete,
   description,
