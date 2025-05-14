@@ -38,4 +38,3 @@ out/
 
 !./docker-compose.yaml
 !dockerfile
-backend.server.env
