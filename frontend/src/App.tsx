@@ -12,6 +12,11 @@ import { ChatPage } from "./pages/ChatPage";
 import { EditProfile } from "./pages/EditProfile";
 import { SettingsPage } from "./pages/SettingsPage";
 import { PremiumSubscription } from "./pages/PremiumSubscription";
+import { InfoPage } from "./pages/guestPages/info/InfoPage";
+import { LimitPage } from "./pages/guestPages/limit/LimitPage";
+import { UserLimitPage } from "./pages/UserLimitPage";
+import { WaitingPage } from "./pages/servicePages/waiting/WaitingPage";
+import { ErrorPage } from "./pages/servicePages/error/ErrorPage";
 //import { RequireAuth } from "./utils/RequireAuth";
 
 function App() {
@@ -30,11 +35,18 @@ function App() {
         <Route path="settings" element={<SettingsPage />} />
         <Route path="premiumSubscription" element={<PremiumSubscription />} />
 
+        <Route path="infoPage" element={<InfoPage />} />
+        <Route path="guestLimit" element={<LimitPage />} />
+
+        <Route path="waiting" element={<WaitingPage />} />
+        <Route path="error" element={<ErrorPage />} />
+
         <Route element={<BottomMenu />}>
           <Route path="matchFeed" element={<MatchFeed />} />
           <Route path="listChat" element={<ListOfChats />} />
           <Route path="listMatch" element={<ListOfMatches />} />
           <Route path="profile" element={<Profile />} />
+          <Route path="userLimit" element={<UserLimitPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

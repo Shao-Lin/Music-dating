@@ -42,8 +42,9 @@ export const Settings = ({
 
   const handleExit = async () => {
     try {
-      await logout(localStorage.getItem("token")).unwrap();
-      localStorage.removeItem("token");
+      await logout(localStorage.getItem("accessToken")).unwrap();
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
       navigate("/login");
     } catch (err) {
       console.error("Ошибка при выходе:", err);

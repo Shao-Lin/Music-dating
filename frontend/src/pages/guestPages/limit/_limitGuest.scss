@@ -1,0 +1,31 @@
+.limit-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 145px;
+  padding-left: 26px;
+  padding-right: 26px;
+  text-align: center;
+
+  .limit-image {
+    width: 200px;
+    height: 200px;
+    object-fit: contain;
+    margin-bottom: 35px;
+  }
+
+  .limit-text {
+    font-size: 20px;
+    line-height: 1.6;
+
+    .register-link {
+      color: #fe6d87;
+      text-decoration: none;
+      font-weight: 500;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}

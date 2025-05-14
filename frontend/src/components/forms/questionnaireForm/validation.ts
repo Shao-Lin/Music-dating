@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import * as Yup from "yup";
 export const validationSchema = Yup.object().shape({
   name: Yup.string().required("Обязательное поле"),
@@ -5,6 +6,11 @@ export const validationSchema = Yup.object().shape({
     .nullable()
     .required("Обязательное поле")
     .max(new Date(), "Дата рождения не может быть в будущем")
+    .test("is-allowed-age", "Возраст должен быть от 18 до 100 лет", (value) => {
+      if (!value) return false;
+      const age = dayjs().diff(dayjs(value), "year");
+      return age >= 18 && age <= 100;
+    })
     .typeError("Введите корректную дату"),
   city: Yup.object({
     label: Yup.string().required("Обязательное поле"),
