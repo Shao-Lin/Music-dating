@@ -112,9 +112,8 @@ public class DefaultAuthService implements AuthService {
 
     @Override
     public AuthResponse refresh(String refreshToken) {
-        if (jwtUtils.validateToken(refreshToken)) {
-            throw new RefreshTokenException(INVALID_TOKEN);
-        }
+        jwtUtils.validateToken(refreshToken);
+
         RefreshTokenEntity tokenEntity = refreshTokenRepository.findByTokenValue(refreshToken);
         if (tokenEntity == null) {
             throw new RefreshTokenException(TOKEN_NOT_FOUND);

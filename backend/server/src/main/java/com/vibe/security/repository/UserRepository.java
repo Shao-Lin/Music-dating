@@ -17,10 +17,9 @@ public interface UserRepository extends JpaRepository<UserEntity, UUID> {
 
     boolean existsByUsername(String username);
 
-    /** 10 «неиспользованных» пользователей */
     @Query("""
         SELECT u FROM UserEntity u
-        WHERE u.id <> :currentUserId
+        WHERE u.id <> :currentUserId and u.gender <> :gender
           AND u.id NOT IN (
               SELECT m.targetUser.id
               FROM MatchEntity m
@@ -28,9 +27,9 @@ public interface UserRepository extends JpaRepository<UserEntity, UUID> {
           )
         """)
     Page<UserEntity> findUnseenUsers(@Param("currentUserId") UUID currentUserId,
+                                     String userGender,
                                      Pageable pageable);
 
-    /** Взаимные симпатии */
     @Query("""
         SELECT u
         FROM UserEntity u
@@ -49,4 +48,19 @@ public interface UserRepository extends JpaRepository<UserEntity, UUID> {
         )
         """)
     Set<UserEntity> findMutualMatches(@Param("currentUserId") UUID currentUserId);
+
+    @Query("""
+                SELECT m.sourceUser
+                FROM MatchEntity m
+                WHERE m.targetUser.id = :currentUserId
+                  AND m.liked = TRUE
+                  AND NOT EXISTS (
+                      SELECT 1
+                      FROM MatchEntity m2
+                      WHERE m2.sourceUser.id = :currentUserId
+                        AND m2.targetUser.id = m.sourceUser.id
+                  )
+            """)
+    Set<UserEntity> findIncomingLikes(@Param("currentUserId") UUID currentUserId);
+
 }
