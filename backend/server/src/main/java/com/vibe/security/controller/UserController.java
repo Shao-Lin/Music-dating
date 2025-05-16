@@ -1,6 +1,7 @@
 package com.vibe.security.controller;
 
 import com.vibe.security.entity.UserEntity;
+import com.vibe.security.mapper.UserMapper;
 import com.vibe.security.payload.TrackDto;
 import com.vibe.security.payload.UserDto;
 import com.vibe.security.repository.UserRepository;
@@ -18,21 +19,11 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserController {
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
     @GetMapping("/me")
     public UserDto getUserInfo(@AuthenticationPrincipal UserDetails userDetails) {
         UserEntity user = userRepository.findByUsername(userDetails.getUsername()).get();
-
-        return new UserDto(
-                user.getName(),
-                user.getAbout(),
-                user.getCity(),
-                user.getGender(),
-                user.getAvatarUrl(),
-                user.getBirthDate(),
-                user.getTracks().stream()
-                        .map(trackEntity -> new TrackDto(trackEntity.getUrl(), "mock-name", "https://s3.twcstorage.ru/edafb68b-vibe-data/cover.jpg"))
-                        .collect(Collectors.toSet())
-        );
+        return userMapper.toDto(user);
     }
 }

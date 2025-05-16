@@ -6,7 +6,6 @@ import com.vibe.security.payload.RegisterRequest;
 import com.vibe.security.service.AuthService;
 import com.vibe.security.service.OtpService;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.annotations.processing.Pattern;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +33,7 @@ public class AuthController {
     }
 
     @PostMapping("/refresh")
-    public AuthResponse refresh(String refreshToken) {
+    public AuthResponse refresh(@RequestHeader("Authorization") String refreshToken) {
         return authService.refresh(refreshToken);
     }
 

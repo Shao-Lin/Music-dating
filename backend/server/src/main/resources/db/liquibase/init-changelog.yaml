@@ -187,3 +187,60 @@ databaseChangeLog:
               - column:
                   name: user_id
 
+  - changeSet:
+      id: 007-create-match-table
+      author: David Chernykh
+      changes:
+        - createTable:
+            tableName: match
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: source_user_id      # кто ставит лайк/дизлайк
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: target_user_id      # кому ставят
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: liked
+                  type: BOOLEAN
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+
+        - addForeignKeyConstraint:
+            constraintName: fk_match_source_user
+            baseTableName: match
+            baseColumnNames: source_user_id
+            referencedTableName: users
+            referencedColumnNames: id
+            onDelete: CASCADE
+
+        - addForeignKeyConstraint:
+            constraintName: fk_match_target_user
+            baseTableName: match
+            baseColumnNames: target_user_id
+            referencedTableName: users
+            referencedColumnNames: id
+            onDelete: CASCADE
+
+
+        - createIndex:
+            indexName: idx_match_unique_pair
+            tableName: match
+            unique: true
+            columns:
+              - column: { name: source_user_id }
+              - column: { name: target_user_id }
