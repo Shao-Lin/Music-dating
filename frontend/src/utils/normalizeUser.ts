@@ -1,13 +1,13 @@
 import { UserData, MusicData } from "../components/userCard/userType";
 
 interface RawUserData {
-  id?: string;
+  userId?: string;
   name?: string;
   birthDate?: string;
   city?: string;
   photos?: string[];
   avatarUrl?: string;
-  music?: MusicData[];
+  tracks?: MusicData[];
 }
 
 export const normalizeUserData = (
@@ -15,11 +15,11 @@ export const normalizeUserData = (
   fallbackMusic: MusicData[]
 ): UserData => {
   return {
-    id: raw.id ?? "unknown-id",
+    userId: raw.userId ?? "unknown-id",
     name: raw.name ?? "Без имени",
     birthDate: raw.birthDate ?? "1999-05-02",
     city: raw.city ?? "Не указан",
     photos: raw.photos?.length ? raw.photos : [raw.avatarUrl ?? "/default.jpg"],
-    tracks: raw.music?.length ? raw.music : fallbackMusic,
+    tracks: raw.tracks?.length ? raw.tracks : fallbackMusic,
   };
 };

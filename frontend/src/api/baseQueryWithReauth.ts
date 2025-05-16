@@ -1,11 +1,32 @@
-import { fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import type {
+import {
   BaseQueryFn,
   FetchArgs,
   FetchBaseQueryError,
+  FetchBaseQueryMeta,
 } from "@reduxjs/toolkit/query";
+import { fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { Mutex } from "async-mutex";
 
-const baseQuery = fetchBaseQuery({
+// Мьютекс для предотвращения одновременных запросов на обновление токена
+const mutex = new Mutex();
+
+interface RefreshTokenResponse {
+  accessToken: string;
+  refreshToken: string;
+}
+
+const queryWithRefresh = fetchBaseQuery({
+  baseUrl: "https://vibedating.ru/api",
+  prepareHeaders: (headers) => {
+    const token = localStorage.getItem("refreshToken");
+    if (token) {
+      headers.set("Authorization", `${token}`);
+    }
+    return headers;
+  },
+});
+
+const queryWithAccess = fetchBaseQuery({
   baseUrl: "https://vibedating.ru/api",
   prepareHeaders: (headers) => {
     const token = localStorage.getItem("accessToken");
@@ -16,68 +37,66 @@ const baseQuery = fetchBaseQuery({
   },
 });
 
-interface RefreshResponse {
-  accessToken: string;
-  refreshToken: string;
-}
-
-function shouldRefreshToken(error: FetchBaseQueryError) {
-  // Обработка и 401 и некоторых 403
-  if (error.status === 401) return true;
-
-  if (error.status === 403) {
-    const message =
-      typeof error.data === "string"
-        ? error.data
-        : (error.data as any)?.message || "";
-
-    // Подстрой под своё API — какое сообщение приходит при истёкшем access-токене?
-    return (
-      message.toLowerCase().includes("token expired") ||
-      message.toLowerCase().includes("jwt expired") ||
-      message.toLowerCase().includes("unauthorized")
-    );
-  }
-
-  return false;
-}
-
 export const baseQueryWithReauth: BaseQueryFn<
   string | FetchArgs,
   unknown,
-  FetchBaseQueryError
+  FetchBaseQueryError,
+  object,
+  FetchBaseQueryMeta
 > = async (args, api, extraOptions) => {
-  let result = await baseQuery(args, api, extraOptions);
+  await mutex.waitForUnlock();
+  let result = await queryWithAccess(args, api, extraOptions);
 
-  if (result.error && shouldRefreshToken(result.error)) {
-    const refreshToken = localStorage.getItem("refreshToken");
+  if (result.error) {
+    if (result.error.status === 403) {
+      // Токен истек, пытаемся обновить
+      if (!mutex.isLocked()) {
+        const release = await mutex.acquire();
+        try {
+          const refreshToken = localStorage.getItem("refreshToken");
+          if (!refreshToken) {
+            console.error("No refreshToken available");
+            return result;
+          }
+          console.log(args);
+          console.log(api);
+          console.log(extraOptions);
 
-    if (!refreshToken) {
-      return result;
-    }
+          const refreshResult = await queryWithRefresh(
+            {
+              url: "/auth/refresh", // Исправленный URL
+              method: "POST",
+              body: { refreshToken },
+            },
+            api,
+            extraOptions
+          );
 
-    const refreshResult = await baseQuery(
-      {
-        url: "auth/refresh",
-        method: "POST",
-        body: { refreshToken },
-      },
-      api,
-      extraOptions
-    );
-
-    const refreshData = refreshResult.data as RefreshResponse | undefined;
-
-    if (refreshData?.accessToken && refreshData.refreshToken) {
-      localStorage.setItem("accessToken", refreshData.accessToken);
-      localStorage.setItem("refreshToken", refreshData.refreshToken);
-
-      // Повторный вызов исходного запроса
-      result = await baseQuery(args, api, extraOptions);
-    } else {
-      // refresh не удался — чистим токены
-      localStorage.removeItem("accessToken");
-      localStorage.removeItem("refreshToken");
+          if (refreshResult.data) {
+            const { accessToken, refreshToken: newRefreshToken } =
+              refreshResult.data as RefreshTokenResponse;
+            localStorage.setItem("accessToken", accessToken);
+            localStorage.setItem("refreshToken", newRefreshToken);
+            console.log("Token refreshed successfully");
+            result = await queryWithAccess(args, api, extraOptions);
+          } else {
+            console.error("Failed to refresh token:", refreshResult.error);
+            //localStorage.removeItem("accessToken");
+            //localStorage.removeItem("refreshToken");
+          }
+        } finally {
+          release();
+        }
+      } else {
+        await mutex.waitForUnlock();
+        result = await queryWithAccess(args, api, extraOptions);
+      }
+    } else if (result.error.status === 401) {
+      // Ошибка доступа, токен может быть недействителен или недостаточно прав
+      console.error(
+        "Access forbidden. Check token validity or permissions:",
+        result.error
+      );
     }
   }
 

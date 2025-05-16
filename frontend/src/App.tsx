@@ -17,6 +17,8 @@ import { LimitPage } from "./pages/guestPages/limit/LimitPage";
 import { UserLimitPage } from "./pages/UserLimitPage";
 import { WaitingPage } from "./pages/servicePages/waiting/WaitingPage";
 import { ErrorPage } from "./pages/servicePages/error/ErrorPage";
+import { MatchFeedGuest } from "./pages/guestPages/MatchFeedGuest";
+import { BottomMenuGuest } from "./components/navigation/bottomMenuGuest/BottomMenuGuest";
 //import { RequireAuth } from "./utils/RequireAuth";
 
 function App() {
@@ -37,6 +39,9 @@ function App() {
 
         <Route path="infoPage" element={<InfoPage />} />
         <Route path="guestLimit" element={<LimitPage />} />
+        <Route element={<BottomMenuGuest />}>
+          <Route path="introductoryFeed" element={<MatchFeedGuest />} />
+        </Route>
 
         <Route path="waiting" element={<WaitingPage />} />
         <Route path="error" element={<ErrorPage />} />
