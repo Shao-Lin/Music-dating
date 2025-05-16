@@ -1,20 +1,18 @@
 import { useEffect, useRef, useState } from "react";
 import Stop from "../../../../assets/musicButton/Stop.svg"; // иконки
 import Play from "../../../../assets/musicButton/Play.svg"; // иконки
-//import coverImage from "../../../../assets/musicButton/cover.png"; // или строкой как пропс
-//import sound from "../../../../assets/testMusic/linkin-park-in-the-end-original_(bobamuz.online).mp3"; // путь к mp3
 
 type MusicData = {
   name: string;
-  cover: string;
-  music: string;
+  coverUrl: string;
+  url: string;
   isEditProfile?: boolean;
 };
 
 export const AudioButton = ({
   name,
-  cover,
-  music,
+  coverUrl,
+  url,
   isEditProfile = false,
 }: MusicData) => {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -44,7 +42,7 @@ export const AudioButton = ({
   }, []);
 
   useEffect(() => {
-    audioRef.current = new Audio(music);
+    audioRef.current = new Audio(url);
     audioRef.current.addEventListener("ended", () => setIsPlaying(false));
     return () => {
       audioRef.current?.pause();
@@ -75,7 +73,7 @@ export const AudioButton = ({
           onClick={handleTogglePlay}
         >
           <img
-            src={cover}
+            src={coverUrl}
             style={{ width: `${containerSize}px` }}
             alt="cover"
           />

@@ -1,0 +1,29 @@
+.error-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  text-align: center;
+
+  .error-image {
+    width: 220px;
+    height: 220px;
+    object-fit: contain;
+    margin: 150px auto 62px;
+  }
+
+  .error-text {
+    font-size: 24px;
+    line-height: 1.6;
+    padding: 0 30px;
+  }
+
+  .button-wrapper {
+    margin-top: auto;
+    padding: 0 30px 40px;
+    width: 100%;
+
+    .button {
+      width: 100%;
+    }
+  }
+}

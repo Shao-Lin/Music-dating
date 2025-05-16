@@ -8,7 +8,7 @@ import { UserData } from "./userType";
 import { setId } from "../../slices/userData";
 import { useEffect } from "react";
 export const UserCard = ({
-  id,
+  userId,
   photos,
   name,
   birthDate,
@@ -20,12 +20,12 @@ export const UserCard = ({
   const age = calculateAge(parseToDate);
 
   useEffect(() => {
-    dispatch(setId({ id }));
-  }, [dispatch, id]);
+    dispatch(setId({ userId }));
+  }, [dispatch, userId]);
 
   return (
     <>
-      <Carousel key={id} images={photos} />
+      <Carousel key={userId} images={photos} />
       <div className="human-data">
         <div className="name-age">
           {name} {age}

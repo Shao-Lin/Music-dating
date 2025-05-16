@@ -1,0 +1,43 @@
+.swipe-limit-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding-top: 110px;
+  padding-left: 26px;
+  padding-right: 26px;
+
+  .limit-image {
+    width: 200px;
+    height: 200px;
+    object-fit: contain;
+    margin-bottom: 25px;
+  }
+
+  .text {
+    font-size: 20px;
+    line-height: 1.5;
+  }
+
+  .timer {
+    margin-top: 12px; // Межстрочный интервал между текстом и таймером
+    font-size: 36px;
+    font-weight: bold;
+  }
+
+  .bottom-text {
+    margin-top: 27px;
+    font-size: 24px;
+
+    .premium-link {
+      color: #fe6d87;
+      text-decoration: none;
+      font-weight: 500;
+      font-family: "Emilys Candy";
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}

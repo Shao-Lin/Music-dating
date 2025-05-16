@@ -30,9 +30,13 @@ export const LoginForm = () => {
 
   const handleLogin = async (credentials: CredentialsType) => {
     try {
-      const { accessToken } = await login(credentials).unwrap();
-      localStorage.setItem("token", accessToken);
-      console.log(`login ${localStorage.getItem("token")}`);
+      const { accessToken, refreshToken } = await login(credentials).unwrap();
+      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("refreshToken", refreshToken);
+      console.log(`login ${localStorage.getItem("accessToken")}`);
+      console.log(`refresh ${localStorage.getItem("refreshToken")}`);
+
+      console.log("успех входа");
 
       navigate("/profile");
     } catch (err) {

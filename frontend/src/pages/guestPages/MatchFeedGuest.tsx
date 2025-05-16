@@ -1,24 +1,26 @@
 import { useState } from "react";
-import { UserCard } from "../components/userCard/UserCard";
-import { SelectMatch } from "../components/UI/selectMatch/SelectMatch";
+import { UserCard } from "../../components/userCard/UserCard";
+import { SelectMatch } from "../../components/UI/selectMatch/SelectMatch";
 
-import one from "../assets/testCarousel/one.jpg";
-import two from "../assets/testCarousel/two.png";
-import three from "../assets/testCarousel/three.jpg";
+import one from "../../assets/testCarousel/one.jpg";
+import two from "../../assets/testCarousel/two.png";
+import three from "../../assets/testCarousel/three.jpg";
 
-import sev from "../assets/testCarousel/sev.webp";
-import eig from "../assets/testCarousel/eig.webp";
-import nine from "../assets/testCarousel/nine.webp";
+import sev from "../../assets/testCarousel/sev.webp";
+import eig from "../../assets/testCarousel/eig.webp";
+import nine from "../../assets/testCarousel/nine.webp";
 
-import cov2 from "../assets/testMusic/obloj2.webp";
-import cov3 from "../assets/testMusic/obloj3.webp";
-import cov6 from "../assets/testMusic/cov6.jpg";
+import cov2 from "../../assets/testMusic/obloj2.webp";
+import cov3 from "../../assets/testMusic/obloj3.webp";
+import cov6 from "../../assets/testMusic/cov6.jpg";
 
-import sound from "../assets/testMusic/linkin-park-in-the-end-original_(bobamuz.online).mp3";
+import sound from "../../assets/testMusic/linkin-park-in-the-end-original_(bobamuz.online).mp3";
 //import coverImage from "../assets/musicButton/coverUrl.png";
-import { MusicData, UserData } from "../components/userCard/userType";
+import { MusicData, UserData } from "../../components/userCard/userType";
+import { useNavigate } from "react-router";
 
-export const MatchFeed = () => {
+export const MatchFeedGuest = () => {
+  const navigate = useNavigate();
   const photos2 = [one, two, three];
   const photos3 = [sev, eig];
   const photos4 = [nine];
@@ -87,6 +89,7 @@ export const MatchFeed = () => {
     } else {
       // Можно показать сообщение: лента закончилась
       console.log("Больше пользователей нет");
+      navigate("/guestLimit"); // редирект
     }
   };
 

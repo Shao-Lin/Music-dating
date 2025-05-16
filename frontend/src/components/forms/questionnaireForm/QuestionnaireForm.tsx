@@ -79,6 +79,7 @@ export const QuestionnaireForm = () => {
       //console.log(`login ${localStorage.getItem("token")}`);
 
       //navigate("/profile");
+      console.log("успех регистрации");
     } catch (err) {
       if (isFetchBaseQueryError(err)) {
         // Ошибка от сервера
@@ -101,9 +102,15 @@ export const QuestionnaireForm = () => {
     }
 
     try {
-      const { accessToken } = await singIn({ login, password }).unwrap();
-      localStorage.setItem("token", accessToken);
-      console.log(`login ${localStorage.getItem("token")}`);
+      const { accessToken, refreshToken } = await singIn({
+        login,
+        password,
+      }).unwrap();
+      console.log("успех входа");
+      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("refreshToken", refreshToken);
+      console.log(`login ${localStorage.getItem("accessToken")}`);
+      console.log(`refresh ${localStorage.getItem("refreshToken")}`);
       dispatch(deleteCredentials());
 
       navigate("/profile");

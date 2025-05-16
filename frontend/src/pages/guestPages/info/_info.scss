@@ -1,0 +1,38 @@
+.welcome-page {
+  padding-top: 100px;
+  padding-left: 35px;
+  padding-right: 35px;
+  text-align: center;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  .title {
+    font-size: 115px;
+    color: #fe6d87;
+    margin-bottom: 95px;
+    font-family: "Emilys Candy";
+  }
+
+  .description {
+    padding: 0 0;
+    font-size: 20px;
+    line-height: 1.6;
+  }
+
+  .spacer {
+    flex-grow: 1;
+  }
+
+  .nav-buttons {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 35px;
+
+    .nav-button {
+      color: #fe6d87;
+      font-size: 24px;
+      text-decoration: none;
+    }
+  }
+}

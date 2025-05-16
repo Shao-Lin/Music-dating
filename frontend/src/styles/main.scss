@@ -50,3 +50,10 @@
 
 @use "../components/premiumSub/buyPremium";
 @use "../components/modals/successModal/successModal";
+
+@use "../pages/guestPages/info/info";
+@use "../pages/guestPages/limit/limitGuest";
+@use "./blocks/components/userLimit";
+
+@use "../pages/servicePages/waiting/waiting";
+@use "../pages/servicePages/error/error";

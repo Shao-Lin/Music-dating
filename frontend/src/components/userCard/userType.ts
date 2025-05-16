@@ -1,11 +1,11 @@
 export type MusicData = {
   name: string;
-  cover: string;
-  music: string;
+  coverUrl: string;
+  url: string;
 };
 
 export type UserData = {
-  id: string;
+  userId: string;
   photos: string[];
   name: string;
   birthDate: string;

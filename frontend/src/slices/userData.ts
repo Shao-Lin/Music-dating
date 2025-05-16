@@ -1,19 +1,19 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 type InitialStateType = {
-  id: string | null;
+  userId: string | null;
   activeIndexImage: number;
 };
 
 type PayloadType = {
-  id: string | null;
+  userId: string | null;
 };
 type IndexType = {
   activeIndexImage: number;
 };
 
 const initialState: InitialStateType = {
-  id: null,
+  userId: null,
   activeIndexImage: 0,
 };
 
@@ -22,8 +22,8 @@ const setIdSlice = createSlice({
   initialState,
   reducers: {
     setId: (state, action: PayloadAction<PayloadType>) => {
-      const { id } = action.payload;
-      state.id = id;
+      const { userId } = action.payload;
+      state.userId = userId;
     },
     setActiveImage: (state, action: PayloadAction<IndexType>) => {
       const { activeIndexImage } = action.payload;
