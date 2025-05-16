@@ -12,16 +12,16 @@ export const EditProfile = () => {
   const testTrack1: Track = {
     id: "12e21",
     isActive: false,
-    music: sound,
-    cover: cov3,
+    url: sound,
+    coverUrl: cov3,
     name: "Messi",
   };
 
   const testTrack2: Track = {
     id: "2234",
     isActive: true,
-    music: sound,
-    cover: cov6,
+    url: sound,
+    coverUrl: cov6,
     name: "Ronaldo",
   };
 

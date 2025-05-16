@@ -1,8 +1,8 @@
 export type Track = {
   id: string;
   isActive: boolean;
-  music: string;
-  cover: string;
+  url: string;
+  coverUrl: string;
   name: string;
 };
 export type aboutAndMusicProp = {

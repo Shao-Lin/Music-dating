@@ -13,7 +13,7 @@ type FormValues = {
 export const ChatFooter = () => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const id = useAppSelector((state) => state.setDataUser.id);
+  const id = useAppSelector((state) => state.setDataUser.userId);
   const [addMessage, { isLoading }] = useAddMessageMutation();
 
   const initialValues: FormValues = { message: "", file: null };
