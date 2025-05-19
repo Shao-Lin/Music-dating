@@ -25,6 +25,8 @@ export const MatchFeed = () => {
   const photos3 = [sev, eig];
   const photos4 = [nine];
 
+  const [isAutoplay] = useState(false); // заменить на нормальный запрос
+
   const musicdata: MusicData = {
     name: "In the end",
     coverUrl: cov3,
@@ -138,7 +140,7 @@ export const MatchFeed = () => {
             transition={{ duration: 0.2 }}
             className="animated-card"
           >
-            <UserCard {...currentUser} />
+            <UserCard {...currentUser} isAutoplay={isAutoplay} />
           </motion.div>
         </AnimatePresence>
       </div>
