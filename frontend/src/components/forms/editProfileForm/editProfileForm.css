@@ -1,0 +1,57 @@
+@charset "UTF-8";
+.edit-profile-container {
+  margin-top: 30px;
+}
+
+.about-title {
+  font-size: 24px;
+  text-align: left;
+  margin-left: 50px;
+}
+
+.audio-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.audio-track {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 35px;
+}
+.audio-track .radio-button {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--color-accent); /* розовый или любой другой */
+  cursor: pointer;
+  outline: none;
+  box-shadow: none;
+  border: 1px solid #ccc; /* тонкая обводка как у неактивного */
+  border-radius: 50%;
+  background-color: white;
+  appearance: none; /* чтобы кастомизация сработала */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  display: inline-block;
+  position: relative;
+}
+.audio-track .radio-button:checked {
+  border-color: var(--color-accent); /* тонкая розовая обводка */
+  background-color: var(--color-accent);
+}
+.audio-track .radio-button:checked::after {
+  content: "";
+  width: 10px;
+  height: 10px;
+  background: white;
+  border-radius: 50%;
+  position: absolute;
+  top: 4px;
+  left: 4px;
+}
+
+.generate-button-wrapper {
+  margin-top: 30px;
+  padding: 0 30px;
+}/*# sourceMappingURL=editProfileForm.css.map */

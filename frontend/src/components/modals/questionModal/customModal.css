@@ -1,0 +1,49 @@
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 999;
+}
+.modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+}
+.modal__content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 300px;
+  padding: 20px;
+  background: white;
+  border-radius: 12px;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  text-align: center;
+}
+.modal__content p {
+  margin-bottom: 20px;
+  font-size: 18px;
+  font-weight: 500;
+}
+.modal__buttons {
+  display: flex;
+  justify-content: space-around;
+}
+.modal__buttons button {
+  padding: 8px 16px;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.modal__buttons button:first-child {
+  background: #eee;
+  color: var(--color-dark);
+}
+.modal__buttons button:last-child {
+  background: var(--color-accent);
+  color: white;
+}/*# sourceMappingURL=customModal.css.map */

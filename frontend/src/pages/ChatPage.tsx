@@ -32,7 +32,7 @@ export const ChatPage = () => {
   //   };
   // }, []);
 
-  //const fakeImageFile = new File([""], "testImage.png", { type: "image/png" });
+  const fakeImageFile = new File([""], "testImage.png", { type: "image/png" });
   const message1: MessageType = {
     senderId: "111",
 
@@ -43,7 +43,7 @@ export const ChatPage = () => {
     senderId: "112",
 
     text: "Ты очень красивая",
-    image: null,
+    image: fakeImageFile,
   };
   const message3: MessageType = {
     senderId: "111",

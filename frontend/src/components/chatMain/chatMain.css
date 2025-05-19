@@ -1,0 +1,9 @@
+.chat-main {
+  flex: 1;
+  margin-top: 66px;
+  margin-bottom: 65px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column-reverse;
+  padding: 11px 0;
+}/*# sourceMappingURL=chatMain.css.map */

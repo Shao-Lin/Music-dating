@@ -20,15 +20,14 @@ export const Message = ({ message, isSameSender }: MessageProps) => {
         isSameSender ? "message--same-sender" : "message--new-sender"
       }`}
     >
-      {message.image ? (
+      {message.image && (
         <img
           src={URL.createObjectURL(message.image)}
           alt="sent-img"
           className="message__image"
         />
-      ) : (
-        <div className="message__text">{message.text}</div>
       )}
+      {message.text && <div className="message__text">{message.text}</div>}
     </div>
   );
 };
