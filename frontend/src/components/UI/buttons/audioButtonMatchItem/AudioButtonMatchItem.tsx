@@ -1,32 +1,62 @@
 import { useEffect, useRef, useState } from "react";
 import Stop from "../../../../assets/musicButton/Stop.svg"; // иконки
 import Play from "../../../../assets/musicButton/Play.svg"; // иконки
-//import coverImage from "../../../../assets/musicButton/cover.png"; // или строкой как пропс
-//import sound from "../../../../assets/testMusic/linkin-park-in-the-end-original_(bobamuz.online).mp3"; // путь к mp3
-import { MusicDataMatchItem } from "../../../matchItem/matchItemType";
+import { useAudioPlayer } from "../../../../context/AudioPlayerContext";
 
-export const AudioButton = ({ cover, music }: MusicDataMatchItem) => {
+interface MatchProps {
+  cover: string;
+  music: string;
+  id: string;
+}
+
+export const AudioButton = ({ cover, music, id }: MatchProps) => {
+  const { currentAudio, setCurrentAudio, currentId, setCurrentId } =
+    useAudioPlayer();
   const [isPlaying, setIsPlaying] = useState(false);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const audioRef = useRef<HTMLAudioElement>(new Audio(music));
 
   useEffect(() => {
-    audioRef.current = new Audio(music);
-    audioRef.current.addEventListener("ended", () => setIsPlaying(false));
+    const audio = audioRef.current;
+
+    const handleEnded = () => {
+      setIsPlaying(false);
+      setCurrentAudio(null);
+      setCurrentId(null);
+    };
+
+    audio.addEventListener("ended", handleEnded);
     return () => {
-      audioRef.current?.pause();
-      audioRef.current = null;
+      audio.removeEventListener("ended", handleEnded);
+      audio.pause();
     };
   }, []);
 
   const handleTogglePlay = () => {
-    if (!audioRef.current) return;
-    if (isPlaying) {
-      audioRef.current.pause();
-    } else {
-      audioRef.current.play();
+    const thisAudio = audioRef.current;
+
+    if (currentAudio && currentAudio !== thisAudio) {
+      currentAudio.pause();
     }
-    setIsPlaying(!isPlaying);
+
+    if (currentId === id) {
+      thisAudio.pause();
+      setIsPlaying(false);
+      setCurrentAudio(null);
+      setCurrentId(null);
+    } else {
+      thisAudio.play();
+      setCurrentAudio(thisAudio);
+      setCurrentId(id);
+      setIsPlaying(true);
+    }
   };
+
+  // Если текущий активный ID — не этот, но кнопка думает, что играет — сбрасываем
+  useEffect(() => {
+    if (currentId !== id && isPlaying) {
+      setIsPlaying(false);
+    }
+  }, [currentId]);
 
   return (
     <div className="cover" onClick={handleTogglePlay}>

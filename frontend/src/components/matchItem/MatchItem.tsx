@@ -48,7 +48,7 @@ export const MatchItem = ({ item }: Props) => {
             <CustomAvatar avatar={avatar} online={online} size={60} />
           </div>
 
-          <AudioButton {...music} />
+          <AudioButton {...music} id={id} />
 
           <div className="match-item__reject">
             <button onClick={handleRejectClick}>

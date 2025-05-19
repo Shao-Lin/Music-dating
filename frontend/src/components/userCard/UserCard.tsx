@@ -25,7 +25,10 @@ export const UserCard = ({
 
   return (
     <>
-      <Carousel key={userId} images={photos} />
+      <div className="carousel-isolation-layer">
+        <Carousel key={userId} images={photos} />
+      </div>
+
       <div className="human-data">
         <div className="name-age">
           {name} {age}

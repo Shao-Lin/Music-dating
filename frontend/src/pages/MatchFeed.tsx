@@ -17,6 +17,8 @@ import cov6 from "../assets/testMusic/cov6.jpg";
 import sound from "../assets/testMusic/linkin-park-in-the-end-original_(bobamuz.online).mp3";
 //import coverImage from "../assets/musicButton/coverUrl.png";
 import { MusicData, UserData } from "../components/userCard/userType";
+import { useSwipeable } from "react-swipeable";
+import { motion, AnimatePresence } from "framer-motion"; // NEW
 
 export const MatchFeed = () => {
   const photos2 = [one, two, three];
@@ -79,29 +81,72 @@ export const MatchFeed = () => {
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const currentUser = arrTest[currentIndex];
+  const [swipeDirection, setSwipeDirection] = useState<"left" | "right" | null>(
+    null
+  );
 
-  const handleSwipe = async () => {
-    // Логика можно добавить здесь если нужно
-    if (currentIndex < arrTest.length - 1) {
-      setCurrentIndex((prev) => prev + 1);
-    } else {
-      // Можно показать сообщение: лента закончилась
-      console.log("Больше пользователей нет");
-    }
+  const handleSwipe = (action: "like" | "dislike") => {
+    setSwipeDirection(action === "like" ? "right" : "left");
+
+    setTimeout(() => {
+      setSwipeDirection(null); // сброс анимации
+      if (currentIndex < arrTest.length - 1) {
+        setCurrentIndex((prev) => prev + 1);
+      } else {
+        console.log("Больше пользователей нет");
+      }
+    }, 300); // немного подождём, чтобы анимация проигралась
   };
 
+  const swipeHandlers = useSwipeable({
+    onSwipedLeft: (eventData) => {
+      // Check if the swipe originated from the carousel
+      const target = eventData.event.target as HTMLElement | null;
+      if (target && !target.closest(".carousel")) {
+        handleSwipe("dislike");
+      }
+    },
+    onSwipedRight: (eventData) => {
+      // Check if the swipe originated from the carousel
+      const target = eventData.event.target as HTMLElement | null;
+      if (target && !target.closest(".carousel")) {
+        handleSwipe("like");
+      }
+    },
+    preventScrollOnSwipe: true,
+    trackTouch: true,
+    trackMouse: true,
+  });
+
   return (
-    <main>
-      {currentUser && (
-        <>
-          <UserCard {...currentUser} />
-          <SelectMatch
-            meId={userId.userId}
-            feedId={currentUser.userId}
-            onSwipe={handleSwipe}
-          />
-        </>
-      )}
+    <main className="match-feed">
+      <div className="card-wrapper" {...swipeHandlers}>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentUser.userId}
+            initial={{ x: 0, opacity: 1 }}
+            animate={{
+              x:
+                swipeDirection === "left"
+                  ? -300
+                  : swipeDirection === "right"
+                  ? 300
+                  : 0,
+              opacity: swipeDirection ? 0 : 1,
+            }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="animated-card"
+          >
+            <UserCard {...currentUser} />
+          </motion.div>
+        </AnimatePresence>
+      </div>
+      <SelectMatch
+        meId={userId.userId}
+        feedId={currentUser.userId}
+        onSwipe={handleSwipe}
+      />
     </main>
   );
 };

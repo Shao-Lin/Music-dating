@@ -1,13 +1,11 @@
 .spacer-container {
-  min-height: 80px; /* Минимальная высота */
+  margin-top: 20px; // ⬅️ Отступ сверху от предыдущих компонентов
+  min-height: 80px;
+  max-height: 100px;
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
-  padding-top: 30px;
-  padding-bottom: 35px;
-
-  height: 100%;
 }
 
 .centered-buttons {
