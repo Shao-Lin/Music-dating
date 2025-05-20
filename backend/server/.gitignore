@@ -38,3 +38,4 @@ out/
 
 !./docker-compose.yaml
 !dockerfile
+/build/
