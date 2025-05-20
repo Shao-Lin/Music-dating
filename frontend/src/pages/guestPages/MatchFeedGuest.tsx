@@ -97,7 +97,7 @@ export const MatchFeedGuest = () => {
     <main>
       {currentUser && (
         <>
-          <UserCard {...currentUser} />
+          <UserCard {...currentUser} isAutoplay={false} />
           <SelectMatch
             meId={userId.userId}
             feedId={currentUser.userId}

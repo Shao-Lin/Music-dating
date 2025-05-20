@@ -25,7 +25,7 @@ export const Profile = () => {
 
   return (
     <main>
-      <UserCard {...normalizeUser} />
+      <UserCard {...normalizeUser} isAutoplay={false} />
       <ActionMenu />
     </main>
   );
