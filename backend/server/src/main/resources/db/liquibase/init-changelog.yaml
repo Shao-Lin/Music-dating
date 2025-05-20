@@ -244,3 +244,46 @@ databaseChangeLog:
             columns:
               - column: { name: source_user_id }
               - column: { name: target_user_id }
+
+  - changeSet:
+      id: 008-create-user-photos-table
+      author: David Chernykh
+      changes:
+        - createTable:
+            tableName: user_photo
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: url
+                  type: TEXT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: uploaded_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+
+        - addForeignKeyConstraint:
+            constraintName: fk_user_photo_user
+            baseTableName: user_photo
+            baseColumnNames: user_id
+            referencedTableName: users
+            referencedColumnNames: id
+            onDelete: CASCADE
+
+        - createIndex:
+            indexName: idx_user_photo_user
+            tableName: user_photo
+            columns:
+              - column:
+                  name: user_id

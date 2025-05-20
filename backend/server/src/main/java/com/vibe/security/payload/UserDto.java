@@ -12,6 +12,7 @@ public record UserDto(
         String gender,
         String avatarUrl,
         LocalDate birthDate,
-        Set<TrackDto> tracks
+        Set<TrackDto> tracks,
+        Set<UserPhotoDto> photos
 ) {
 }

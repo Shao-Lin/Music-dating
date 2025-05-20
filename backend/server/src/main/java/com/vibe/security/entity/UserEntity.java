@@ -77,4 +77,11 @@ public class UserEntity {
     )
     private Set<TrackEntity> tracks = new HashSet<>();
 
+    @OneToMany(
+            mappedBy = "user",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY
+    )
+    private Set<UserPhotoEntity> photos = new HashSet<>();
 }

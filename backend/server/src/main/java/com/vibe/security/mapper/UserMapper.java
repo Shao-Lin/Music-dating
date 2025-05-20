@@ -1,8 +1,10 @@
 package com.vibe.security.mapper;
 
 import com.vibe.security.entity.UserEntity;
+import com.vibe.security.entity.UserPhotoEntity;
 import com.vibe.security.payload.TrackDto;
 import com.vibe.security.payload.UserDto;
+import com.vibe.security.payload.UserPhotoDto;
 import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;
@@ -20,6 +22,9 @@ public class UserMapper {
                 userEntity.getBirthDate(),
                 userEntity.getTracks().stream()
                         .map(trackEntity -> new TrackDto(trackEntity.getUrl(), "mock-name", "https://s3.twcstorage.ru/edafb68b-vibe-data/cover.jpg"))
+                        .collect(Collectors.toSet()),
+                userEntity.getPhotos().stream()
+                        .map(photoEntity -> new UserPhotoDto(photoEntity.getId(), photoEntity.getUrl()))
                         .collect(Collectors.toSet())
         );
     }
