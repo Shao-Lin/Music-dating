@@ -1,4 +1,4 @@
-import { Routes, Route, BrowserRouter, Navigate } from "react-router";
+import { Routes, Route, Navigate } from "react-router";
 import { LoginPage } from "./pages/LoginPage";
 import { SignUpPage } from "./pages/SignUpPage";
 import { QuestionnairePage } from "./pages/QuestionnairePage";
@@ -21,9 +21,15 @@ import { MatchFeedGuest } from "./pages/guestPages/MatchFeedGuest";
 import { BottomMenuGuest } from "./components/navigation/bottomMenuGuest/BottomMenuGuest";
 //import { RequireAuth } from "./utils/RequireAuth";
 
+import { useYandexPageview } from "./hooks/useYandexPageview";
+import { YandexMetrika } from "./YandexMetrika";
+
 function App() {
+  useYandexPageview();
   return (
-    <BrowserRouter>
+    <>
+      <YandexMetrika />
+
       <Routes>
         <Route path="/" element={<Navigate to="/login" replace />} />
 
@@ -54,7 +60,7 @@ function App() {
           <Route path="userLimit" element={<UserLimitPage />} />
         </Route>
       </Routes>
-    </BrowserRouter>
+    </>
   );
 }
 
