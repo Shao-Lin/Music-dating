@@ -171,6 +171,16 @@ databaseChangeLog:
                   type: TEXT #todo узнать размер url в s3
                   constraints:
                     nullable: false
+              - column:
+                  name: name
+                  type: varchar
+                  constraints:
+                    nullable: false
+              - column:
+                  name: cover_url
+                  type: varchar
+                  constraints:
+                    nullable: false
 
         - addForeignKeyConstraint:
             constraintName: fk_track_user

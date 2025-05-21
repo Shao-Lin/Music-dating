@@ -29,6 +29,12 @@ public class TrackEntity {
     @Column(name = "url", nullable = false)
     private String url;
 
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "cover_url")
+    private String coverUrl;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;

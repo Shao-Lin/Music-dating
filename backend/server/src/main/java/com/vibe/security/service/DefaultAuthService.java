@@ -19,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.time.Instant;
@@ -44,6 +45,7 @@ public class DefaultAuthService implements AuthService {
     private final TrackRepository trackRepository;
 
     @Override
+    @Transactional
     public void register(RegisterRequest request) {
         if (userRepository.existsByUsername(request.login())) {
             throw new UserAlreadyExistsException(USER_ALREADY_EXISTS);
@@ -72,17 +74,22 @@ public class DefaultAuthService implements AuthService {
         TrackEntity trackEntityFirst = TrackEntity.builder()
                 .url("https://s3.twcstorage.ru/edafb68b-vibe-data/frozen_time.mp3")
                 .user(savedUser)
+                .coverUrl("https://s3.twcstorage.ru/edafb68b-vibe-data/267fde48-4b6b-4855-91d3-49a9ad6d968e-9mb.jpg")
+                .name("mock-name-1")
                 .build();
         //mock
         TrackEntity trackEntitySecond = TrackEntity.builder()
                 .url("https://s3.twcstorage.ru/edafb68b-vibe-data/reflect.mp3")
                 .user(savedUser)
+                .coverUrl("https://s3.twcstorage.ru/edafb68b-vibe-data/267fde48-4b6b-4855-91d3-49a9ad6d968e-9mb.jpg")
+                .name("mock-name-2")
                 .build();
 
         trackRepository.saveAll(List.of(trackEntityFirst, trackEntitySecond));
     }
 
     @Override
+    @Transactional
     public AuthResponse login(AuthRequest request) {
         String username = request.login();
         UserEntity userEntity = userRepository.findByUsername(username).orElseThrow(() ->
