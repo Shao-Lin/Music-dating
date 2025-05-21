@@ -36,7 +36,7 @@ public class UserController {
         userPhotoService.upload(userId, photo);
     }
 
-    @DeleteMapping("/{photo-id}")
+    @DeleteMapping("/{photo-id}/delete-photo")
     public ResponseEntity<Void> deletePhoto(@AuthenticationPrincipal UserDetails userDetails, @PathVariable("photo-id") UUID photoId) {
         UUID userId = userRepository.findByUsername(userDetails.getUsername()).get().getId();
         userPhotoService.delete(userId, photoId);

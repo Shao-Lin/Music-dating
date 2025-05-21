@@ -27,7 +27,7 @@ public interface UserRepository extends JpaRepository<UserEntity, UUID> {
           )
         """)
     Page<UserEntity> findUnseenUsers(@Param("currentUserId") UUID currentUserId,
-                                     String userGender,
+                                     String gender,
                                      Pageable pageable);
 
     @Query("""
