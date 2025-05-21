@@ -260,7 +260,7 @@ paths:
         '400': { $ref: '#/components/responses/BadRequest' }
       security: [ { BearerAuth: [ ] } ]
 
-  /user/{photo-id}:
+  /user/{photo-id}/delete-photo:
     delete:
       tags: [ User ]
       summary: Удалить своё фото
@@ -359,8 +359,7 @@ components:
       properties:
         id:     { type: string, format: uuid }
         url:    { type: string, format: uri }
-        isMain: { type: boolean }
-
+        
     TrackDto:
       type: object
       properties:
