@@ -14,5 +14,16 @@ services:
     volumes:
       - pg_data:/var/lib/postgresql/data
 
+  app:
+    build:
+      context: .
+      dockerfile: local_dockerfile
+    env_file:
+      - local-docker.env
+    ports:
+      - "8088:8088"
+    depends_on:
+      - db
+
 volumes:
   pg_data:
