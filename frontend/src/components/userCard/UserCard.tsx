@@ -11,13 +11,15 @@ import { useEffect, useRef } from "react";
 
 export const UserCard = ({
   userId,
+  avatarUrl,
   photos,
   name,
   birthDate,
   city,
   tracks,
   isAutoplay,
-}: UserData & { isAutoplay: boolean }) => {
+  isProfile = false,
+}: UserData & { isAutoplay: boolean; isProfile?: boolean }) => {
   const dispatch = useAppDispatch();
   const parseToDate = new Date(birthDate);
   const age = calculateAge(parseToDate);
@@ -36,7 +38,12 @@ export const UserCard = ({
   return (
     <>
       <div className="carousel-isolation-layer">
-        <Carousel key={userId} images={photos} />
+        <Carousel
+          key={userId}
+          avatarUrl={avatarUrl}
+          photos={photos}
+          showMenuButton={isProfile}
+        />
       </div>
 
       <div className="human-data">

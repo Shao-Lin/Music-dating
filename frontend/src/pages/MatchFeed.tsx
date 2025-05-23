@@ -3,56 +3,91 @@ import { UserCard } from "../components/userCard/UserCard";
 import { SelectMatch } from "../components/UI/selectMatch/SelectMatch";
 import { useSwipeable } from "react-swipeable";
 import { motion, AnimatePresence } from "framer-motion";
-import { useGetRecommendationsQuery } from "../api/usersApi";
-import { UserData } from "../components/userCard/userType";
+import {
+  useGetRecommendationsQuery,
+  useLikeTargetMutation,
+  useDislikeTargetMutation,
+} from "../api/usersApi";
+import type { RecommendationUser } from "../components/userCard/userType";
 
 export const MatchFeed = () => {
-  const size = 5;
+  const size = 1;
   const [page, setPage] = useState(0);
-  const [users, setUsers] = useState<UserData[]>([]);
+  const [users, setUsers] = useState<RecommendationUser[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [swipeDirection, setSwipeDirection] = useState<"left" | "right" | null>(
     null
   );
 
-  const { data, isSuccess } = useGetRecommendationsQuery({ page, size });
+  const { data, isSuccess, isLoading, isError } = useGetRecommendationsQuery({
+    page,
+    size,
+  });
+  const [likeTarget] = useLikeTargetMutation();
+  const [dislikeTarget] = useDislikeTargetMutation();
 
-  console.log(data);
-  // Добавление новых пользователей при загрузке новой страницы
+  // Обновление списка пользователей при загрузке новой страницы
   useEffect(() => {
-    if (isSuccess && data) {
-      setUsers((prev) => [...prev, ...data]);
-    }
-  }, [data, isSuccess]);
-
-  const handleSwipe = (action: "like" | "dislike") => {
-    setSwipeDirection(action === "like" ? "right" : "left");
-
-    setTimeout(() => {
-      setSwipeDirection(null);
-
-      // Переход к следующему пользователю
-      const nextIndex = currentIndex + 1;
-      setCurrentIndex(nextIndex);
-
-      // Если мы показали последнего из текущей пачки — загружаем следующую
-      if (nextIndex >= users.length) {
-        setPage((prev) => prev + 1);
+    if (isSuccess) {
+      if (data && data.length > 0) {
+        setUsers((prev) => [...prev, ...data]);
+      } else if (data && data.length === 0 && currentIndex >= users.length) {
+        // Если данных нет и все пользователи просмотрены, очищаем список
+        setUsers([]);
       }
-    }, 300);
+    }
+  }, [data, isSuccess, currentIndex]);
+
+  // Единая функция для обработки действий (свайп или кнопка)
+  const performAction = async (action: "like" | "dislike") => {
+    const currentUser = users[currentIndex];
+    if (!currentUser) return;
+
+    // Отправка запроса
+    try {
+      if (action === "like") {
+        await likeTarget(currentUser.userId).unwrap();
+      } else if (action === "dislike") {
+        await dislikeTarget(currentUser.userId).unwrap();
+      }
+    } catch (error) {
+      console.log(`Ошибка при ${action}:`, error);
+      return;
+    }
+
+    // Запуск анимации свайпа
+    setSwipeDirection(action === "like" ? "right" : "left");
   };
 
+  // Обработка завершения анимации
+  const handleAnimationComplete = () => {
+    if (swipeDirection) {
+      setSwipeDirection(null);
+      const nextIndex = currentIndex + 1;
+
+      if (nextIndex < users.length) {
+        // Переход к следующему пользователю
+        setCurrentIndex(nextIndex);
+      } else {
+        // Если пользователей больше нет, увеличиваем страницу
+        setPage((prev) => prev + 1);
+        setCurrentIndex(nextIndex);
+      }
+    }
+  };
+
+  // Обработчики свайпов
   const swipeHandlers = useSwipeable({
     onSwipedLeft: (e) => {
       const target = e.event.target as HTMLElement;
       if (!target.closest(".carousel")) {
-        handleSwipe("dislike");
+        performAction("dislike");
       }
     },
     onSwipedRight: (e) => {
       const target = e.event.target as HTMLElement;
       if (!target.closest(".carousel")) {
-        handleSwipe("like");
+        performAction("like");
       }
     },
     preventScrollOnSwipe: true,
@@ -60,9 +95,17 @@ export const MatchFeed = () => {
     trackMouse: true,
   });
 
-  const currentUser = users[currentIndex];
+  // Обработка состояний
+  if (isLoading) return <p>Загрузка...</p>;
+  if (isError) return <p>Ошибка загрузки рекомендаций</p>;
+  if (!users.length && (!data || data.length === 0)) {
+    return <p>Нет доступных пользователей</p>;
+  }
 
-  if (!currentUser) return <p>Загрузка...</p>;
+  const currentUser = users[currentIndex];
+  if (!currentUser) {
+    return <p>Нет доступных пользователей</p>;
+  }
 
   return (
     <main className="match-feed">
@@ -80,20 +123,16 @@ export const MatchFeed = () => {
                   : 0,
               opacity: swipeDirection ? 0 : 1,
             }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
+            transition={{ duration: 0.3 }}
+            onAnimationComplete={handleAnimationComplete}
             className="animated-card"
           >
-            <UserCard {...currentUser} isAutoplay={true} />
+            <UserCard {...currentUser} isAutoplay={false} />
           </motion.div>
         </AnimatePresence>
       </div>
 
-      <SelectMatch
-        meId={currentUser.userId} // или другой id текущего пользователя
-        feedId={currentUser.userId}
-        onSwipe={handleSwipe}
-      />
+      <SelectMatch onAction={performAction} />
     </main>
   );
 };
