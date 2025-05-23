@@ -4,16 +4,20 @@ import dislike from "../../assets/cancleListMatch.png";
 import { CustomModal } from "../modals/questionModal/CustomModal";
 import { useState } from "react";
 import { MatchItemType } from "./matchItemType";
-import { useDeleteMatchMutation } from "../../api/matchesApi";
+import { useDislikeTargetMutation } from "../../api/usersApi";
 import { useNavigate } from "react-router";
+import { MusicData } from "../userCard/userType";
 
 type Props = {
   item: MatchItemType; // Явно указываем, что ожидаем пропс `item`
 };
 export const MatchItem = ({ item }: Props) => {
-  const { id, name, avatar, online, music } = item;
+  const { userId, name, avatarUrl, online = true, tracks } = item;
   const navigate = useNavigate();
-  const [deleteMatch] = useDeleteMatchMutation();
+  const [deleteMatch] = useDislikeTargetMutation();
+  const activeTrack: MusicData = tracks[0];
+
+  console.log(activeTrack);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -23,7 +27,7 @@ export const MatchItem = ({ item }: Props) => {
 
   const handleDelete = async () => {
     try {
-      await deleteMatch(id).unwrap();
+      await deleteMatch(userId).unwrap();
       console.log("Удалить");
     } catch (error) {
       console.error(error);
@@ -45,10 +49,10 @@ export const MatchItem = ({ item }: Props) => {
 
         <div className="match-item__content">
           <div className="match-item__avatar" onClick={handleClick}>
-            <CustomAvatar avatar={avatar} online={online} size={60} />
+            <CustomAvatar avatar={avatarUrl} online={online} size={60} />
           </div>
 
-          <AudioButton {...music} id={id} />
+          <AudioButton {...activeTrack} userId={userId} />
 
           <div className="match-item__reject">
             <button onClick={handleRejectClick}>

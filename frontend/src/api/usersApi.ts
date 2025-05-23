@@ -5,7 +5,7 @@ import { RecommendationUser } from "../components/userCard/userType";
 export const usersApi = createApi({
   reducerPath: "usersApi",
   baseQuery: baseQueryWithReauth,
-  tagTypes: ["Recommendations"],
+  tagTypes: ["Recommendations", "Matches"],
   endpoints: (build) => ({
     getRecommendations: build.query<
       RecommendationUser[],
@@ -22,14 +22,18 @@ export const usersApi = createApi({
         url: `users/${targetId}/like`,
         method: "POST",
       }),
-      invalidatesTags: ["Recommendations"],
+      invalidatesTags: ["Recommendations", "Matches"],
     }),
     dislikeTarget: build.mutation({
       query: (targetId) => ({
         url: `users/${targetId}/dislike`,
         method: "POST",
       }),
-      invalidatesTags: ["Recommendations"],
+      invalidatesTags: ["Recommendations", "Matches"],
+    }),
+    getMatchesData: build.query<RecommendationUser[], void>({
+      query: () => "users/matches",
+      providesTags: ["Matches"], // ← помечаем кэш
     }),
   }),
 });
@@ -38,4 +42,5 @@ export const {
   useGetRecommendationsQuery,
   useLikeTargetMutation,
   useDislikeTargetMutation,
+  useGetMatchesDataQuery,
 } = usersApi;

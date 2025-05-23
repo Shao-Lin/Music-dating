@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { UserCard } from "../components/userCard/UserCard";
 import { SelectMatch } from "../components/UI/selectMatch/SelectMatch";
 import { useSwipeable } from "react-swipeable";
@@ -11,7 +11,7 @@ import {
 import type { RecommendationUser } from "../components/userCard/userType";
 
 export const MatchFeed = () => {
-  const size = 1;
+  const size = 2;
   const [page, setPage] = useState(0);
   const [users, setUsers] = useState<RecommendationUser[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -19,35 +19,46 @@ export const MatchFeed = () => {
     null
   );
 
+  const loadedUserIds = useRef(new Set<string>()); // ⬅️ отслеживание уникальных пользователей
+
   const { data, isSuccess, isLoading, isError } = useGetRecommendationsQuery({
     page,
     size,
   });
+
   const [likeTarget] = useLikeTargetMutation();
   const [dislikeTarget] = useDislikeTargetMutation();
 
-  // Обновление списка пользователей при загрузке новой страницы
+  // Загружаем новых пользователей, фильтруя повторяющихся
   useEffect(() => {
-    if (isSuccess) {
-      if (data && data.length > 0) {
-        setUsers((prev) => [...prev, ...data]);
-      } else if (data && data.length === 0 && currentIndex >= users.length) {
-        // Если данных нет и все пользователи просмотрены, очищаем список
-        setUsers([]);
+    if (isSuccess && data) {
+      const newUsers = data.filter(
+        (user) => !loadedUserIds.current.has(user.userId)
+      );
+
+      if (newUsers.length > 0) {
+        newUsers.forEach((user) => loadedUserIds.current.add(user.userId));
+        setUsers((prev) => [...prev, ...newUsers]);
       }
     }
-  }, [data, isSuccess, currentIndex]);
+  }, [data, isSuccess]);
 
-  // Единая функция для обработки действий (свайп или кнопка)
+  // Начальная очистка
+  useEffect(() => {
+    setPage(0);
+    setUsers([]);
+    setCurrentIndex(0);
+    loadedUserIds.current.clear();
+  }, []);
+
   const performAction = async (action: "like" | "dislike") => {
     const currentUser = users[currentIndex];
     if (!currentUser) return;
 
-    // Отправка запроса
     try {
       if (action === "like") {
         await likeTarget(currentUser.userId).unwrap();
-      } else if (action === "dislike") {
+      } else {
         await dislikeTarget(currentUser.userId).unwrap();
       }
     } catch (error) {
@@ -55,28 +66,23 @@ export const MatchFeed = () => {
       return;
     }
 
-    // Запуск анимации свайпа
     setSwipeDirection(action === "like" ? "right" : "left");
   };
 
-  // Обработка завершения анимации
   const handleAnimationComplete = () => {
     if (swipeDirection) {
       setSwipeDirection(null);
       const nextIndex = currentIndex + 1;
 
       if (nextIndex < users.length) {
-        // Переход к следующему пользователю
         setCurrentIndex(nextIndex);
       } else {
-        // Если пользователей больше нет, увеличиваем страницу
         setPage((prev) => prev + 1);
         setCurrentIndex(nextIndex);
       }
     }
   };
 
-  // Обработчики свайпов
   const swipeHandlers = useSwipeable({
     onSwipedLeft: (e) => {
       const target = e.event.target as HTMLElement;
@@ -95,17 +101,38 @@ export const MatchFeed = () => {
     trackMouse: true,
   });
 
-  // Обработка состояний
-  if (isLoading) return <p>Загрузка...</p>;
+  if (isLoading && users.length === 0) return <p>Загрузка...</p>;
   if (isError) return <p>Ошибка загрузки рекомендаций</p>;
-  if (!users.length && (!data || data.length === 0)) {
-    return <p>Нет доступных пользователей</p>;
-  }
+  if (!users.length)
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+          textAlign: "center",
+        }}
+      >
+        <p>Нет доступных пользователей</p>
+      </div>
+    );
 
   const currentUser = users[currentIndex];
-  if (!currentUser) {
-    return <p>Нет доступных пользователей</p>;
-  }
+  if (!currentUser)
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+          textAlign: "center",
+        }}
+      >
+        <p>Нет доступных пользователей</p>
+      </div>
+    );
 
   return (
     <main className="match-feed">
