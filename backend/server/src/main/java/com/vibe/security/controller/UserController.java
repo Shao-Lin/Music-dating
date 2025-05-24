@@ -4,6 +4,7 @@ import com.vibe.security.entity.UserEntity;
 import com.vibe.security.mapper.UserMapper;
 import com.vibe.security.payload.UserDto;
 import com.vibe.security.repository.UserRepository;
+import com.vibe.security.service.S3StorageService;
 import com.vibe.security.service.UserPhotoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,7 @@ public class UserController {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final UserPhotoService userPhotoService;
+    private final S3StorageService s3StorageService;
 
     @GetMapping("/me")
     public UserDto getUserInfo(@AuthenticationPrincipal UserDetails userDetails) {
@@ -41,5 +43,13 @@ public class UserController {
         UUID userId = userRepository.findByUsername(userDetails.getUsername()).get().getId();
         userPhotoService.delete(userId, photoId);
         return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/edit-avatar")
+    public void editAvatar(@AuthenticationPrincipal UserDetails userDetails, @RequestPart MultipartFile avatar) throws IOException {
+        UserEntity userEntity = userRepository.findByUsername(userDetails.getUsername()).get();
+        String url = s3StorageService.upload(avatar);
+        userEntity.setAvatarUrl(url);
+        userRepository.save(userEntity);
     }
 }
