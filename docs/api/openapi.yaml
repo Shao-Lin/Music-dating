@@ -272,6 +272,31 @@ paths:
       responses:
         '204': { description: Фото удалено }
       security: [ { BearerAuth: [ ] } ]
+      
+  /user/edit-avatar:
+    patch:
+      tags: [ User ]
+      summary: Обновить аватар пользователя
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                avatar:
+                  type: string
+                  format: binary
+                  description: Новый аватар (jpeg/png)
+      responses:
+        '204':
+          description: Аватар обновлён
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      security: [ { BearerAuth: [ ] } ]
+  
 
 components:
 
