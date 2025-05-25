@@ -11,10 +11,12 @@ import com.vibe.security.service.S3StorageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 import software.amazon.awssdk.annotations.NotNull;
 
 import java.io.IOException;
@@ -39,6 +41,20 @@ public class ChatController {
 		List<UUID> participants = request.participants();
 		participants.add(userRepository.findByUsername(userDetails.getUsername()).get().getId());
 		return chatService.create(request.participants());
+	}
+
+	@GetMapping("/{target-id}")
+	public Chat getChatByTargetId(@AuthenticationPrincipal UserDetails me,
+									@PathVariable("target-id") UUID targetId) {
+
+		UUID myId = userRepository.findByUsername(me.getUsername())
+			.orElseThrow()
+			.getId();
+
+		return chatRepo.findByParticipants(List.of(myId, targetId))
+			.orElseThrow(() ->
+				new ResponseStatusException(HttpStatus.NOT_FOUND,
+					"Chat not found"));
 	}
 
 	@GetMapping
