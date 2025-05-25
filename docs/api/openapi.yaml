@@ -4,8 +4,8 @@ info:
   version: "1.0.0"
   description: |
     REST API музыкального дейтинга **Vibe**.  
-    Авторизация через JWT-токены (Bearer) + Refresh-токены.  
-    Все даты — в формате `yyyy-MM-dd`, время — ISO 8601.
+    Авторизация — JWT-токен (Bearer) + Refresh-токен.  
+    Все даты — `yyyy-MM-dd`, время — ISO 8601.
 
 servers:
   - url: http://localhost:8080
@@ -25,7 +25,7 @@ tags:
     description: Диалоги и сообщения
 
 paths:
-
+  # ─────────── AUTH ───────────
   /auth/register:
     post:
       tags: [ Auth ]
@@ -34,32 +34,26 @@ paths:
         required: true
         content:
           multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/RegisterRequest'
+            schema: { $ref: '#/components/schemas/RegisterRequest' }
             encoding:
-              image:
-                contentType: image/jpeg
+              image: { contentType: image/jpeg }
       responses:
         '200':
           description: Пользователь создан
           content:
             text/plain:
-              schema:
-                type: string
-                example: User register successfully
-        '400':
-          $ref: '#/components/responses/BadRequest'
+              schema: { type: string, example: User register successfully }
+        '400': { $ref: '#/components/responses/BadRequest' }
 
   /auth/login:
     post:
       tags: [ Auth ]
-      summary: Логин (получение Access и Refresh токенов)
+      summary: Логин (получение Access/Refresh-токенов)
       requestBody:
         required: true
         content:
           application/json:
-            schema:
-              $ref: '#/components/schemas/AuthRequest'
+            schema: { $ref: '#/components/schemas/AuthRequest' }
             examples:
               default:
                 value: { login: alice, password: pa$$w0rd }
@@ -68,17 +62,14 @@ paths:
           description: Токены выданы
           content:
             application/json:
-              schema:
-                $ref: '#/components/schemas/AuthResponse'
+              schema: { $ref: '#/components/schemas/AuthResponse' }
               examples:
                 default:
                   value:
-                    accessToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+                    accessToken: eyJhbGciOiJI…
                     refreshToken: 3d5e0c0b-…
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '400':
-          $ref: '#/components/responses/BadRequest'
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '400': { $ref: '#/components/responses/BadRequest' }
 
   /auth/refresh:
     post:
@@ -89,16 +80,14 @@ paths:
           name: Authorization
           required: true
           schema: { type: string, example: Bearer 3d5e0c0b-… }
-          description: Refresh-токен в формате `Bearer <token>`
+          description: Refresh-токен `Bearer <token>`
       responses:
         '200':
           description: Новый Access-токен
           content:
             application/json:
-              schema:
-                $ref: '#/components/schemas/AuthResponse'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
+              schema: { $ref: '#/components/schemas/AuthResponse' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
 
   /auth/logout:
     delete:
@@ -114,14 +103,12 @@ paths:
           description: Refresh-токен удалён
           content:
             text/plain:
-              schema:
-                type: string
-                example: Logout successfully
+              schema: { type: string, example: Logout successfully }
 
   /auth/request-code:
     post:
       tags: [ Auth ]
-      summary: Запросить OTP-код на почту
+      summary: Запрос OTP-кода
       parameters:
         - in: query
           name: email
@@ -133,7 +120,7 @@ paths:
   /auth/verify-code:
     post:
       tags: [ Auth ]
-      summary: Подтвердить OTP-код
+      summary: Подтверждение OTP-кода
       parameters:
         - in: query
           name: email
@@ -151,22 +138,21 @@ paths:
             text/plain:
               schema: { type: string, example: Invalid code }
 
+  # ─────────── USERS ───────────
   /users/recommendations:
     get:
       tags: [ Users ]
-      summary: Список нерекомендованных (непросмотренных) пользователей
+      summary: Рекомендации (непросмотренные пользователи)
       parameters:
         - in: query
           name: page
-          required: true
-          schema: { type: integer, example: 0 }
+          schema: { type: integer, default: 0 }
         - in: query
           name: size
-          required: true
-          schema: { type: integer, example: 20 }
+          schema: { type: integer, default: 20 }
       responses:
         '200':
-          description: Множество пользователей
+          description: Список пользователей
           content:
             application/json:
               schema:
@@ -203,23 +189,15 @@ paths:
   /users/{targetId}/like:
     post:
       tags: [ Users ]
-      summary: Поставить лайк пользователю
+      summary: Лайк пользователя
       parameters:
-        - in: path
-          name: targetId
-          required: true
-          schema: { type: string, format: uuid }
+        - $ref: '#/components/parameters/TargetId'
       responses:
         '200':
-          description: Результат реакции
+          description: Статус мэтча
           content:
             application/json:
               schema: { $ref: '#/components/schemas/ReactionResponse' }
-              examples:
-                mutual:
-                  value: { mutualMatch: true }
-                not-mutual:
-                  value: { mutualMatch: false }
       security: [ { BearerAuth: [ ] } ]
 
   /users/{targetId}/dislike:
@@ -232,6 +210,7 @@ paths:
         '204': { description: Дизлайк сохранён }
       security: [ { BearerAuth: [ ] } ]
 
+  # ─────────── USER ───────────
   /user/me:
     get:
       tags: [ User ]
@@ -254,31 +233,29 @@ paths:
             schema:
               type: object
               properties:
-                photo:
-                  type: string
-                  format: binary
+                photo: { type: string, format: binary }
       responses:
         '201': { description: Фото загружено }
         '400': { $ref: '#/components/responses/BadRequest' }
       security: [ { BearerAuth: [ ] } ]
 
-  /user/{photo-id}/delete-photo:
+  /user/{photoId}/delete-photo:
     delete:
       tags: [ User ]
-      summary: Удалить своё фото
+      summary: Удалить фото
       parameters:
         - in: path
-          name: photo-id
+          name: photoId
           required: true
           schema: { type: string, format: uuid }
       responses:
         '204': { description: Фото удалено }
       security: [ { BearerAuth: [ ] } ]
-      
+
   /user/edit-avatar:
     patch:
       tags: [ User ]
-      summary: Обновить аватар пользователя
+      summary: Обновить аватар
       requestBody:
         required: true
         content:
@@ -291,40 +268,32 @@ paths:
                   format: binary
                   description: Новый аватар (jpeg/png)
       responses:
-        '204':
-          description: Аватар обновлён
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
+        '204': { description: Аватар обновлён }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
       security: [ { BearerAuth: [ ] } ]
 
+  # ─────────── CHAT ───────────
   /chat:
     post:
       tags: [ Chat ]
-      summary: Создать (или вернуть существующий) чат с участниками
+      summary: Создать или получить чат
       requestBody:
         required: true
         content:
           application/json:
-            schema:
-              $ref: '#/components/schemas/CreateChatRequest'
-            examples:
-              one-to-one:
-                value: { participants: [ "e4c8d9ad-7f99-42f0-8a0d-8a7b51d4d3ef" ] }
+            schema: { $ref: '#/components/schemas/CreateChatRequest' }
       responses:
         '201':
           description: Чат создан
           content:
             application/json:
               schema: { $ref: '#/components/schemas/ChatDto' }
-        '409':
-          description: Чат уже существует — вернётся тот же объект
       security: [ { BearerAuth: [ ] } ]
 
     get:
       tags: [ Chat ]
-      summary: Мои чаты (последнее сообщение + статус online)
+      summary: Список чатов (последнее сообщение + время обновления)
       responses:
         '200':
           content:
@@ -336,13 +305,13 @@ paths:
 
   /chat/{chatId}/messages:
     parameters:
-      - name: chatId
-        in: path
+      - in: path
+        name: chatId
         required: true
         schema: { type: string }
     get:
       tags: [ Chat ]
-      summary: История сообщений (постранично, newest → oldest)
+      summary: История сообщений
       parameters:
         - in: query
           name: page
@@ -354,8 +323,7 @@ paths:
         '200':
           content:
             application/json:
-              schema:
-                $ref: '#/components/schemas/PageMessage'
+              schema: { $ref: '#/components/schemas/PageMessage' }
       security: [ { BearerAuth: [ ] } ]
 
     post:
@@ -365,86 +333,19 @@ paths:
         required: true
         content:
           multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/SendMessageRequest'
+            schema: { $ref: '#/components/schemas/SendMessageRequest' }
             encoding:
               files: { contentType: "*/*" }
       responses:
         '201':
-          description: Сообщение сохранено и отправлено по WebSocket
+          description: Сообщение сохранено
           content:
             application/json:
               schema: { $ref: '#/components/schemas/MessageDto' }
       security: [ { BearerAuth: [ ] } ]
 
+# ─────────── COMPONENTS ───────────
 components:
-
-  schemas:
-
-    # ---- chat level ----
-    CreateChatRequest:
-      type: object
-      required: [ participants ]
-      properties:
-        participants:
-          type: array
-          items: { type: string, format: uuid }
-          description: UUID'ы собеседников (кроме самого автора)
-
-    ChatDto:
-      type: object
-      properties:
-        id:            { type: string, example: 6632fe2287791473c7141eea }
-        participantIds:
-          type: array
-          items: { type: string, format: uuid }
-        lastMessage:   { $ref: '#/components/schemas/MessagePreview' }
-        online:        { type: boolean, description: "true, если хотя бы один собеседник онлайн" }
-        updatedAt:     { type: string, format: date-time }
-
-    # ---- message level ----
-    SendMessageRequest:
-      type: object
-      properties:
-        text:  { type: string }
-        files:
-          type: array
-          items: { type: string, format: binary }
-          description: вложения (0..n)
-
-    MessagePreview:
-      type: object
-      properties:
-        id:        { type: string }
-        snippet:   { type: string, example: "Привет!" }
-        createdAt: { type: string, format: date-time }
-
-    MessageDto:
-      type: object
-      properties:
-        id:        { type: string }
-        chatId:    { type: string }
-        senderId:  { type: string, format: uuid }
-        text:      { type: string, nullable: true }
-        attachments:
-          type: array
-          items:
-            type: string
-            format: uri
-        createdAt: { type: string, format: date-time }
-
-    PageMessage:
-      type: object
-      properties:
-        content:
-          type: array
-          items: { $ref: '#/components/schemas/MessageDto' }
-        totalPages:  { type: integer }
-        totalItems:  { type: integer }
-        page:        { type: integer }
-        size:        { type: integer }
-  
-
 
   securitySchemes:
     BearerAuth:
@@ -471,22 +372,20 @@ components:
         application/json:
           schema: { $ref: '#/components/schemas/ApiError' }
 
-
+  schemas:
+    # --- auth ---
     RegisterRequest:
       type: object
       required: [ name, birthDate, gender, login, password ]
       properties:
-        name:      { type: string, example: Alice }
-        about:     { type: string, example: "Люблю инди-рок" }
-        birthDate: { type: string, format: date, example: 1998-05-12 }
-        city:      { type: string, example: Moscow }
-        gender:    { type: string, example: female }
-        login:     { type: string, example: alice }
-        password:  { type: string, example: pa$$w0rd }
-        image:
-          type: string
-          format: binary
-          description: Аватар (jpeg/png)
+        name:       { type: string }
+        about:      { type: string }
+        birthDate:  { type: string, format: date }
+        city:       { type: string }
+        gender:     { type: string }
+        login:      { type: string }
+        password:   { type: string }
+        image:      { type: string, format: binary, description: Аватар }
 
     AuthRequest:
       type: object
@@ -501,22 +400,36 @@ components:
         accessToken:  { type: string }
         refreshToken: { type: string }
 
+    # --- social ---
     ReactionResponse:
       type: object
       properties:
         mutualMatch: { type: boolean }
 
+    # --- users ---
+    UserPhotoDto:
+      type: object
+      properties:
+        id:  { type: string, format: uuid }
+        url: { type: string, format: uri }
+
+    TrackDto:
+      type: object
+      properties:
+        id:  { type: string, format: uuid }
+        url: { type: string, format: uri }
+
     UserDto:
       type: object
       properties:
-        id:         { type: string, format: uuid, example: d290f1ee-6c54-4b01-90e6-d701748f0851 }
-        username:   { type: string, example: alice }
-        name:       { type: string, example: Alice }
-        about:      { type: string, example: "Люблю инди-рок и винил" }
-        birthDate:  { type: string, format: date, example: 1998-05-12 }
-        city:       { type: string, example: Moscow }
-        gender:     { type: string, example: female }
-        avatarUrl:  { type: string, format: uri, example: "https://cdn.vibe.app/avatars/alice.jpg" }
+        id:        { type: string, format: uuid }
+        username:  { type: string }
+        name:      { type: string }
+        about:     { type: string }
+        birthDate: { type: string, format: date }
+        city:      { type: string }
+        gender:    { type: string }
+        avatarUrl: { type: string, format: uri }
         photos:
           type: array
           items: { $ref: '#/components/schemas/UserPhotoDto' }
@@ -524,23 +437,69 @@ components:
           type: array
           items: { $ref: '#/components/schemas/TrackDto' }
 
-    UserPhotoDto:
+    # --- chat ---
+    CreateChatRequest:
       type: object
+      required: [ participants ]
       properties:
-        id:     { type: string, format: uuid }
-        url:    { type: string, format: uri }
-        
-    TrackDto:
-      type: object
-      properties:
-        id:  { type: string, format: uuid }
-        url: { type: string, format: uri }
+        participants:
+          type: array
+          items: { type: string, format: uuid }
 
+    MessagePreview:
+      type: object
+      properties:
+        id:        { type: string }
+        text:      { type: string }
+        createdAt: { type: string, format: date-time }
+
+    ChatDto:
+      type: object
+      properties:
+        id:            { type: string }
+        participantIds:
+          type: array
+          items: { type: string, format: uuid }
+        lastMessage: { $ref: '#/components/schemas/MessagePreview' }
+        updatedAt:   { type: string, format: date-time }
+
+    SendMessageRequest:
+      type: object
+      properties:
+        text:  { type: string }
+        files:
+          type: array
+          items: { type: string, format: binary }
+
+    MessageDto:
+      type: object
+      properties:
+        id:        { type: string }
+        chatId:    { type: string }
+        senderId:  { type: string }           # хранится строкой
+        text:      { type: string, nullable: true }
+        mediaUrls:
+          type: array
+          items: { type: string, format: uri }
+        createdAt: { type: string, format: date-time }
+
+    PageMessage:
+      type: object
+      properties:
+        content:
+          type: array
+          items: { $ref: '#/components/schemas/MessageDto' }
+        totalPages:  { type: integer }
+        totalItems:  { type: integer }
+        page:        { type: integer }
+        size:        { type: integer }
+
+    # --- errors ---
     ApiError:
       type: object
       properties:
-        timestamp: { type: string, format: date-time, example: "2025-05-21T15:42:01" }
-        status:    { type: integer, example: 403 }
-        error:     { type: string, example: Forbidden }
-        message:   { type: string, example: Access is denied }
-        path:      { type: string, example: /api/v1/users/123/photos }
+        timestamp: { type: string, format: date-time }
+        status:    { type: integer }
+        error:     { type: string }
+        message:   { type: string }
+        path:      { type: string }
