@@ -9,6 +9,8 @@ import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -35,6 +37,15 @@ public class S3StorageService {
         );
 
         return props.getEndpoint() + "/" + props.getBucket() + "/" + key;
+    }
+
+    public List<String> uploadFiles(List<MultipartFile> files) throws IOException {
+        List<String> urls = new ArrayList<>();
+        for (MultipartFile file : files) {
+            urls.add(upload(file));
+        }
+
+        return urls;
     }
 }
 

@@ -1,4 +1,4 @@
-package com.vibe.security.entity;
+package com.vibe.security.entity.relational;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;

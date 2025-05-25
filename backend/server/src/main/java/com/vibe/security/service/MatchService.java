@@ -1,9 +1,9 @@
 package com.vibe.security.service;
 
-import com.vibe.security.entity.MatchEntity;
-import com.vibe.security.entity.UserEntity;
-import com.vibe.security.repository.MatchRepository;
-import com.vibe.security.repository.UserRepository;
+import com.vibe.security.entity.relational.MatchEntity;
+import com.vibe.security.entity.relational.UserEntity;
+import com.vibe.security.repository.relational.MatchRepository;
+import com.vibe.security.repository.relational.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

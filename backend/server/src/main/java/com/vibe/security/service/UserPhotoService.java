@@ -1,9 +1,9 @@
 package com.vibe.security.service;
 
-import com.vibe.security.entity.UserEntity;
-import com.vibe.security.entity.UserPhotoEntity;
-import com.vibe.security.repository.UserPhotoRepository;
-import com.vibe.security.repository.UserRepository;
+import com.vibe.security.entity.relational.UserEntity;
+import com.vibe.security.entity.relational.UserPhotoEntity;
+import com.vibe.security.repository.relational.UserPhotoRepository;
+import com.vibe.security.repository.relational.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

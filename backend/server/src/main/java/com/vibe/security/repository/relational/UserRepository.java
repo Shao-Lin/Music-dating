@@ -1,6 +1,6 @@
-package com.vibe.security.repository;
+package com.vibe.security.repository.relational;
 
-import com.vibe.security.entity.UserEntity;
+import com.vibe.security.entity.relational.UserEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -14,16 +14,33 @@ services:
     volumes:
       - pg_data:/var/lib/postgresql/data
 
-  app:
-    build:
-      context: .
-      dockerfile: local_dockerfile
-    env_file:
-      - local-docker.env
+  mongo:
+    image: mongo:7.0
+    restart: unless-stopped
     ports:
-      - "8088:8088"
-    depends_on:
-      - db
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: user
+      MONGO_INITDB_ROOT_PASSWORD: 123
+      MONGO_INITDB_DATABASE: vibe_chat
+    volumes:
+      - mongo_data:/data/db
+    healthcheck:
+      test: [ "CMD", "mongosh", "--eval", "db.adminCommand('ping')" ]
+      interval: 10s
+      retries: 5
+
+#  app:
+#    build:
+#      context: .
+#      dockerfile: local_dockerfile
+#    env_file:
+#      - local-docker.env
+#    ports:
+#      - "8088:8088"
+#    depends_on:
+#      - db
 
 volumes:
   pg_data:
+  mongo_data:

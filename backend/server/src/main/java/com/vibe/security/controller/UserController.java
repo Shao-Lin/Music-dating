@@ -1,9 +1,9 @@
 package com.vibe.security.controller;
 
-import com.vibe.security.entity.UserEntity;
+import com.vibe.security.entity.relational.UserEntity;
 import com.vibe.security.mapper.UserMapper;
 import com.vibe.security.payload.UserDto;
-import com.vibe.security.repository.UserRepository;
+import com.vibe.security.repository.relational.UserRepository;
 import com.vibe.security.service.S3StorageService;
 import com.vibe.security.service.UserPhotoService;
 import lombok.RequiredArgsConstructor;
