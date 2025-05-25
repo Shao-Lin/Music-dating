@@ -21,6 +21,8 @@ tags:
     description: Поиск, лайки, дизлайки, мэтчи
   - name: User
     description: Личный профиль и фото
+  - name: Chat
+    description: Диалоги и сообщения
 
 paths:
 
@@ -296,9 +298,153 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
       security: [ { BearerAuth: [ ] } ]
-  
+
+  /chat:
+    post:
+      tags: [ Chat ]
+      summary: Создать (или вернуть существующий) чат с участниками
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateChatRequest'
+            examples:
+              one-to-one:
+                value: { participants: [ "e4c8d9ad-7f99-42f0-8a0d-8a7b51d4d3ef" ] }
+      responses:
+        '201':
+          description: Чат создан
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ChatDto' }
+        '409':
+          description: Чат уже существует — вернётся тот же объект
+      security: [ { BearerAuth: [ ] } ]
+
+    get:
+      tags: [ Chat ]
+      summary: Мои чаты (последнее сообщение + статус online)
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/ChatDto' }
+      security: [ { BearerAuth: [ ] } ]
+
+  /chat/{chatId}/messages:
+    parameters:
+      - name: chatId
+        in: path
+        required: true
+        schema: { type: string }
+    get:
+      tags: [ Chat ]
+      summary: История сообщений (постранично, newest → oldest)
+      parameters:
+        - in: query
+          name: page
+          schema: { type: integer, default: 0 }
+        - in: query
+          name: size
+          schema: { type: integer, default: 30 }
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageMessage'
+      security: [ { BearerAuth: [ ] } ]
+
+    post:
+      tags: [ Chat ]
+      summary: Отправить сообщение
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SendMessageRequest'
+            encoding:
+              files: { contentType: "*/*" }
+      responses:
+        '201':
+          description: Сообщение сохранено и отправлено по WebSocket
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/MessageDto' }
+      security: [ { BearerAuth: [ ] } ]
 
 components:
+
+  schemas:
+
+    # ---- chat level ----
+    CreateChatRequest:
+      type: object
+      required: [ participants ]
+      properties:
+        participants:
+          type: array
+          items: { type: string, format: uuid }
+          description: UUID'ы собеседников (кроме самого автора)
+
+    ChatDto:
+      type: object
+      properties:
+        id:            { type: string, example: 6632fe2287791473c7141eea }
+        participantIds:
+          type: array
+          items: { type: string, format: uuid }
+        lastMessage:   { $ref: '#/components/schemas/MessagePreview' }
+        online:        { type: boolean, description: "true, если хотя бы один собеседник онлайн" }
+        updatedAt:     { type: string, format: date-time }
+
+    # ---- message level ----
+    SendMessageRequest:
+      type: object
+      properties:
+        text:  { type: string }
+        files:
+          type: array
+          items: { type: string, format: binary }
+          description: вложения (0..n)
+
+    MessagePreview:
+      type: object
+      properties:
+        id:        { type: string }
+        snippet:   { type: string, example: "Привет!" }
+        createdAt: { type: string, format: date-time }
+
+    MessageDto:
+      type: object
+      properties:
+        id:        { type: string }
+        chatId:    { type: string }
+        senderId:  { type: string, format: uuid }
+        text:      { type: string, nullable: true }
+        attachments:
+          type: array
+          items:
+            type: string
+            format: uri
+        createdAt: { type: string, format: date-time }
+
+    PageMessage:
+      type: object
+      properties:
+        content:
+          type: array
+          items: { $ref: '#/components/schemas/MessageDto' }
+        totalPages:  { type: integer }
+        totalItems:  { type: integer }
+        page:        { type: integer }
+        size:        { type: integer }
+  
+
 
   securitySchemes:
     BearerAuth:
@@ -325,7 +471,6 @@ components:
         application/json:
           schema: { $ref: '#/components/schemas/ApiError' }
 
-  schemas:
 
     RegisterRequest:
       type: object
