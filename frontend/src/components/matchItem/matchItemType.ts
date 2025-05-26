@@ -8,6 +8,6 @@ export type MatchItemType = {
   userId: string;
   name: string;
   avatarUrl: string;
-  online: boolean;
+  online?: boolean;
   tracks: MusicDataMatchItem[];
 };
