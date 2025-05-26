@@ -48,7 +48,7 @@ export const baseQueryWithReauth: BaseQueryFn<
   let result = await queryWithAccess(args, api, extraOptions);
 
   if (result.error) {
-    if (result.error.status === 403) {
+    if (result.error.status === 500) {
       // Токен истек, пытаемся обновить
       if (!mutex.isLocked()) {
         const release = await mutex.acquire();

@@ -1,16 +1,52 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
+import { CarouselMenu } from "../../UI/menu/CarouselMenu";
+import { useDeletePhotoMutation } from "../../../api/userApi";
+
+export type CarouselImage = {
+  photoId: string;
+  url: string;
+};
 
 interface CarouselProps {
-  images: string[];
+  avatarUrl: string;
+  photos: CarouselImage[];
+  showMenuButton: boolean;
 }
 
-export const Carousel = ({ images }: CarouselProps) => {
+export const Carousel = ({
+  avatarUrl,
+  photos,
+  showMenuButton,
+}: CarouselProps) => {
+  const [deletePhoto] = useDeletePhotoMutation();
   const [activeIndex, setActiveIndex] = useState(0);
   const [containerSize, setContainerSize] = useState(350);
   const carouselRef = useRef<HTMLDivElement>(null);
+  const imageRef = useRef<HTMLDivElement>(null); // Новый ref для изображения
   const touchStartX = useRef<number | null>(null);
 
-  // Обработчик изменения размера окна
+  const images: CarouselImage[] = [
+    { photoId: "avatar", url: avatarUrl },
+    ...photos,
+  ];
+
+  const currentImage = images[activeIndex];
+  const isAvatar = currentImage.photoId === "avatar";
+
+  const handleChangeAvatar = useCallback(() => {}, []);
+
+  const handleDeletePhoto = useCallback(async () => {
+    try {
+      await deletePhoto(currentImage.photoId).unwrap();
+      if (activeIndex >= images.length - 1) {
+        setActiveIndex(Math.max(0, activeIndex - 1));
+      }
+    } catch (error) {
+      console.error("Ошибка при удалении фото:", error);
+    }
+  }, [currentImage.photoId, activeIndex, images.length, deletePhoto]);
+
+  // Resize
   useEffect(() => {
     const handleResize = () => {
       if (carouselRef.current) {
@@ -28,49 +64,36 @@ export const Carousel = ({ images }: CarouselProps) => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Обработчики свайпов
+  // Swipe
   useEffect(() => {
-    const carouselElement = carouselRef.current;
-    if (!carouselElement) return;
+    const imageElement = imageRef.current;
+    if (!imageElement) return;
 
-    const handleTouchStart = (e: TouchEvent) => {
-      e.stopPropagation(); // Останавливаем всплытие
-      e.preventDefault();
-      touchStartX.current = e.touches[0].clientX;
+    const handlePointerDown = (e: PointerEvent) => {
+      console.log("Начало свайпа");
+      touchStartX.current = e.clientX;
     };
 
-    const handleTouchMove = (e: TouchEvent) => {
-      e.stopPropagation(); // Останавливаем всплытие
-      e.preventDefault();
-    };
-
-    const handleTouchEnd = (e: TouchEvent) => {
-      e.stopPropagation(); // Останавливаем всплытие
-      e.preventDefault();
+    const handlePointerUp = (e: PointerEvent) => {
+      console.log("Конец свайпа");
       if (touchStartX.current === null) return;
-      const delta = e.changedTouches[0].clientX - touchStartX.current;
+
+      const delta = e.clientX - touchStartX.current;
       if (delta > 50) {
         setActiveIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
       } else if (delta < -50) {
         setActiveIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
       }
+
       touchStartX.current = null;
     };
 
-    carouselElement.addEventListener("touchstart", handleTouchStart, {
-      passive: false,
-    });
-    carouselElement.addEventListener("touchmove", handleTouchMove, {
-      passive: false,
-    });
-    carouselElement.addEventListener("touchend", handleTouchEnd, {
-      passive: false,
-    });
+    imageElement.addEventListener("pointerdown", handlePointerDown);
+    imageElement.addEventListener("pointerup", handlePointerUp);
 
     return () => {
-      carouselElement.removeEventListener("touchstart", handleTouchStart);
-      carouselElement.removeEventListener("touchmove", handleTouchMove);
-      carouselElement.removeEventListener("touchend", handleTouchEnd);
+      imageElement.removeEventListener("pointerdown", handlePointerDown);
+      imageElement.removeEventListener("pointerup", handlePointerUp);
     };
   }, [images]);
 
@@ -81,6 +104,7 @@ export const Carousel = ({ images }: CarouselProps) => {
         style={{
           width: `${containerSize}px`,
           height: `${containerSize}px`,
+          position: "relative",
         }}
       >
         <div className="carousel-indicator">
@@ -93,11 +117,23 @@ export const Carousel = ({ images }: CarouselProps) => {
             />
           ))}
         </div>
-        <img
-          className="carousel-image"
-          src={images[activeIndex]}
-          alt={`Image ${activeIndex + 1}`}
-        />
+
+        <div ref={imageRef} className="image-container">
+          <img
+            key={currentImage.photoId}
+            className="carousel-image"
+            src={currentImage.url}
+            alt={`Image ${activeIndex + 1}`}
+          />
+        </div>
+
+        {showMenuButton && (
+          <CarouselMenu
+            isAvatar={isAvatar}
+            onChangeAvatar={handleChangeAvatar}
+            onDeletePhoto={handleDeletePhoto}
+          />
+        )}
       </div>
     </div>
   );

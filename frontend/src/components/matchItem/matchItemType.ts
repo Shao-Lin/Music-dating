@@ -1,12 +1,13 @@
 export type MusicDataMatchItem = {
-  music: string;
-  cover: string;
+  coverUrl: string;
+  name: string;
+  url: string;
 };
 
 export type MatchItemType = {
-  id: string;
+  userId: string;
   name: string;
-  avatar: string;
-  online: boolean;
-  music: MusicDataMatchItem;
+  avatarUrl: string;
+  online?: boolean;
+  tracks: MusicDataMatchItem[];
 };
