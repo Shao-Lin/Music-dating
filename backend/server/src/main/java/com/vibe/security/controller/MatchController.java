@@ -1,11 +1,10 @@
 package com.vibe.security.controller;
 
-import com.vibe.security.entity.UserEntity;
+import com.vibe.security.entity.relational.UserEntity;
 import com.vibe.security.mapper.UserMapper;
 import com.vibe.security.payload.ReactionResponse;
-import com.vibe.security.payload.TrackDto;
 import com.vibe.security.payload.UserDto;
-import com.vibe.security.repository.UserRepository;
+import com.vibe.security.repository.relational.UserRepository;
 import com.vibe.security.service.MatchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;

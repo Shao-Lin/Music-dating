@@ -2,6 +2,10 @@ server:
   port: 8088
   shutdown: graceful
 spring:
+  data:
+    mongodb:
+      uri: ${SPRING_DATA_MONGODB_URI:mongodb://user:123@localhost:27017/vibeapp?authSource=admin}
+
   application:
     name: vibe-auth-server
 
@@ -27,6 +31,8 @@ spring:
   liquibase:
     enabled: true
     change-log: classpath:/db/liquibase/init-changelog.yaml
+    clear-check-sums: ${SPRING_LIQUIBASE_CLEAR_CHECKSUMS:false}
+
 
   docker:
     compose:

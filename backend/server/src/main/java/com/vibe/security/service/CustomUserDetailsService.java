@@ -1,6 +1,6 @@
 package com.vibe.security.service;
 
-import com.vibe.security.repository.UserRepository;
+import com.vibe.security.repository.relational.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -1,6 +1,6 @@
-package com.vibe.security.repository;
+package com.vibe.security.repository.relational;
 
-import com.vibe.security.entity.RoleEntity;
+import com.vibe.security.entity.relational.RoleEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

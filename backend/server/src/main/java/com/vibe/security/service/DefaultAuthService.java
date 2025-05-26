@@ -1,17 +1,17 @@
 package com.vibe.security.service;
 
-import com.vibe.security.entity.RefreshTokenEntity;
-import com.vibe.security.entity.RoleEntity;
-import com.vibe.security.entity.TrackEntity;
-import com.vibe.security.entity.UserEntity;
+import com.vibe.security.entity.relational.RefreshTokenEntity;
+import com.vibe.security.entity.relational.RoleEntity;
+import com.vibe.security.entity.relational.TrackEntity;
+import com.vibe.security.entity.relational.UserEntity;
 import com.vibe.security.exception.InvalidPasswordException;
 import com.vibe.security.exception.RefreshTokenException;
 import com.vibe.security.exception.UserAlreadyExistsException;
 import com.vibe.security.payload.RegisterRequest;
-import com.vibe.security.repository.RefreshTokenRepository;
-import com.vibe.security.repository.RoleRepository;
-import com.vibe.security.repository.TrackRepository;
-import com.vibe.security.repository.UserRepository;
+import com.vibe.security.repository.relational.RefreshTokenRepository;
+import com.vibe.security.repository.relational.RoleRepository;
+import com.vibe.security.repository.relational.TrackRepository;
+import com.vibe.security.repository.relational.UserRepository;
 import com.vibe.security.payload.AuthRequest;
 import com.vibe.security.payload.AuthResponse;
 import com.vibe.security.util.JwtUtils;

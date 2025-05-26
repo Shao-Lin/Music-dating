@@ -1,7 +1,6 @@
 package com.vibe.security.mapper;
 
-import com.vibe.security.entity.UserEntity;
-import com.vibe.security.entity.UserPhotoEntity;
+import com.vibe.security.entity.relational.UserEntity;
 import com.vibe.security.payload.TrackDto;
 import com.vibe.security.payload.UserDto;
 import com.vibe.security.payload.UserPhotoDto;
