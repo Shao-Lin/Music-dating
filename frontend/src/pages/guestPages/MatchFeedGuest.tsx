@@ -6,9 +6,9 @@ import one from "../../assets/testCarousel/one.jpg";
 import two from "../../assets/testCarousel/two.png";
 import three from "../../assets/testCarousel/three.jpg";
 
-import sev from "../../assets/testCarousel/sev.webp";
-import eig from "../../assets/testCarousel/eig.webp";
-import nine from "../../assets/testCarousel/nine.webp";
+//import sev from "../../assets/testCarousel/sev.webp";
+//import eig from "../../assets/testCarousel/eig.webp";
+//import nine from "../../assets/testCarousel/nine.webp";
 
 import cov2 from "../../assets/testMusic/obloj2.webp";
 import cov3 from "../../assets/testMusic/obloj3.webp";
@@ -21,9 +21,9 @@ import { useNavigate } from "react-router";
 
 export const MatchFeedGuest = () => {
   const navigate = useNavigate();
-  const photos2 = [one, two, three];
-  const photos3 = [sev, eig];
-  const photos4 = [nine];
+  //const photos2 = [one, two, three];
+  //const photos3 = [sev, eig];
+  //const photos4 = [nine];
 
   const musicdata: MusicData = {
     name: "In the end",
@@ -50,7 +50,8 @@ export const MatchFeedGuest = () => {
 
   const test1: UserData = {
     userId: "1",
-    photos: photos2,
+    avatarUrl: one,
+    photos: [],
     name: "Алина",
     birthDate: birthDate,
     city: "Воронеж",
@@ -59,7 +60,8 @@ export const MatchFeedGuest = () => {
 
   const test2: UserData = {
     userId: "2",
-    photos: photos3,
+    photos: [],
+    avatarUrl: two,
     name: "Дарья",
     birthDate: birthDate2,
     city: "Москва",
@@ -68,7 +70,8 @@ export const MatchFeedGuest = () => {
 
   const test3: UserData = {
     userId: "3",
-    photos: photos4,
+    avatarUrl: three,
+    photos: [],
     name: "Ксения",
     birthDate: birthDate3,
     city: "Нижний Новгород",
@@ -77,7 +80,7 @@ export const MatchFeedGuest = () => {
 
   const arrTest = [test1, test2, test3];
 
-  const userId = { userId: "123" };
+  //const userId = { userId: "123" };
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const currentUser = arrTest[currentIndex];
@@ -98,11 +101,7 @@ export const MatchFeedGuest = () => {
       {currentUser && (
         <>
           <UserCard {...currentUser} isAutoplay={false} />
-          <SelectMatch
-            meId={userId.userId}
-            feedId={currentUser.userId}
-            onSwipe={handleSwipe}
-          />
+          <SelectMatch onAction={handleSwipe} />
         </>
       )}
     </main>
