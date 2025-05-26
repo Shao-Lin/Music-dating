@@ -344,6 +344,34 @@ paths:
               schema: { $ref: '#/components/schemas/MessageDto' }
       security: [ { BearerAuth: [ ] } ]
 
+  /chat/{target-id}:
+    get:
+      tags: [ Chat ]
+      summary: Найти p2p-чат с указанным пользователем
+      description: |
+        Возвращает чат между текущим авторизованным пользователем и указанным `targetId`.
+        Предполагается, что у каждого диалога между двумя людьми — только один чат.
+        Возвращает 404, если такого чата не существует.
+      parameters:
+        - in: path
+          name: target-id
+          required: true
+          schema: { type: string, format: uuid }
+          description: UUID собеседника
+      responses:
+        '200':
+          description: Найденный чат
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ChatDto' }
+        '404':
+          description: Чат не найден
+          content:
+            text/plain:
+              schema: { type: string, example: Chat not found }
+      security: [ { BearerAuth: [ ] } ]
+
+
 # ─────────── COMPONENTS ───────────
 components:
 
