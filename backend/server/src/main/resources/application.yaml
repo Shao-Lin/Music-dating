@@ -57,6 +57,10 @@ cloud:
     secretKey: ${S3_SECRET_KEY}
     bucket: edafb68b-vibe-data
 
+suno:
+  base-url: https://apibox.erweima.ai
+  api-key:  ${SUNO_API_KEY}
+
 logging:
   level:
     software.amazon.awssdk: debug

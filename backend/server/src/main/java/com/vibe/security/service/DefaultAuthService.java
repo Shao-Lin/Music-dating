@@ -7,19 +7,23 @@ import com.vibe.security.entity.UserEntity;
 import com.vibe.security.exception.InvalidPasswordException;
 import com.vibe.security.exception.RefreshTokenException;
 import com.vibe.security.exception.UserAlreadyExistsException;
-import com.vibe.security.payload.RegisterRequest;
+import com.vibe.security.payload.*;
 import com.vibe.security.repository.RefreshTokenRepository;
 import com.vibe.security.repository.RoleRepository;
 import com.vibe.security.repository.TrackRepository;
 import com.vibe.security.repository.UserRepository;
-import com.vibe.security.payload.AuthRequest;
-import com.vibe.security.payload.AuthResponse;
 import com.vibe.security.util.JwtUtils;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestClient;
 
 import java.io.IOException;
 import java.time.Instant;
@@ -32,6 +36,7 @@ import java.util.Set;
 
 import static com.vibe.security.exception.ExceptionMessage.*;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class DefaultAuthService implements AuthService {
@@ -43,6 +48,11 @@ public class DefaultAuthService implements AuthService {
     private final RoleRepository roleRepository;
     private final S3StorageService s3StorageService;
     private final TrackRepository trackRepository;
+    private final SunoBlockingService sunoBlockingService;
+    private final AudioTrimService audioTrimService;
+    private final RestClient restClient = RestClient.builder()
+            .defaultHeader(HttpHeaders.ACCEPT, MediaType.ALL_VALUE)
+            .build();
 
     @Override
     @Transactional
@@ -70,22 +80,67 @@ public class DefaultAuthService implements AuthService {
         }
         UserEntity savedUser = userRepository.save(userEntity);
 
-        // mock
-        TrackEntity trackEntityFirst = TrackEntity.builder()
-                .url("https://s3.twcstorage.ru/edafb68b-vibe-data/frozen_time.mp3")
-                .user(savedUser)
-                .coverUrl("https://s3.twcstorage.ru/edafb68b-vibe-data/267fde48-4b6b-4855-91d3-49a9ad6d968e-9mb.jpg")
-                .name("mock-name-1")
-                .build();
-        //mock
-        TrackEntity trackEntitySecond = TrackEntity.builder()
-                .url("https://s3.twcstorage.ru/edafb68b-vibe-data/reflect.mp3")
-                .user(savedUser)
-                .coverUrl("https://s3.twcstorage.ru/edafb68b-vibe-data/267fde48-4b6b-4855-91d3-49a9ad6d968e-9mb.jpg")
-                .name("mock-name-2")
-                .build();
+        try {
+            RecordInfoResponse result = sunoBlockingService.generateAndWait(new SunoGeneratePrompt(
+                    request.about(),
+                    "",
+                    "",
+                    Boolean.FALSE,
+                    Boolean.FALSE,
+                    "V3_5",
+                    "",
+                    ""));
 
-        trackRepository.saveAll(List.of(trackEntityFirst, trackEntitySecond));
+            log.info("Музыка сгенерирована нейросетью и получена");
+
+            List<SongPayload> songPayloads = result.songList();
+
+            SongPayload track1 = songPayloads.getFirst();
+            SongPayload track2 = songPayloads.getLast();
+
+
+            ResponseEntity<Resource> track1Audio = restClient.get()
+                    .uri(track1.audioUrl())
+                    .retrieve()
+                    .toEntity(Resource.class);
+
+            ResponseEntity<Resource> track2Audio = restClient.get()
+                    .uri(track2.audioUrl())
+                    .retrieve()
+                    .toEntity(Resource.class);
+
+            ResponseEntity<Resource> track1Image = restClient.get()
+                    .uri(track1.imageUrl())
+                    .retrieve()
+                    .toEntity(Resource.class);
+
+            ResponseEntity<Resource> track2Image = restClient.get()
+                    .uri(track1.imageUrl())
+                    .retrieve()
+                    .toEntity(Resource.class);
+
+            log.info("Получены файлы картинок и треков mp3 с хранилища апи нейронки");
+
+            TrackEntity trackEntityFirst = TrackEntity.builder()
+                    .url(s3StorageService.uploadResource(audioTrimService.trimFirst20sToResource(track1Audio.getBody()), track1Audio.getHeaders().getContentType()))
+                    .user(savedUser)
+                    .coverUrl(s3StorageService.uploadResource(track1Image.getBody(), track1Image.getHeaders().getContentType()))
+                    .name(track1.title())
+                    .build();
+
+            TrackEntity trackEntitySecond = TrackEntity.builder()
+                    .url(s3StorageService.uploadResource(audioTrimService.trimFirst20sToResource(track2Audio.getBody()), track2Audio.getHeaders().getContentType()))
+                    .user(savedUser)
+                    .coverUrl(s3StorageService.uploadResource(track2Image.getBody(), track2Image.getHeaders().getContentType()))
+                    .name(track2.title())
+                    .build();
+
+            log.info("Треки загружены в внутреннее хранилище");
+
+            trackRepository.saveAll(List.of(trackEntityFirst, trackEntitySecond));
+        } catch (InterruptedException | IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

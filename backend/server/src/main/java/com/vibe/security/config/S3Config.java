@@ -1,5 +1,6 @@
 package com.vibe.security.config;
 
+import com.vibe.security.config.properties.S3ConfigurationProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
