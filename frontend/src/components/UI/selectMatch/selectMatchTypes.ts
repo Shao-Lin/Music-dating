@@ -1,5 +1,4 @@
 export type SelectMatchProps = {
-  meId: string;
   feedId: string;
 };
 export type SelectMatchType = {

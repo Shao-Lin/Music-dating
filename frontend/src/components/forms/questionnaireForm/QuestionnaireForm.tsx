@@ -71,15 +71,6 @@ export const QuestionnaireForm = () => {
 
     try {
       await singUp(formData).unwrap();
-      //console.log(response);
-      //const { accessToken } = response;
-
-      //localStorage.setItem("token", accessToken);
-
-      //console.log(`login ${localStorage.getItem("token")}`);
-
-      //navigate("/profile");
-      console.log("успех регистрации");
     } catch (err) {
       if (isFetchBaseQueryError(err)) {
         // Ошибка от сервера

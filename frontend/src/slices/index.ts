@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { authApi } from "../api/authApi";
 import { userApi } from "../api/userApi";
-import { userFeedApi } from "../api/userFeedApi";
+import { usersApi } from "../api/usersApi";
 import { matchesApi } from "../api/matchesApi";
 import { messagesApi } from "../api/messagesApi";
 import authSlice from "./authSlice";
@@ -13,7 +13,7 @@ export const store = configureStore({
     setDataUser: setIdSlice,
     [authApi.reducerPath]: authApi.reducer,
     [userApi.reducerPath]: userApi.reducer,
-    [userFeedApi.reducerPath]: userFeedApi.reducer,
+    [usersApi.reducerPath]: usersApi.reducer,
     [matchesApi.reducerPath]: matchesApi.reducer,
     [messagesApi.reducerPath]: messagesApi.reducer,
   },
@@ -21,7 +21,7 @@ export const store = configureStore({
     getDefaultMiddleware().concat(
       authApi.middleware,
       userApi.middleware,
-      userFeedApi.middleware,
+      usersApi.middleware,
       matchesApi.middleware,
       messagesApi.middleware
     ),
