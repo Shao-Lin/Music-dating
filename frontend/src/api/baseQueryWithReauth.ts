@@ -16,7 +16,7 @@ interface RefreshTokenResponse {
 }
 
 const queryWithRefresh = fetchBaseQuery({
-  baseUrl: "https://vibedating.ru/api",
+  baseUrl: "http://localhost:8088/",
   prepareHeaders: (headers) => {
     const token = localStorage.getItem("refreshToken");
     if (token) {
@@ -27,7 +27,7 @@ const queryWithRefresh = fetchBaseQuery({
 });
 
 const queryWithAccess = fetchBaseQuery({
-  baseUrl: "https://vibedating.ru/api",
+  baseUrl: "http://localhost:8088/",
   prepareHeaders: (headers) => {
     const token = localStorage.getItem("accessToken");
     if (token) {

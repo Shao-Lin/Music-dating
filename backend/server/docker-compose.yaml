@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   db:
@@ -26,20 +26,20 @@ services:
     volumes:
       - mongo_data:/data/db
     healthcheck:
-      test: [ "CMD", "mongosh", "--eval", "db.adminCommand('ping')" ]
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
       interval: 10s
       retries: 5
 
-#  app:
-#    build:
-#      context: .
-#      dockerfile: local_dockerfile
-#    env_file:
-#      - local-docker.env
-#    ports:
-#      - "8088:8088"
-#    depends_on:
-#      - db
+  app:
+    build:
+      context: .
+      dockerfile: local_dockerfile
+    env_file:
+      - local-docker.env
+    ports:
+      - "8088:8088"
+    depends_on:
+      - db
 
 volumes:
   pg_data:
