@@ -36,7 +36,7 @@ public class ChatService {
 		chatRepo.findById(chatId).ifPresent(chat -> {
 			chat.setLastMessage(new MessagePreview(
 				msg.getId(),
-				text == null || text.isEmpty() ? "[attachment]" : text,
+				text == null || text.isEmpty() ? "File" : text,
 				msg.getCreatedAt()));
 			chat.setUpdatedAt(msg.getCreatedAt());
 			chatRepo.save(chat);
