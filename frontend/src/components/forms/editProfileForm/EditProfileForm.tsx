@@ -14,22 +14,23 @@ const validationSchema = Yup.object({
     .min(10, "Минимум 10 символов"),
 });
 
-export const EditProfileForm = ({ about, audioTracks }: aboutAndMusicProp) => {
+export const EditProfileForm = ({ about, tracks }: aboutAndMusicProp) => {
   const [selectedTrackIndex, setSelectedTrackIndex] = useState<number | null>(
     null
   );
 
   // Устанавливаем активный трек при первом рендере
   useEffect(() => {
-    const activeIndex = audioTracks.findIndex((track) => track.isActive);
-    if (activeIndex !== -1) {
-      setSelectedTrackIndex(activeIndex);
-    }
-  }, [audioTracks]);
+    //const activeIndex = tracks.findIndex((track) => track.isActive);
+    const activeIndex = 0;
+    //if (activeIndex !== -1) {
+    setSelectedTrackIndex(activeIndex);
+    //}
+  }, [tracks]);
 
   const handleTrackChange = (index: number) => {
     setSelectedTrackIndex(index);
-    const selectedTrack = audioTracks[index];
+    const selectedTrack = tracks[index];
     console.log("Изменён активный трек:", selectedTrack);
     // Здесь можно вызвать API: await updateActiveTrack(selectedTrack);
   };
@@ -57,8 +58,8 @@ export const EditProfileForm = ({ about, audioTracks }: aboutAndMusicProp) => {
             />
 
             <div className="audio-section">
-              {audioTracks.map((track, index) => (
-                <div className="audio-track" key={track.id}>
+              {tracks.map((track, index) => (
+                <div className="audio-track" key={index}>
                   <AudioButton {...track} isEditProfile={true} />
                   <input
                     type="radio"

@@ -1,6 +1,9 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { CarouselMenu } from "../../UI/menu/CarouselMenu";
-import { useDeletePhotoMutation } from "../../../api/userApi";
+import {
+  useDeletePhotoMutation,
+  usePatchAvatarMutation,
+} from "../../../api/userApi";
 
 export type CarouselImage = {
   photoId: string;
@@ -19,6 +22,7 @@ export const Carousel = ({
   showMenuButton,
 }: CarouselProps) => {
   const [deletePhoto] = useDeletePhotoMutation();
+  const [patchAvatar] = usePatchAvatarMutation();
   const [activeIndex, setActiveIndex] = useState(0);
   const [containerSize, setContainerSize] = useState(350);
   const carouselRef = useRef<HTMLDivElement>(null);
@@ -33,7 +37,21 @@ export const Carousel = ({
   const currentImage = images[activeIndex];
   const isAvatar = currentImage.photoId === "avatar";
 
-  const handleChangeAvatar = useCallback(() => {}, []);
+  const handleChangeAvatar = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("avatar", file);
+    try {
+      await patchAvatar(formData).unwrap();
+      if (e.target) {
+        e.target.value = "";
+      }
+    } catch (error) {
+      console.error("Ошибка при смене аватара:", error);
+    }
+  };
 
   const handleDeletePhoto = useCallback(async () => {
     try {

@@ -15,6 +15,7 @@ export const usersApi = createApi({
         url: "users/recommendations",
         params: { page, size },
       }),
+      keepUnusedDataFor: 0,
       providesTags: ["Recommendations"],
     }),
     likeTarget: build.mutation({

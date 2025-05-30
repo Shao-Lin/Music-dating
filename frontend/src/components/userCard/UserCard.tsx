@@ -24,6 +24,7 @@ export const UserCard = ({
   const parseToDate = new Date(birthDate);
   const age = calculateAge(parseToDate);
   const audioButtonRef = useRef<AudioButtonHandle | null>(null);
+  localStorage.setItem("myId", userId);
 
   useEffect(() => {
     dispatch(setId({ userId }));

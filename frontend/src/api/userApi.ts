@@ -25,6 +25,14 @@ export const userApi = createApi({
       }),
       invalidatesTags: ["User"],
     }),
+    patchAvatar: build.mutation({
+      query: (photo) => ({
+        url: "user/edit-avatar",
+        method: "PATCH",
+        body: photo,
+      }),
+      invalidatesTags: ["User"], // ← сбрасываем кэш
+    }),
   }),
 });
 
@@ -32,4 +40,5 @@ export const {
   useGetUserDataQuery,
   useAddPhotoMutation,
   useDeletePhotoMutation,
+  usePatchAvatarMutation,
 } = userApi;
