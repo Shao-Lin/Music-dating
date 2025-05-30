@@ -1,12 +1,9 @@
 import { CustomAvatar } from "../UI/avatar/CustomAvatar";
-//import avatar from "../../assets/testAvatar.png";
 import arrowBack from "../../assets/chat/ArrowBack.svg";
 import type { HeaderType } from "./headerType";
 import { useNavigate } from "react-router";
 
-export const ChatHeader = ({ name, avatar, isOnline }: HeaderType) => {
-  // const name = "Anastasia";
-  // const isOnline = true;
+export const ChatHeader = ({ name, avatarUrl, isOnline }: HeaderType) => {
   const navigate = useNavigate();
   const handleClick = () => {
     navigate(-1);
@@ -18,7 +15,12 @@ export const ChatHeader = ({ name, avatar, isOnline }: HeaderType) => {
         <img src={arrowBack} alt="назад" />
       </button>
 
-      <CustomAvatar avatar={avatar} online={isOnline} size={40} isChat={true} />
+      <CustomAvatar
+        avatar={avatarUrl}
+        online={isOnline}
+        size={40}
+        isChat={true}
+      />
 
       <div className="chat-header__info">
         <div className="chat-header__name">{name}</div>

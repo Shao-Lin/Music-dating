@@ -1,10 +1,12 @@
-// ChatMain.scss
 .chat-main {
-  flex: 1;
-  margin-top: 66px; // высота хедера
-  margin-bottom: 65px; // высота футера (предполагаю 65px как ты писал)
+  position: fixed;
+  top: 5px; /* высота хедера */
+  bottom: 5px; /* высота футера */
+  left: 0;
+  right: 0;
   overflow-y: auto;
   display: flex;
-  flex-direction: column-reverse; // <-- чтобы последние сообщения были внизу
-  padding: 11px 0; // отступ от футера
+  flex-direction: column-reverse; /* оставляем, если рендерите старые вверху, новые внизу */
+  padding: 11px 0; /* ваши отступы */
+  z-index: 1; /* ниже, чем header/footer */
 }

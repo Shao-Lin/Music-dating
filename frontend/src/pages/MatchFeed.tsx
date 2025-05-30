@@ -8,10 +8,11 @@ import {
   useLikeTargetMutation,
   useDislikeTargetMutation,
 } from "../api/usersApi";
+import { useCreateChatMutation } from "../api/chatApi";
 import type { RecommendationUser } from "../components/userCard/userType";
 
 export const MatchFeed = () => {
-  const size = 2;
+  const size = 5;
   const [page, setPage] = useState(0);
   const [users, setUsers] = useState<RecommendationUser[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -28,6 +29,7 @@ export const MatchFeed = () => {
 
   const [likeTarget] = useLikeTargetMutation();
   const [dislikeTarget] = useDislikeTargetMutation();
+  const [createChat] = useCreateChatMutation();
 
   // Загружаем новых пользователей, фильтруя повторяющихся
   useEffect(() => {
@@ -57,7 +59,16 @@ export const MatchFeed = () => {
 
     try {
       if (action === "like") {
-        await likeTarget(currentUser.userId).unwrap();
+        const { mutualMatch } = await likeTarget(currentUser.userId).unwrap();
+        console.log(mutualMatch);
+
+        if (mutualMatch) {
+          try {
+            await createChat([currentUser.userId]).unwrap();
+          } catch (error) {
+            console.error(`Ошибка при создании чата`, error);
+          }
+        }
       } else {
         await dislikeTarget(currentUser.userId).unwrap();
       }

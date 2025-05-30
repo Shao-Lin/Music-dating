@@ -1,36 +1,10 @@
 import arrowBack from "../assets/chat/ArrowBack.svg";
 import { EditProfileForm } from "../components/forms/editProfileForm/EditProfileForm";
-
-import cov3 from "../assets/testMusic/obloj3.webp";
-import cov6 from "../assets/testMusic/cov6.jpg";
-import sound from "../assets/testMusic/linkin-park-in-the-end-original_(bobamuz.online).mp3";
-import type { Track } from "../components/forms/editProfileForm/editProfileTypes";
-import type { aboutAndMusicProp } from "../components/forms/editProfileForm/editProfileTypes";
 import { useNavigate } from "react-router";
+import { useGetUserDataQuery } from "../api/userApi";
 export const EditProfile = () => {
+  const { data: user } = useGetUserDataQuery(undefined);
   const navigate = useNavigate();
-  const testTrack1: Track = {
-    id: "12e21",
-    isActive: false,
-    url: sound,
-    coverUrl: cov3,
-    name: "Messi",
-  };
-
-  const testTrack2: Track = {
-    id: "2234",
-    isActive: true,
-    url: sound,
-    coverUrl: cov6,
-    name: "Ronaldo",
-  };
-
-  const arrTrack = [testTrack1, testTrack2];
-
-  const aboutAndMusic: aboutAndMusicProp = {
-    about: "Пупупупупуп пууу",
-    audioTracks: arrTrack,
-  };
 
   return (
     <div className="edit-profile">
@@ -43,7 +17,7 @@ export const EditProfile = () => {
 
       <div className="edit-profile__title">Vibe</div>
 
-      <EditProfileForm {...aboutAndMusic} />
+      <EditProfileForm {...user} />
     </div>
   );
 };

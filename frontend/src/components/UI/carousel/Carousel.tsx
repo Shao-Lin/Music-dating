@@ -42,7 +42,7 @@ export const Carousel = ({
     if (!file) return;
 
     const formData = new FormData();
-    formData.append("photo", file);
+    formData.append("avatar", file);
     try {
       await patchAvatar(formData).unwrap();
       if (e.target) {

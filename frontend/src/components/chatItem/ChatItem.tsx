@@ -1,16 +1,23 @@
+import { useAppDispatch } from "../../hooks/reduxHook";
+import { setPartnerId } from "../../slices/userData";
 import { CustomAvatar } from "../UI/avatar/CustomAvatar";
 import type { ChatItemPropsType } from "./chatItemType";
 import { useNavigate } from "react-router";
 export const ChatItem = ({
   name,
+  chatId,
   avatar,
   isOnline,
   lastMessage,
+  partnerId,
 }: ChatItemPropsType) => {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate("/chat");
+    dispatch(setPartnerId({ partnerId }));
+    localStorage.setItem("partnerId", partnerId);
+    navigate(`/chat/${chatId}`);
   };
   return (
     <button onClick={handleClick} className="chat-item">

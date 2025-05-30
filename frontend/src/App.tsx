@@ -38,7 +38,7 @@ function App() {
         <Route path="/inputCode" element={<InputCode />} />
         <Route path="/questionnaire" element={<QuestionnairePage />} />
 
-        <Route path="chat" element={<ChatPage />} />
+        <Route path="chat/:chatId" element={<ChatPage />} />
         <Route path="editProfile" element={<EditProfile />} />
         <Route path="settings" element={<SettingsPage />} />
         <Route path="premiumSubscription" element={<PremiumSubscription />} />

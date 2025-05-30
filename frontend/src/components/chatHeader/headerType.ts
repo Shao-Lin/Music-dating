@@ -1,5 +1,5 @@
 export type HeaderType = {
   name: string;
-  avatar: string;
+  avatarUrl: string;
   isOnline: boolean;
 };

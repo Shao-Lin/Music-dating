@@ -2,41 +2,45 @@ import { useRef, useState } from "react";
 import { Formik, Form, Field, FormikHelpers } from "formik";
 import photoIcon from "../../assets/chat/addImage.png";
 import sendIcon from "../../assets/chat/sendMessage.png";
-import { useAppSelector } from "../../hooks/reduxHook";
-import { useAddMessageMutation } from "../../api/messagesApi";
+import { useAddMessageMutation } from "../../api/chatApi";
 
 type FormValues = {
-  message: string | null;
-  file: File | null;
+  message: string;
+  files: File[];
+};
+type ChatProp = {
+  chatId: string;
 };
 
-export const ChatFooter = () => {
+export const ChatFooter = ({ chatId }: ChatProp) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const id = useAppSelector((state) => state.setDataUser.userId);
   const [addMessage, { isLoading }] = useAddMessageMutation();
 
-  const initialValues: FormValues = { message: "", file: null };
+  const initialValues: FormValues = { message: "", files: [] };
 
   const handleSubmit = async (
     values: FormValues,
     { resetForm }: FormikHelpers<FormValues>
   ) => {
     const formData = new FormData();
-    if (id !== null) {
-      formData.append("senderId", id.toString());
+
+    if (values.message.trim()) {
+      formData.append("text", values.message);
     }
 
-    if (values.message) {
-      formData.append("message", values.message);
+    if (values.files.length > 0) {
+      values.files.forEach((file) => {
+        formData.append("files", file);
+      });
     }
 
-    if (values.file) {
-      formData.append("file", values.file);
-    }
-    console.log(formData);
+    formData.forEach((value, key) => {
+      console.log(`${key}:`, value);
+    });
+
     try {
-      await addMessage(formData).unwrap();
+      await addMessage({ chatId, formData }).unwrap();
     } catch (error) {
       console.error(error);
     }
@@ -59,7 +63,7 @@ export const ChatFooter = () => {
             const isButtonDisabled =
               isLoading ||
               isSubmitting ||
-              (!values.message?.trim() && !values.file);
+              (values.message.trim() === "" && values.files.length === 0);
 
             return (
               <Form className="chat-footer__form">
@@ -72,6 +76,7 @@ export const ChatFooter = () => {
                 </button>
 
                 <input
+                  name="files"
                   type="file"
                   accept="image/*"
                   ref={fileInputRef}
@@ -79,7 +84,7 @@ export const ChatFooter = () => {
                   onChange={(e) => {
                     const file = e.target.files?.[0];
                     if (file) {
-                      setFieldValue("file", file);
+                      setFieldValue("files", [file]);
                       const url = URL.createObjectURL(file);
                       setImagePreview(url);
                     }
