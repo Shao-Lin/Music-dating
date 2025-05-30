@@ -26,8 +26,8 @@ jobs:
           echo "Файлы в backend/server:"
           ls -la backend/server/
 
-          echo "JAR-файлы:"
-          ls -la backend/server/build/libs/
+ #         echo "JAR-файлы:"
+ #         ls -la backend/server/build/libs/
 
       # 🛠 Установка Java и Gradle
       - name: 🧰 Setup JDK & Gradle
