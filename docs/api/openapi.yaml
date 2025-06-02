@@ -12,7 +12,7 @@ servers:
     description: Local dev
 
 security:
-  - BearerAuth: [ ]
+  - BearerAuth: []
 
 tags:
   - name: Auth
@@ -20,7 +20,7 @@ tags:
   - name: Users
     description: Поиск, лайки, дизлайки, мэтчи
   - name: User
-    description: Личный профиль и фото
+    description: Личный профиль, фото, треки
   - name: Chat
     description: Диалоги и сообщения
 
@@ -28,128 +28,157 @@ paths:
   # ─────────── AUTH ───────────
   /auth/register:
     post:
-      tags: [ Auth ]
+      tags: [Auth]
       summary: Регистрация пользователя
       requestBody:
         required: true
         content:
           multipart/form-data:
-            schema: { $ref: '#/components/schemas/RegisterRequest' }
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
             encoding:
-              image: { contentType: image/jpeg }
+              image:
+                contentType: image/jpeg
       responses:
         '200':
           description: Пользователь создан
           content:
             text/plain:
-              schema: { type: string, example: User register successfully }
-        '400': { $ref: '#/components/responses/BadRequest' }
+              schema:
+                type: string
+                example: User register successfully
+        '400':
+          $ref: '#/components/responses/BadRequest'
 
   /auth/login:
     post:
-      tags: [ Auth ]
+      tags: [Auth]
       summary: Логин (получение Access/Refresh-токенов)
       requestBody:
         required: true
         content:
           application/json:
-            schema: { $ref: '#/components/schemas/AuthRequest' }
+            schema:
+              $ref: '#/components/schemas/AuthRequest'
             examples:
               default:
-                value: { login: alice, password: pa$$w0rd }
+                value:
+                  login: alice
+                  password: pa$$w0rd
       responses:
         '200':
           description: Токены выданы
           content:
             application/json:
-              schema: { $ref: '#/components/schemas/AuthResponse' }
-              examples:
-                default:
-                  value:
-                    accessToken: eyJhbGciOiJI…
-                    refreshToken: 3d5e0c0b-…
-        '401': { $ref: '#/components/responses/Unauthorized' }
-        '400': { $ref: '#/components/responses/BadRequest' }
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '400':
+          $ref: '#/components/responses/BadRequest'
 
   /auth/refresh:
     post:
-      tags: [ Auth ]
+      tags: [Auth]
       summary: Обновление Access-токена
       parameters:
         - in: header
           name: Authorization
           required: true
-          schema: { type: string, example: Bearer 3d5e0c0b-… }
+          schema:
+            type: string
+            example: Bearer 3d5e0c0b-…
           description: Refresh-токен `Bearer <token>`
       responses:
         '200':
           description: Новый Access-токен
           content:
             application/json:
-              schema: { $ref: '#/components/schemas/AuthResponse' }
-        '401': { $ref: '#/components/responses/Unauthorized' }
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
 
   /auth/logout:
     delete:
-      tags: [ Auth ]
+      tags: [Auth]
       summary: Выход и отзыв Refresh-токена
       parameters:
         - in: header
           name: Authorization
           required: true
-          schema: { type: string, example: Bearer 3d5e0c0b-… }
+          schema:
+            type: string
+            example: Bearer 3d5e0c0b-…
       responses:
         '200':
           description: Refresh-токен удалён
           content:
             text/plain:
-              schema: { type: string, example: Logout successfully }
+              schema:
+                type: string
+                example: Logout successfully
 
   /auth/request-code:
     post:
-      tags: [ Auth ]
+      tags: [Auth]
       summary: Запрос OTP-кода
       parameters:
         - in: query
           name: email
           required: true
-          schema: { type: string, format: email, example: alice@example.com }
+          schema:
+            type: string
+            format: email
+            example: alice@example.com
       responses:
-        '200': { description: Код выслан }
+        '200':
+          description: Код выслан
 
   /auth/verify-code:
     post:
-      tags: [ Auth ]
+      tags: [Auth]
       summary: Подтверждение OTP-кода
       parameters:
         - in: query
           name: email
           required: true
-          schema: { type: string, format: email }
+          schema:
+            type: string
+            format: email
         - in: query
           name: code
           required: true
-          schema: { type: string, example: "123456" }
+          schema:
+            type: string
+            example: "123456"
       responses:
-        '200': { description: Код верен }
+        '200':
+          description: Код верен
         '401':
           description: Неверный код
           content:
             text/plain:
-              schema: { type: string, example: Invalid code }
+              schema:
+                type: string
+                example: Invalid code
 
   # ─────────── USERS ───────────
   /users/recommendations:
     get:
-      tags: [ Users ]
+      tags: [Users]
       summary: Рекомендации (непросмотренные пользователи)
       parameters:
         - in: query
           name: page
-          schema: { type: integer, default: 0 }
+          schema:
+            type: integer
+            default: 0
         - in: query
           name: size
-          schema: { type: integer, default: 20 }
+          schema:
+            type: integer
+            default: 20
       responses:
         '200':
           description: Список пользователей
@@ -157,12 +186,13 @@ paths:
             application/json:
               schema:
                 type: array
-                items: { $ref: '#/components/schemas/UserDto' }
-      security: [ { BearerAuth: [ ] } ]
+                items:
+                  $ref: '#/components/schemas/UserDto'
+      security: [{BearerAuth: []}]
 
   /users/matches:
     get:
-      tags: [ Users ]
+      tags: [Users]
       summary: Мои взаимные мэтчи
       responses:
         '200':
@@ -170,12 +200,13 @@ paths:
             application/json:
               schema:
                 type: array
-                items: { $ref: '#/components/schemas/UserDto' }
-      security: [ { BearerAuth: [ ] } ]
+                items:
+                  $ref: '#/components/schemas/UserDto'
+      security: [{BearerAuth: []}]
 
   /users/likes/incoming:
     get:
-      tags: [ Users ]
+      tags: [Users]
       summary: Кто меня лайкнул
       responses:
         '200':
@@ -183,12 +214,13 @@ paths:
             application/json:
               schema:
                 type: array
-                items: { $ref: '#/components/schemas/UserDto' }
-      security: [ { BearerAuth: [ ] } ]
+                items:
+                  $ref: '#/components/schemas/UserDto'
+      security: [{BearerAuth: []}]
 
   /users/{targetId}/like:
     post:
-      tags: [ Users ]
+      tags: [Users]
       summary: Лайк пользователя
       parameters:
         - $ref: '#/components/parameters/TargetId'
@@ -197,34 +229,37 @@ paths:
           description: Статус мэтча
           content:
             application/json:
-              schema: { $ref: '#/components/schemas/ReactionResponse' }
-      security: [ { BearerAuth: [ ] } ]
+              schema:
+                $ref: '#/components/schemas/ReactionResponse'
+      security: [{BearerAuth: []}]
 
   /users/{targetId}/dislike:
     post:
-      tags: [ Users ]
+      tags: [Users]
       summary: Дизлайк пользователя
       parameters:
         - $ref: '#/components/parameters/TargetId'
       responses:
-        '204': { description: Дизлайк сохранён }
-      security: [ { BearerAuth: [ ] } ]
+        '204':
+          description: Дизлайк сохранён
+      security: [{BearerAuth: []}]
 
-  # ─────────── USER ───────────
+  # ─────────── USER: профиль и медиа ───────────
   /user/me:
     get:
-      tags: [ User ]
+      tags: [User]
       summary: Профиль текущего пользователя
       responses:
         '200':
           content:
             application/json:
-              schema: { $ref: '#/components/schemas/UserDto' }
-      security: [ { BearerAuth: [ ] } ]
+              schema:
+                $ref: '#/components/schemas/UserDto'
+      security: [{BearerAuth: []}]
 
   /user/upload-photo:
     post:
-      tags: [ User ]
+      tags: [User]
       summary: Загрузить фото
       requestBody:
         required: true
@@ -233,28 +268,33 @@ paths:
             schema:
               type: object
               properties:
-                photo: { type: string, format: binary }
+                photo:
+                  type: string
+                  format: binary
       responses:
-        '201': { description: Фото загружено }
-        '400': { $ref: '#/components/responses/BadRequest' }
-      security: [ { BearerAuth: [ ] } ]
+        '201':
+          description: Фото загружено
+      security: [{BearerAuth: []}]
 
   /user/{photoId}/delete-photo:
     delete:
-      tags: [ User ]
+      tags: [User]
       summary: Удалить фото
       parameters:
         - in: path
           name: photoId
           required: true
-          schema: { type: string, format: uuid }
+          schema:
+            type: string
+            format: uuid
       responses:
-        '204': { description: Фото удалено }
-      security: [ { BearerAuth: [ ] } ]
+        '204':
+          description: Фото удалено
+      security: [{BearerAuth: []}]
 
   /user/edit-avatar:
     patch:
-      tags: [ User ]
+      tags: [User]
       summary: Обновить аватар
       requestBody:
         required: true
@@ -266,115 +306,199 @@ paths:
                 avatar:
                   type: string
                   format: binary
-                  description: Новый аватар (jpeg/png)
       responses:
-        '204': { description: Аватар обновлён }
-        '400': { $ref: '#/components/responses/BadRequest' }
-        '401': { $ref: '#/components/responses/Unauthorized' }
-      security: [ { BearerAuth: [ ] } ]
+        '204':
+          description: Аватар обновлён
+      security: [{BearerAuth: []}]
+
+  # ── NEW: настройки и подписка ──
+  /user/settings:
+    get:
+      tags: [User]
+      summary: Получить настройки
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserSettingDto'
+      security: [{BearerAuth: []}]
+
+    put:
+      tags: [User]
+      summary: Обновить настройки
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserSettingDto'
+      responses:
+        '204':
+          description: Настройки обновлены
+      security: [{BearerAuth: []}]
+
+  /user/buy-sub:
+    post:
+      tags: [User]
+      summary: Покупка месячной подписки
+      responses:
+        '204':
+          description: Подписка активирована
+      security: [{BearerAuth: []}]
+
+  /user/edit-profile:
+    put:
+      tags: [User]
+      summary: Полное редактирование профиля
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDto'
+      responses:
+        '204':
+          description: Профиль обновлён
+      security: [{BearerAuth: []}]
+
+  /user/regenerate-track:
+    patch:
+      tags: [User]
+      summary: Сгенерировать новый трек (AI)
+      responses:
+        '204':
+          description: Трек создан
+      security: [{BearerAuth: []}]
+
+  /user/{trackId}:
+    patch:
+      tags: [User]
+      summary: Сделать указанный трек «главным»
+      parameters:
+        - in: path
+          name: trackId
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Трек отмечен как основной
+      security: [{BearerAuth: []}]
 
   # ─────────── CHAT ───────────
   /chat:
     post:
-      tags: [ Chat ]
+      tags: [Chat]
       summary: Создать или получить чат
       requestBody:
         required: true
         content:
           application/json:
-            schema: { $ref: '#/components/schemas/CreateChatRequest' }
+            schema:
+              $ref: '#/components/schemas/CreateChatRequest'
       responses:
         '201':
           description: Чат создан
           content:
             application/json:
-              schema: { $ref: '#/components/schemas/ChatDto' }
-      security: [ { BearerAuth: [ ] } ]
+              schema:
+                $ref: '#/components/schemas/ChatDto'
+      security: [{BearerAuth: []}]
 
     get:
-      tags: [ Chat ]
-      summary: Список чатов (последнее сообщение + время обновления)
+      tags: [Chat]
+      summary: Список чатов
       responses:
         '200':
           content:
             application/json:
               schema:
                 type: array
-                items: { $ref: '#/components/schemas/ChatDto' }
-      security: [ { BearerAuth: [ ] } ]
+                items:
+                  $ref: '#/components/schemas/ChatDto'
+      security: [{BearerAuth: []}]
 
   /chat/{chatId}/messages:
     parameters:
       - in: path
         name: chatId
         required: true
-        schema: { type: string }
+        schema:
+          type: string
     get:
-      tags: [ Chat ]
+      tags: [Chat]
       summary: История сообщений
       parameters:
         - in: query
           name: page
-          schema: { type: integer, default: 0 }
+          schema:
+            type: integer
+            default: 0
         - in: query
           name: size
-          schema: { type: integer, default: 30 }
+          schema:
+            type: integer
+            default: 30
       responses:
         '200':
           content:
             application/json:
-              schema: { $ref: '#/components/schemas/PageMessage' }
-      security: [ { BearerAuth: [ ] } ]
+              schema:
+                $ref: '#/components/schemas/PageMessage'
+      security: [{BearerAuth: []}]
 
     post:
-      tags: [ Chat ]
+      tags: [Chat]
       summary: Отправить сообщение
       requestBody:
         required: true
         content:
           multipart/form-data:
-            schema: { $ref: '#/components/schemas/SendMessageRequest' }
+            schema:
+              $ref: '#/components/schemas/SendMessageRequest'
             encoding:
-              files: { contentType: "*/*" }
+              files:
+                contentType: "*/*"
       responses:
         '201':
           description: Сообщение сохранено
           content:
             application/json:
-              schema: { $ref: '#/components/schemas/MessageDto' }
-      security: [ { BearerAuth: [ ] } ]
+              schema:
+                $ref: '#/components/schemas/MessageDto'
+      security: [{BearerAuth: []}]
 
   /chat/{target-id}:
     get:
-      tags: [ Chat ]
-      summary: Найти p2p-чат с указанным пользователем
-      description: |
-        Возвращает чат между текущим авторизованным пользователем и указанным `targetId`.
-        Предполагается, что у каждого диалога между двумя людьми — только один чат.
-        Возвращает 404, если такого чата не существует.
+      tags: [Chat]
+      summary: Найти p2p-чат с пользователем
       parameters:
         - in: path
           name: target-id
           required: true
-          schema: { type: string, format: uuid }
-          description: UUID собеседника
+          schema:
+            type: string
+            format: uuid
       responses:
         '200':
           description: Найденный чат
           content:
             application/json:
-              schema: { $ref: '#/components/schemas/ChatDto' }
+              schema:
+                $ref: '#/components/schemas/ChatDto'
         '404':
           description: Чат не найден
           content:
             text/plain:
-              schema: { type: string, example: Chat not found }
-      security: [ { BearerAuth: [ ] } ]
-
+              schema:
+                type: string
+                example: Chat not found
+      security: [{BearerAuth: []}]
 
 # ─────────── COMPONENTS ───────────
 components:
-
   securitySchemes:
     BearerAuth:
       type: http
@@ -386,148 +510,167 @@ components:
       in: path
       name: targetId
       required: true
-      schema: { type: string, format: uuid }
+      schema:
+        type: string
+        format: uuid
 
   responses:
     BadRequest:
       description: Некорректный запрос
       content:
         application/json:
-          schema: { $ref: '#/components/schemas/ApiError' }
+          schema:
+            $ref: '#/components/schemas/ApiError'
     Unauthorized:
       description: Требуется аутентификация
       content:
         application/json:
-          schema: { $ref: '#/components/schemas/ApiError' }
+          schema:
+            $ref: '#/components/schemas/ApiError'
 
   schemas:
     # --- auth ---
     RegisterRequest:
       type: object
-      required: [ name, birthDate, gender, login, password ]
+      required: [name, birthDate, gender, login, password]
       properties:
-        name:       { type: string }
-        about:      { type: string }
-        birthDate:  { type: string, format: date }
-        city:       { type: string }
-        gender:     { type: string }
-        login:      { type: string }
-        password:   { type: string }
-        image:      { type: string, format: binary, description: Аватар }
+        name:       {type: string}
+        about:      {type: string}
+        birthDate:  {type: string, format: date}
+        city:       {type: string}
+        gender:     {type: string}
+        login:      {type: string}
+        password:   {type: string}
+        image:
+          type: string
+          format: binary
+          description: Аватар
 
     AuthRequest:
       type: object
-      required: [ login, password ]
+      required: [login, password]
       properties:
-        login:    { type: string }
-        password: { type: string }
+        login:    {type: string}
+        password: {type: string}
 
     AuthResponse:
       type: object
       properties:
-        accessToken:  { type: string }
-        refreshToken: { type: string }
-
-    # --- social ---
-    ReactionResponse:
-      type: object
-      properties:
-        mutualMatch: { type: boolean }
+        accessToken:  {type: string}
+        refreshToken: {type: string}
 
     # --- users ---
     UserPhotoDto:
       type: object
       properties:
-        id:  { type: string, format: uuid }
-        url: { type: string, format: uri }
+        id:  {type: string, format: uuid}
+        url: {type: string, format: uri}
 
     TrackDto:
       type: object
       properties:
-        id:  { type: string, format: uuid }
-        url: { type: string, format: uri }
+        url:      {type: string, format: uri}
+        name:     {type: string}
+        coverUrl: {type: string, format: uri}
 
     UserDto:
       type: object
       properties:
-        id:        { type: string, format: uuid }
-        username:  { type: string }
-        name:      { type: string }
-        about:     { type: string }
-        birthDate: { type: string, format: date }
-        city:      { type: string }
-        gender:    { type: string }
-        avatarUrl: { type: string, format: uri }
+        userId:    {type: string, format: uuid}
+        name:      {type: string}
+        about:     {type: string}
+        birthDate: {type: string, format: date}
+        city:      {type: string}
+        gender:    {type: string}
+        avatarUrl: {type: string, format: uri}
         photos:
           type: array
-          items: { $ref: '#/components/schemas/UserPhotoDto' }
+          items: {$ref: '#/components/schemas/UserPhotoDto'}
         tracks:
           type: array
-          items: { $ref: '#/components/schemas/TrackDto' }
+          items: {$ref: '#/components/schemas/TrackDto'}
+
+    UserSettingDto:
+      type: object
+      properties:
+        lang:       {type: string}
+        ageFrom:    {type: integer}
+        ageTo:      {type: integer}
+        subActive:  {type: boolean}
+        activeFrom: {type: string, format: date}
+        activeTo:   {type: string, format: date}
+
+    ReactionResponse:
+      type: object
+      properties:
+        mutualMatch: {type: boolean}
 
     # --- chat ---
     CreateChatRequest:
       type: object
-      required: [ participants ]
+      required: [participants]
       properties:
         participants:
           type: array
-          items: { type: string, format: uuid }
+          items: {type: string, format: uuid}
 
     MessagePreview:
       type: object
       properties:
-        id:        { type: string }
-        text:      { type: string }
-        createdAt: { type: string, format: date-time }
+        id:        {type: string}
+        text:      {type: string}
+        createdAt: {type: string, format: date-time}
 
     ChatDto:
       type: object
       properties:
-        id:            { type: string }
+        id:            {type: string}
         participantIds:
           type: array
-          items: { type: string, format: uuid }
-        lastMessage: { $ref: '#/components/schemas/MessagePreview' }
-        updatedAt:   { type: string, format: date-time }
+          items: {type: string, format: uuid}
+        lastMessage:
+          $ref: '#/components/schemas/MessagePreview'
+        updatedAt: {type: string, format: date-time}
 
     SendMessageRequest:
       type: object
       properties:
-        text:  { type: string }
+        text:  {type: string}
         files:
           type: array
-          items: { type: string, format: binary }
+          items: {type: string, format: binary}
 
     MessageDto:
       type: object
       properties:
-        id:        { type: string }
-        chatId:    { type: string }
-        senderId:  { type: string }           # хранится строкой
-        text:      { type: string, nullable: true }
+        id:       {type: string}
+        chatId:   {type: string}
+        senderId: {type: string}
+        text:
+          type: string
+          nullable: true
         mediaUrls:
           type: array
-          items: { type: string, format: uri }
-        createdAt: { type: string, format: date-time }
+          items: {type: string, format: uri}
+        createdAt: {type: string, format: date-time}
 
     PageMessage:
       type: object
       properties:
         content:
           type: array
-          items: { $ref: '#/components/schemas/MessageDto' }
-        totalPages:  { type: integer }
-        totalItems:  { type: integer }
-        page:        { type: integer }
-        size:        { type: integer }
+          items: {$ref: '#/components/schemas/MessageDto'}
+        totalPages:  {type: integer}
+        totalItems:  {type: integer}
+        page:        {type: integer}
+        size:        {type: integer}
 
     # --- errors ---
     ApiError:
       type: object
       properties:
-        timestamp: { type: string, format: date-time }
-        status:    { type: integer }
-        error:     { type: string }
-        message:   { type: string }
-        path:      { type: string }
+        timestamp: {type: string, format: date-time}
+        status:    {type: integer}
+        error:     {type: string}
+        message:   {type: string}
+        path:      {type: string}
