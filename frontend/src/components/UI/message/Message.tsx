@@ -1,6 +1,3 @@
-// Message.tsx
-
-//import { useAppSelector } from "../../hooks/reduxHook"; // если у тебя id текущего пользователя в стейте
 import type { MessageType } from "./messageType";
 
 interface MessageProps {
@@ -9,9 +6,7 @@ interface MessageProps {
 }
 
 export const Message = ({ message, isSameSender }: MessageProps) => {
-  //const currentUserId = useAppSelector((state) => state.authUsers.id);
-  const currentUserId = "111";
-
+  const currentUserId = localStorage.getItem("myId");
   const isOwnMessage = message.senderId === currentUserId;
 
   return (
@@ -20,13 +15,11 @@ export const Message = ({ message, isSameSender }: MessageProps) => {
         isSameSender ? "message--same-sender" : "message--new-sender"
       }`}
     >
-      {message.image && (
-        <img
-          src={URL.createObjectURL(message.image)}
-          alt="sent-img"
-          className="message__image"
-        />
-      )}
+      {message.mediaUrls &&
+        message.mediaUrls.map((url, i) => (
+          <img key={i} src={url} alt="sent-img" className="message__image" />
+        ))}
+
       {message.text && <div className="message__text">{message.text}</div>}
     </div>
   );

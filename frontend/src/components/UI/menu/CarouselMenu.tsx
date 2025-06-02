@@ -1,10 +1,10 @@
 import { Menu, MenuItem } from "@mui/material";
-import { MouseEvent, useState } from "react";
+import { MouseEvent, useRef, useState } from "react";
 import iconMenu from "../../../assets/serviceImages/carouselMenu.svg";
 
 interface CarouselMenuProps {
   isAvatar: boolean;
-  onChangeAvatar?: () => void;
+  onChangeAvatar?: (e: React.ChangeEvent<HTMLInputElement>) => Promise<void>;
   onDeletePhoto?: () => void;
 }
 
@@ -14,6 +14,7 @@ export const CarouselMenu = ({
   onDeletePhoto,
 }: CarouselMenuProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   const handleOpen = (event: MouseEvent<HTMLButtonElement>) => {
     console.log("Клик по кнопке меню");
@@ -26,7 +27,8 @@ export const CarouselMenu = ({
 
   const handleAction = () => {
     if (isAvatar) {
-      onChangeAvatar?.();
+      // Открываем выбор файла
+      inputRef.current?.click();
     } else {
       onDeletePhoto?.();
     }
@@ -53,6 +55,14 @@ export const CarouselMenu = ({
       >
         <img src={iconMenu} alt="menu" style={{ width: 20, height: 20 }} />
       </button>
+
+      <input
+        ref={inputRef}
+        type="file"
+        accept="image/*"
+        style={{ display: "none" }}
+        onChange={(e) => onChangeAvatar?.(e)}
+      />
 
       <Menu
         anchorEl={anchorEl}

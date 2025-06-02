@@ -3,7 +3,7 @@ import { authApi } from "../api/authApi";
 import { userApi } from "../api/userApi";
 import { usersApi } from "../api/usersApi";
 import { matchesApi } from "../api/matchesApi";
-import { messagesApi } from "../api/messagesApi";
+import { chatApi } from "../api/chatApi";
 import authSlice from "./authSlice";
 import setIdSlice from "./userData";
 
@@ -15,7 +15,7 @@ export const store = configureStore({
     [userApi.reducerPath]: userApi.reducer,
     [usersApi.reducerPath]: usersApi.reducer,
     [matchesApi.reducerPath]: matchesApi.reducer,
-    [messagesApi.reducerPath]: messagesApi.reducer,
+    [chatApi.reducerPath]: chatApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
@@ -23,7 +23,7 @@ export const store = configureStore({
       userApi.middleware,
       usersApi.middleware,
       matchesApi.middleware,
-      messagesApi.middleware
+      chatApi.middleware
     ),
 });
 

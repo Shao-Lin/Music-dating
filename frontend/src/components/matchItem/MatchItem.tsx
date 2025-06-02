@@ -7,15 +7,22 @@ import { MatchItemType } from "./matchItemType";
 import { useDislikeTargetMutation } from "../../api/usersApi";
 import { useNavigate } from "react-router";
 import { MusicData } from "../userCard/userType";
+import { useGetChatForMatchItemQuery } from "../../api/chatApi";
+import { useAppDispatch } from "../../hooks/reduxHook";
+import { setPartnerId } from "../../slices/userData";
 
 type Props = {
   item: MatchItemType; // Явно указываем, что ожидаем пропс `item`
 };
 export const MatchItem = ({ item }: Props) => {
   const { userId, name, avatarUrl, online = true, tracks } = item;
+  const { data: chatItem } = useGetChatForMatchItemQuery(userId);
   const navigate = useNavigate();
   const [deleteMatch] = useDislikeTargetMutation();
   const activeTrack: MusicData = tracks[0];
+  const dispatch = useAppDispatch();
+
+  const partnerId = userId;
 
   console.log(activeTrack);
 
@@ -40,7 +47,9 @@ export const MatchItem = ({ item }: Props) => {
     setIsModalOpen(false);
   };
   const handleClick = () => {
-    navigate("/chat");
+    localStorage.setItem("partnerId", partnerId);
+    dispatch(setPartnerId({ partnerId }));
+    navigate(`/chat/${chatItem?.id}`);
   };
   return (
     <>

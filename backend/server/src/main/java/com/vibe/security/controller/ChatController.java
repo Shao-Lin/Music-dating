@@ -79,7 +79,9 @@ public class ChatController {
 		if (files != null && !files.isEmpty()) {
 			urls = s3StorageService.uploadFiles(files);
 		}
-		return chatService.send(chatId, userDetails.getUsername(), text, urls);
+		return chatService.send(chatId, userRepository.findByUsername(userDetails.getUsername())
+			.orElseThrow()
+			.getId().toString(), text, urls);
 	}
 }
 
