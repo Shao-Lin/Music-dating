@@ -21,7 +21,7 @@ public class UserMapper {
                 e.getAvatarUrl(),
                 e.getBirthDate(),
                 e.getTracks().stream()
-                        .map(t -> new TrackDto(t.getUrl(), t.getName(), t.getCoverUrl(), t.getIsMain()))
+                        .map(t -> new TrackDto(t.getId() ,t.getUrl(), t.getName(), t.getCoverUrl(), t.getIsMain()))
                         .collect(Collectors.toSet()),
                 e.getPhotos().stream()
                         .map(p -> new UserPhotoDto(p.getId(), p.getUrl()))

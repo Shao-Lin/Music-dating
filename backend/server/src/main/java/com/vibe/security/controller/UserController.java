@@ -91,9 +91,22 @@ public class UserController {
     }
 
     @PatchMapping("/regenerate-track")
-    @Transactional
     public void regenerateTrack(@AuthenticationPrincipal UserDetails ud) {
         UserEntity user = userRepository.findByUsername(ud.getUsername()).get();
         defaultAuthService.generateMusic(user.getAbout(), user);
+    }
+
+    @PatchMapping("/{track-id}")
+    public void setMainTrack(@AuthenticationPrincipal UserDetails ud, @PathVariable(name = "track-id") UUID trackId) {
+        UserEntity user = userRepository.findByUsername(ud.getUsername()).get();
+        List<TrackEntity> trackEntitiesByUser = trackRepository.findTrackEntitiesByUser(user);
+        for (TrackEntity trackEntity : trackEntitiesByUser) {
+            if (trackId.equals(trackEntity.getId())) {
+                trackEntity.setIsMain(Boolean.TRUE);
+                continue;
+            }
+            trackEntity.setIsMain(Boolean.FALSE);
+        }
+        trackRepository.saveAll(trackEntitiesByUser);
     }
 }
