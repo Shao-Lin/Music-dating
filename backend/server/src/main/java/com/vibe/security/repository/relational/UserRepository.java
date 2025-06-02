@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDate;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -18,17 +19,23 @@ public interface UserRepository extends JpaRepository<UserEntity, UUID> {
     boolean existsByUsername(String username);
 
     @Query("""
-        SELECT u FROM UserEntity u
-        WHERE u.id <> :currentUserId and u.gender <> :gender
-          AND u.id NOT IN (
-              SELECT m.targetUser.id
-              FROM MatchEntity m
-              WHERE m.sourceUser.id = :currentUserId
-          )
-        """)
+    SELECT u
+    FROM UserEntity u
+    WHERE u.id <> :currentUserId
+      AND u.gender <> :gender
+      AND u.birthDate BETWEEN :birthDateFrom AND :birthDateTo
+      AND u.id NOT IN (
+            SELECT m.targetUser.id
+            FROM MatchEntity m
+            WHERE m.sourceUser.id = :currentUserId
+      )
+    """)
     Page<UserEntity> findUnseenUsers(@Param("currentUserId") UUID currentUserId,
-                                     String gender,
+                                     @Param("gender")        String gender,
+                                     @Param("birthDateFrom") LocalDate birthDateFrom,
+                                     @Param("birthDateTo")   LocalDate birthDateTo,
                                      Pageable pageable);
+
 
     @Query("""
         SELECT u

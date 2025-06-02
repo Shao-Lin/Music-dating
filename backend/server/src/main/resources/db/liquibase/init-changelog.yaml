@@ -181,6 +181,9 @@ databaseChangeLog:
                   type: varchar
                   constraints:
                     nullable: false
+              - column:
+                  name: is_main
+                  type: boolean
 
         - addForeignKeyConstraint:
             constraintName: fk_track_user
@@ -294,6 +297,59 @@ databaseChangeLog:
         - createIndex:
             indexName: idx_user_photo_user
             tableName: user_photo
+            columns:
+              - column:
+                  name: user_id
+
+  - changeSet:
+      id: 009-create-user-settings-table
+      author: David Chernykh
+      changes:
+
+        - createTable:
+            tableName: user_setting
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: lang
+                  type: varchar(10)
+              - column:
+                  name: age_from
+                  type: int
+              - column:
+                  name: age_to
+                  type: int
+              - column:
+                  name: sub_active
+                  type: boolean
+              - column:
+                  name: active_from
+                  type: date
+              - column:
+                  name: active_to
+                  type: date
+
+        - addForeignKeyConstraint:
+            constraintName: fk_user_setting_user
+            baseTableName: user_setting
+            baseColumnNames: user_id
+            referencedTableName: users
+            referencedColumnNames: id
+            onDelete: CASCADE
+
+        - createIndex:
+            indexName: idx_user_setting_user
+            tableName: user_setting
             columns:
               - column:
                   name: user_id

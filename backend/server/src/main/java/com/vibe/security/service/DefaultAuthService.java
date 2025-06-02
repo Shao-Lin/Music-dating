@@ -80,9 +80,21 @@ public class DefaultAuthService implements AuthService {
         }
         UserEntity savedUser = userRepository.save(userEntity);
 
+        generateMusic(request.about(), savedUser);
+    }
+
+    public void generateMusic(String about, UserEntity savedUser) {
+        List<TrackEntity> trackEntitiesByUser = trackRepository.findTrackEntitiesByUser(savedUser);
+        if (trackEntitiesByUser != null && !trackEntitiesByUser.isEmpty()) {
+            for (TrackEntity trackEntity : trackEntitiesByUser) {
+                trackEntity.setIsMain(Boolean.FALSE);
+            }
+            trackRepository.saveAllAndFlush(trackEntitiesByUser);
+        }
+
         try {
             RecordInfoResponse result = sunoBlockingService.generateAndWait(new SunoGeneratePrompt(
-                    request.about(),
+                    about,
                     "",
                     "",
                     Boolean.FALSE,
@@ -126,6 +138,7 @@ public class DefaultAuthService implements AuthService {
                     .user(savedUser)
                     .coverUrl(s3StorageService.uploadResource(track1Image.getBody(), track1Image.getHeaders().getContentType()))
                     .name(track1.title())
+                    .isMain(Boolean.TRUE)
                     .build();
 
             TrackEntity trackEntitySecond = TrackEntity.builder()
@@ -133,6 +146,7 @@ public class DefaultAuthService implements AuthService {
                     .user(savedUser)
                     .coverUrl(s3StorageService.uploadResource(track2Image.getBody(), track2Image.getHeaders().getContentType()))
                     .name(track2.title())
+                    .isMain(Boolean.FALSE)
                     .build();
 
             log.info("Треки загружены в внутреннее хранилище");
