@@ -1,17 +1,17 @@
 package com.vibe.security.service;
 
-import com.vibe.security.entity.RefreshTokenEntity;
-import com.vibe.security.entity.RoleEntity;
-import com.vibe.security.entity.TrackEntity;
-import com.vibe.security.entity.UserEntity;
+import com.vibe.security.entity.relational.RefreshTokenEntity;
+import com.vibe.security.entity.relational.RoleEntity;
+import com.vibe.security.entity.relational.TrackEntity;
+import com.vibe.security.entity.relational.UserEntity;
 import com.vibe.security.exception.InvalidPasswordException;
 import com.vibe.security.exception.RefreshTokenException;
 import com.vibe.security.exception.UserAlreadyExistsException;
 import com.vibe.security.payload.*;
-import com.vibe.security.repository.RefreshTokenRepository;
-import com.vibe.security.repository.RoleRepository;
-import com.vibe.security.repository.TrackRepository;
-import com.vibe.security.repository.UserRepository;
+import com.vibe.security.repository.relational.RefreshTokenRepository;
+import com.vibe.security.repository.relational.RoleRepository;
+import com.vibe.security.repository.relational.TrackRepository;
+import com.vibe.security.repository.relational.UserRepository;
 import com.vibe.security.util.JwtUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -89,14 +89,14 @@ public class DefaultAuthService implements AuthService {
                     Boolean.FALSE,
                     "V3_5",
                     "",
-                    ""));
+                    "playground"));
 
             log.info("Музыка сгенерирована нейросетью и получена");
 
-            List<SongPayload> songPayloads = result.songList();
+            List<RecordInfoResponse.SunoTrack> songPayloads = result.response().sunoData();
 
-            SongPayload track1 = songPayloads.getFirst();
-            SongPayload track2 = songPayloads.getLast();
+            RecordInfoResponse.SunoTrack track1 = songPayloads.getFirst();
+            RecordInfoResponse.SunoTrack track2 = songPayloads.getLast();
 
 
             ResponseEntity<Resource> track1Audio = restClient.get()
@@ -122,14 +122,14 @@ public class DefaultAuthService implements AuthService {
             log.info("Получены файлы картинок и треков mp3 с хранилища апи нейронки");
 
             TrackEntity trackEntityFirst = TrackEntity.builder()
-                    .url(s3StorageService.uploadResource(audioTrimService.trimFirst20sToResource(track1Audio.getBody()), track1Audio.getHeaders().getContentType()))
+                    .url(s3StorageService.uploadResource(track1Audio.getBody(), track1Audio.getHeaders().getContentType()))
                     .user(savedUser)
                     .coverUrl(s3StorageService.uploadResource(track1Image.getBody(), track1Image.getHeaders().getContentType()))
                     .name(track1.title())
                     .build();
 
             TrackEntity trackEntitySecond = TrackEntity.builder()
-                    .url(s3StorageService.uploadResource(audioTrimService.trimFirst20sToResource(track2Audio.getBody()), track2Audio.getHeaders().getContentType()))
+                    .url(s3StorageService.uploadResource(track2Audio.getBody(), track2Audio.getHeaders().getContentType()))
                     .user(savedUser)
                     .coverUrl(s3StorageService.uploadResource(track2Image.getBody(), track2Image.getHeaders().getContentType()))
                     .name(track2.title())

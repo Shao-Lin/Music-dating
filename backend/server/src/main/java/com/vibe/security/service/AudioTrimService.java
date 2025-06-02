@@ -1,55 +1,77 @@
 package com.vibe.security.service;
 
-import lombok.SneakyThrows;
-import org.springframework.core.io.FileSystemResource;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.*;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class AudioTrimService {
-    @SneakyThrows
-    public File trimFirst20sToFile(Resource in) {
-        return doTrim(in).toFile();
-    }
+    public Resource trimFirst20s(Resource in)
+            throws IOException, InterruptedException {
 
-    @SneakyThrows
-    public Resource trimFirst20sToResource(Resource in) {
-        return new FileSystemResource(doTrim(in));
-    }
-
-
-    private Path doTrim(Resource in) throws IOException, InterruptedException {
-
+        /* 1️⃣  Имя (если null → "audio.mp3") */
         String originalName = Optional.ofNullable(in.getFilename())
-                .orElseThrow(() -> new IllegalArgumentException(
-                        "Resource has no filename"));
+                .filter(n -> !n.isBlank())
+                .orElse("audio.mp3");
 
-        Path srcDir  = Files.createTempDirectory("suno-src-");
-        Path srcPath = srcDir.resolve(originalName);
+        /* 2️⃣  temp-файлы */
+        Path src = Files.createTempFile("suno-src-", getExt(originalName));
+        Path dst = Files.createTempFile("suno-20s-", getExt(originalName));
 
-        try (InputStream is = in.getInputStream();
-             OutputStream os = Files.newOutputStream(srcPath)) {
-            is.transferTo(os);
+        try {
+            /* 2.1  копируем Resource → src */
+            try (InputStream is = in.getInputStream()) {
+                Files.copy(is, src, StandardCopyOption.REPLACE_EXISTING);
+            }
+
+            /* 2.2  ffmpeg: 0 → 20 с */
+            ProcessBuilder pb = new ProcessBuilder(
+                    "ffmpeg", "-y",
+                    "-i", src.toString(),
+                    "-ss", "0",       // начало
+                    "-t", "20",       // длительность
+                    "-acodec", "libmp3lame",
+                    "-b:a", "192k",
+                    dst.toString()
+            );
+            int code = pb.inheritIO().start().waitFor();
+            if (code != 0) {
+                throw new IOException("ffmpeg exited with " + code);
+            }
+
+            /* 2.3  читаем trimmed-файл в память */
+            byte[] bytes = Files.readAllBytes(dst);
+
+            /* 3️⃣  возвращаем ByteArrayResource с тем же именем */
+            return new ByteArrayResource(bytes) {
+                @Override public String getFilename() {
+                    return originalName;
+                }
+            };
+
+        } finally {
+            /* 4️⃣  подчистка temp-файлов */
+            safeDelete(src);
+            safeDelete(dst);
         }
+    }
 
-        Path outDir  = Files.createTempDirectory("suno-demo-");
-        Path outPath = outDir.resolve(originalName);
+    /* ---- helpers --------------------------------------------------- */
 
-        ProcessBuilder pb = new ProcessBuilder(
-                "ffmpeg", "-y",
-                "-i", srcPath.toString(),
-                "-t", "20",
-                "-acodec", "libmp3lame",
-                "-b:a", "192k",
-                outPath.toString()
-        );
-        if (pb.inheritIO().start().waitFor() != 0) {
-            throw new IOException("ffmpeg failed while trimming " + srcPath);
-        }
-        return outPath;
+    private static String getExt(String name) {
+        int dot = name.lastIndexOf('.');
+        return dot >= 0 ? name.substring(dot) : ".bin";
+    }
+
+    private static void safeDelete(Path p) {
+        try { Files.deleteIfExists(p); }
+        catch (IOException e) { log.warn("Can't delete {}", p, e); }
     }
 }

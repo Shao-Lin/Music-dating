@@ -5,12 +5,14 @@ import com.vibe.security.payload.RecordInfoResponse;
 import com.vibe.security.payload.SunoApiResponse;
 import com.vibe.security.payload.SunoGeneratePrompt;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
 import java.time.Duration;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class SunoBlockingService {
@@ -38,7 +40,7 @@ public class SunoBlockingService {
                                     .build())
                             .retrieve()
                             .body(new ParameterizedTypeReference<>() {});
-
+            log.info("Статус генерации = {}", info.data().status());
             if (info.data().finished()) {
                 return info.data();
             }

@@ -11,8 +11,7 @@ import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 import java.io.IOException;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -39,9 +38,19 @@ public class S3StorageService {
         return props.getEndpoint() + "/" + props.getBucket() + "/" + key;
     }
 
-    public String uploadResource(Resource file, MediaType contentType) throws IOException {
+    public List<String> uploadFiles(List<MultipartFile> files) throws IOException {
+        List<String> urls = new ArrayList<>();
+        for (MultipartFile file : files) {
+            urls.add(upload(file));
+        }
 
-        String key = UUID.randomUUID() + "-" + Objects.requireNonNull(file.getFilename());
+        return urls;
+    }
+
+    // Только для загрузки корявых аудио и картинок!!!
+    public String uploadResource(Resource file, MediaType contentType) throws IOException {
+        String ext = MediaType.IMAGE_JPEG.equals(contentType) ? ".jpeg" : ".mp3";
+        String key = UUID.randomUUID() + "-" + Optional.ofNullable(file.getFilename()).orElse("vibe-file" + ext);
 
 
         PutObjectRequest request = PutObjectRequest.builder()
