@@ -33,6 +33,7 @@ public class UserSettingService {
 		if (dto.lang() != null) e.setLang(dto.lang());
 		if (dto.ageFrom() != null) e.setAgeFrom(dto.ageFrom());
 		if (dto.ageTo() != null) e.setAgeTo(dto.ageTo());
+		if (dto.autoplay() != null) e.setAutoplay(dto.autoplay());
 	}
 
 	@Transactional
