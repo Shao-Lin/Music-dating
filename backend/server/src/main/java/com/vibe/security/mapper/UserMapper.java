@@ -57,22 +57,6 @@ public class UserMapper {
         if (d.gender()     != null) e.setGender(d.gender());
         if (d.avatarUrl()  != null) e.setAvatarUrl(d.avatarUrl());
         if (d.birthDate()  != null) e.setBirthDate(d.birthDate());
-
-        if (d.tracks() != null) {
-            e.getTracks().clear();
-            e.getTracks().addAll(
-                    d.tracks().stream()
-                            .map(this::trackFromDto)
-                            .collect(Collectors.toSet()));
-        }
-
-        if (d.photos() != null) {
-            e.getPhotos().clear();
-            e.getPhotos().addAll(
-                    d.photos().stream()
-                            .map(this::photoFromDto)
-                            .collect(Collectors.toSet()));
-        }
     }
 
 
