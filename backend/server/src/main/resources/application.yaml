@@ -1,6 +1,7 @@
 server:
   port: 8088
   shutdown: graceful
+
 spring:
   data:
     mongodb:
@@ -33,7 +34,6 @@ spring:
     change-log: classpath:/db/liquibase/init-changelog.yaml
     clear-check-sums: ${SPRING_LIQUIBASE_CLEAR_CHECKSUMS:false}
 
-
   docker:
     compose:
       enabled: false
@@ -50,21 +50,18 @@ spring:
           starttls:
             enable: true
 
-  management:
-    endpoints:
-      web:
-        exposure:
-          include: 
-            - health
-            - info
-            - prometheus
-    endpoints:
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - health
+          - info
+          - prometheus
+  metrics:
+    export:
       prometheus:
         enabled: true
-    metrics:
-      export:
-        prometheus:
-          enabled: true
 
 jwt:
   secret: ${JWT_SECRET}
@@ -81,7 +78,7 @@ cloud:
 
 suno:
   base-url: https://apibox.erweima.ai
-  api-key:  ${SUNO_API_KEY}
+  api-key: ${SUNO_API_KEY}
 
 logging:
   level:
