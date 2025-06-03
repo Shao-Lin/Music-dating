@@ -51,15 +51,14 @@ spring:
             enable: true
 
   management:
-  server:
-    port: 8088
-  endpoints:
-    web:
-      exposure:
-        include: health, info, prometheus
-  endpoint:
-    prometheus:
-      enabled: true	
+    endpoints:
+      web:
+        exposure:
+          include: health,info,prometheus
+    metrics:
+      export:
+        prometheus:
+          enabled: true
 
 jwt:
   secret: ${JWT_SECRET}
