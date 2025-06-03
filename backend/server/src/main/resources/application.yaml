@@ -55,7 +55,7 @@ spring:
       web:
         exposure:
           include: health,info,prometheus
-    endpoint:
+    endpoints:
       prometheus:
         enabled: true
     metrics:
