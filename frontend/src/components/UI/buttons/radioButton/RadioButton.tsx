@@ -31,8 +31,8 @@ export const RadioButton = ({
         value={value}
         onChange={handleChange}
       >
-        <FormControlLabel value="female" control={<Radio />} label="Женский" />
         <FormControlLabel value="male" control={<Radio />} label="Мужской" />
+        <FormControlLabel value="female" control={<Radio />} label="Женский" />
       </RadioGroup>
       {error && <FormHelperText>{error}</FormHelperText>}
     </FormControl>

@@ -6,7 +6,7 @@ import { useState } from "react";
 import { MatchItemType } from "./matchItemType";
 import { useDislikeTargetMutation } from "../../api/usersApi";
 import { useNavigate } from "react-router";
-import { MusicData } from "../userCard/userType";
+//import { MusicData } from "../userCard/userType";
 import { useGetChatForMatchItemQuery } from "../../api/chatApi";
 import { useAppDispatch } from "../../hooks/reduxHook";
 import { setPartnerId } from "../../slices/userData";
@@ -19,7 +19,11 @@ export const MatchItem = ({ item }: Props) => {
   const { data: chatItem } = useGetChatForMatchItemQuery(userId);
   const navigate = useNavigate();
   const [deleteMatch] = useDislikeTargetMutation();
-  const activeTrack: MusicData = tracks[0];
+  const activeTrack = tracks.find((track) => track.isMain === true);
+  if (!activeTrack) {
+    throw new Error("Main track not found");
+  }
+
   const dispatch = useAppDispatch();
 
   const partnerId = userId;

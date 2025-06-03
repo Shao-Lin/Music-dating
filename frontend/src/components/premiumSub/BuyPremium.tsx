@@ -8,6 +8,7 @@ import { styled } from "@mui/material/styles";
 import { ClassicButton } from "../UI/buttons/classicButton/ClassicButton";
 import { CustomModal } from "../modals/questionModal/CustomModal";
 import { SuccessModal } from "../modals/successModal/SuccessModal";
+import { useBuySubMutation } from "../../api/settingsAndEditProfileApi";
 
 const PinkRadio = styled(Radio)({
   "&.Mui-checked": {
@@ -17,14 +18,20 @@ const PinkRadio = styled(Radio)({
 
 export const BuyPremium = () => {
   const navigate = useNavigate();
+  const [buyPremium] = useBuySubMutation();
   const [isModalQuestionOpen, setIsModalQuestionOpen] = useState(false);
   const [isSuccessModalOpen, setSuccessIsModalOpen] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<"yearly" | "monthly">(
     "yearly"
   );
 
-  const handleBuy = () => {
+  const handleBuy = async () => {
     setIsModalQuestionOpen(false);
+    try {
+      await buyPremium(undefined).unwrap();
+    } catch (error) {
+      console.error(error);
+    }
     setSuccessIsModalOpen(true);
   };
 

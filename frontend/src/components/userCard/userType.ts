@@ -2,6 +2,8 @@ export type MusicData = {
   name: string;
   coverUrl: string;
   url: string;
+  isMain: boolean;
+  trackId: string;
 };
 
 export type Photos = {
@@ -39,5 +41,7 @@ export type RecommendationUser = {
     coverUrl: string;
     name: string;
     url: string;
+    isMain: boolean;
+    trackId: string;
   }[];
 };

@@ -18,16 +18,34 @@ import { CustomModal } from "../modals/questionModal/CustomModal";
 import { useLogoutMutation } from "../../api/authApi";
 import { useNavigate } from "react-router";
 import type { userSettingsProps } from "../../pages/SettingsPage";
+import { useGetUserDataQuery } from "../../api/userApi";
+import { useEditProfileMutation } from "../../api/settingsAndEditProfileApi";
 
 export const Settings = ({
-  isAutoplay,
-  city,
-  language,
-  rangeAge,
+  lang,
+  ageFrom,
+  ageTo,
+  subActive,
+  activeFrom,
+  activeTo,
+  autoplay,
 }: userSettingsProps) => {
+  const userSettings = {
+    lang,
+    ageFrom,
+    ageTo,
+    subActive,
+    activeFrom,
+    activeTo,
+    autoplay,
+  };
+  console.log(activeFrom, activeTo);
+  const { data: userData, refetch: refetchUser } =
+    useGetUserDataQuery(undefined);
   const [logout] = useLogoutMutation();
-  const defaultCity: CityOption = { label: city };
-  const [ageRange, setAgeRange] = useState<[number, number]>(rangeAge);
+  const [editCity] = useEditProfileMutation();
+  const defaultCity: CityOption = { label: userData.city };
+  const [ageRange, setAgeRange] = useState<[number, number]>([ageFrom, ageTo]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -58,7 +76,7 @@ export const Settings = ({
         <img src={autoPlay} alt="Автопроигрывание" className="option__icon" />
         <span className="option__label">Автопроигрывание трека</span>
         <div className="option__control switch">
-          <SwitchButton isAutoplay={isAutoplay} />
+          <SwitchButton {...userSettings} />
         </div>
       </div>
 
@@ -71,7 +89,7 @@ export const Settings = ({
         />
         <span className="option__label">Сменить язык</span>
         <div className="option__control radio">
-          <RadioLanguageSelectorBtn language={language} />
+          <RadioLanguageSelectorBtn {...userSettings} />
         </div>
       </div>
 
@@ -91,12 +109,20 @@ export const Settings = ({
             <AutocompleteInput
               name="city"
               value={values.city}
-              onChange={(val) => {
+              onChange={async (val) => {
                 setFieldValue("city", val); // Сначала обновляем значение
                 setTimeout(() => setFieldTouched("city", true), 0); // Затем touched, чтобы избежать race condition
 
                 if (val) {
-                  console.log("Выбранный город:", val.label);
+                  try {
+                    await editCity({
+                      ...userData,
+                      city: val.label, // 👈 город как строка
+                    }).unwrap();
+                    refetchUser();
+                  } catch (error) {
+                    console.error("Ошибка при обновлении города:", error);
+                  }
                 }
               }}
               onBlur={() => {}}
@@ -112,7 +138,11 @@ export const Settings = ({
           <img src={ageIcon} className="option__icon" alt="Возраст" />
           <span className="option__label">Изменить возрастной диапазон</span>
         </div>
-        <AgeRangeSliderInput initialRange={ageRange} onChange={setAgeRange} />
+        <AgeRangeSliderInput
+          initialRange={ageRange}
+          settings={userSettings} // 👈 передаём все настройки
+          onChange={setAgeRange}
+        />
       </div>
 
       {/* Купить подписку */}

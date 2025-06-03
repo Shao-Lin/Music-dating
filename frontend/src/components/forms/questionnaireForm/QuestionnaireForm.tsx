@@ -21,14 +21,19 @@ import { isFetchBaseQueryError } from "../../../utils/errorChecker";
 import { isSerializedError } from "../../../utils/errorChecker";
 import { useAppSelector } from "../../../hooks/reduxHook";
 import type { FormValues } from "./types";
+import { WaitingPage } from "../../../pages/servicePages/waiting/WaitingPage";
 
 export const QuestionnaireForm = () => {
   const [, setImagePreview] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingBtn, setIsLoadingBtn] = useState(false);
   const [authError, setAuthError] = useState("");
-  const [singUp] = useSignupUserMutation();
+  const [singUp, { isLoading }] = useSignupUserMutation();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const [singIn] = useLoginUserMutation();
+
+  const login = useAppSelector((state) => state.authUsers.login);
+  const password = useAppSelector((state) => state.authUsers.password);
 
   const initialValues: FormValues = {
     name: "",
@@ -38,15 +43,13 @@ export const QuestionnaireForm = () => {
     gender: "",
     image: null,
   };
-  const login = useAppSelector((state) => state.authUsers.login);
-  const password = useAppSelector((state) => state.authUsers.password);
 
-  //const login = "bagit2003@mail.ru";
-  //const password = "1234567";
-  const [singIn] = useLoginUserMutation();
+  if (isLoading) {
+    return <WaitingPage />;
+  }
 
   const handleSubmit = async (values: FormValues) => {
-    setIsLoading(true);
+    setIsLoadingBtn(true);
     if (
       !values.city ||
       !values.city.label ||
@@ -89,7 +92,7 @@ export const QuestionnaireForm = () => {
         setAuthError("Что-то пошло не так");
       }
     } finally {
-      setIsLoading(false);
+      setIsLoadingBtn(false);
     }
 
     try {
@@ -126,88 +129,93 @@ export const QuestionnaireForm = () => {
   };
 
   return (
-    <div className="form-wrapper">
-      <Formik<FormValues>
-        initialValues={initialValues}
-        validationSchema={validationSchema}
-        onSubmit={handleSubmit}
-      >
-        {({
-          values,
-          handleChange,
-          handleBlur,
-          setFieldValue,
-          touched,
-          errors,
-          handleSubmit,
-        }) => (
-          <form onSubmit={handleSubmit} className="form">
-            <div className="form-label">Имя</div>
-            <ClassicInput
-              name="name"
-              value={values.name}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              error={touched.name ? errors.name : ""}
-              placeholder="Введите имя"
-            />
+    <>
+      <header className="header-questionnaire">Анкета</header>
+      <main className="container">
+        <div className="form-wrapper">
+          <Formik<FormValues>
+            initialValues={initialValues}
+            validationSchema={validationSchema}
+            onSubmit={handleSubmit}
+          >
+            {({
+              values,
+              handleChange,
+              handleBlur,
+              setFieldValue,
+              touched,
+              errors,
+              handleSubmit,
+            }) => (
+              <form onSubmit={handleSubmit} className="form">
+                <div className="form-label">Имя</div>
+                <ClassicInput
+                  name="name"
+                  value={values.name}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  error={touched.name ? errors.name : ""}
+                  placeholder="Введите имя"
+                />
 
-            <div className="form-label">Дата рождения</div>
-            <DateInput
-              value={values.birthDate}
-              onChange={(val) => setFieldValue("birthDate", val)}
-              onBlur={handleBlur}
-              error={!!(touched.birthDate && errors.birthDate)}
-              helperText={touched.birthDate ? errors.birthDate : ""}
-            />
+                <div className="form-label">Дата рождения</div>
+                <DateInput
+                  value={values.birthDate}
+                  onChange={(val) => setFieldValue("birthDate", val)}
+                  onBlur={handleBlur}
+                  error={!!(touched.birthDate && errors.birthDate)}
+                  helperText={touched.birthDate ? errors.birthDate : ""}
+                />
 
-            <div className="form-label">Город</div>
-            <AutocompleteInput
-              name="city"
-              value={values.city}
-              onChange={(val) => setFieldValue("city", val)}
-              onBlur={handleBlur}
-              error={touched.city ? errors.city : ""}
-            />
+                <div className="form-label">Город</div>
+                <AutocompleteInput
+                  name="city"
+                  value={values.city}
+                  onChange={(val) => setFieldValue("city", val)}
+                  onBlur={handleBlur}
+                  error={touched.city ? errors.city : ""}
+                />
 
-            <div className="form-label">О себе</div>
-            <TextArea
-              value={values.about}
-              onChange={handleChange}
-              name="about"
-              error={touched.about ? errors.about : ""}
-              minRows={5}
-            />
+                <div className="form-label">О себе</div>
+                <TextArea
+                  value={values.about}
+                  onChange={handleChange}
+                  name="about"
+                  error={touched.about ? errors.about : ""}
+                  minRows={5}
+                />
 
-            <div className="form-label">Пол</div>
-            <RadioButton
-              value={values.gender}
-              handleChange={(e) => setFieldValue("gender", e.target.value)}
-              error={touched.gender ? errors.gender : ""}
-            />
+                <div className="form-label">Пол</div>
+                <RadioButton
+                  value={values.gender}
+                  handleChange={(e) => setFieldValue("gender", e.target.value)}
+                  error={touched.gender ? errors.gender : ""}
+                />
 
-            <div className="form-label">Фото</div>
-            <ImageUploader
-              onImageUpload={(file, preview) => {
-                setImagePreview(preview);
-                setFieldValue("image", file);
-              }}
-            />
-            {touched.image && errors.image && (
-              <div className="form-error">{errors.image}</div>
+                <div className="form-label">Фото</div>
+                <ImageUploader
+                  onImageUpload={(file, preview) => {
+                    setImagePreview(preview);
+                    setFieldValue("image", file);
+                  }}
+                />
+                {touched.image && errors.image && (
+                  <div className="form-error">{errors.image}</div>
+                )}
+
+                <div className="form-button">
+                  <ClassicButton
+                    type="submit"
+                    name="Отправить"
+                    isLoading={isLoadingBtn}
+                  />
+                  {authError && <div className="form-error">{authError}</div>}
+                </div>
+              </form>
             )}
-
-            <div className="form-button">
-              <ClassicButton
-                type="submit"
-                name="Отправить"
-                isLoading={isLoading}
-              />
-              {authError && <div className="form-error">{authError}</div>}
-            </div>
-          </form>
-        )}
-      </Formik>
-    </div>
+          </Formik>
+        </div>
+      </main>
+    </>
   );
 };

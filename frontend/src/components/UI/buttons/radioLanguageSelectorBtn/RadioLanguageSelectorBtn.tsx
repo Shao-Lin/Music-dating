@@ -3,6 +3,8 @@ import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { styled } from "@mui/material/styles";
+import { userSettingsProps } from "../../../../pages/SettingsPage";
+import { useEditSettingsMutation } from "../../../../api/settingsAndEditProfileApi";
 
 const PinkRadio = styled(Radio)(() => ({
   width: 15,
@@ -15,20 +17,42 @@ const PinkRadio = styled(Radio)(() => ({
     color: "#FE6D87", // розовый цвет
   },
 }));
-interface PropsLanguage {
-  language: string;
-}
-export const RadioLanguageSelectorBtn = ({ language }: PropsLanguage) => {
-  const [value, setValue] = useState(language);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(event.target.value);
+export const RadioLanguageSelectorBtn = ({
+  lang,
+  ageFrom,
+  ageTo,
+  subActive,
+  activeFrom,
+  activeTo,
+  autoplay,
+}: userSettingsProps) => {
+  const [editLang] = useEditSettingsMutation();
+  const [langEdit, setlangEdit] = useState(lang);
+
+  const handleChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = event.target.value;
+    setlangEdit(newValue); // обновляем UI сразу
+
+    try {
+      await editLang({
+        lang: newValue,
+        ageFrom,
+        ageTo,
+        subActive,
+        activeFrom,
+        activeTo,
+        autoplay,
+      }).unwrap();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
-    <RadioGroup row name="language" value={value} onChange={handleChange}>
-      <FormControlLabel value="Russian" control={<PinkRadio />} label="ru" />
-      <FormControlLabel value="English" control={<PinkRadio />} label="en" />
+    <RadioGroup row name="language" value={langEdit} onChange={handleChange}>
+      <FormControlLabel value="ru" control={<PinkRadio />} label="ru" />
+      <FormControlLabel value="en" control={<PinkRadio />} label="en" />
     </RadioGroup>
   );
 };

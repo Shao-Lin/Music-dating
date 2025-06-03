@@ -1,23 +1,32 @@
 import { useNavigate } from "react-router";
 import arrowBack from "../assets/chat/ArrowBack.svg";
 import { Settings } from "../components/settings/Settings";
-
+import { useGetSettingsDataQuery } from "../api/settingsAndEditProfileApi";
 export type userSettingsProps = {
-  isAutoplay: boolean;
-  language: string;
-  city: string;
-  rangeAge: [number, number];
+  lang: string;
+  ageFrom: number;
+  ageTo: number;
+  subActive: boolean;
+  activeFrom: string;
+  activeTo: string;
+  autoplay: boolean;
 };
 
 export const SettingsPage = () => {
+  const {
+    data: userSettings,
+    isLoading,
+    isError,
+  } = useGetSettingsDataQuery(undefined);
   const navigate = useNavigate();
 
-  const userSettings: userSettingsProps = {
-    isAutoplay: true,
-    language: "Russian",
-    city: "Москва",
-    rangeAge: [18, 35],
-  };
+  if (isLoading) {
+    return <div>Загрузка настроек...</div>;
+  }
+
+  if (isError || !userSettings) {
+    return <div>Ошибка загрузки настроек</div>;
+  }
 
   return (
     <div className="settings">

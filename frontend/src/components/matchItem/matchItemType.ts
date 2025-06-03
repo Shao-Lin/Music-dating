@@ -2,6 +2,8 @@ export type MusicDataMatchItem = {
   coverUrl: string;
   name: string;
   url: string;
+  isMain: boolean;
+  trackId: string;
 };
 
 export type MatchItemType = {

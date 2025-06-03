@@ -36,6 +36,11 @@ export const UserCard = ({
     }
   }, [isAutoplay, userId]);
 
+  const mainTrack = tracks.find((track) => track.isMain === true);
+  if (!mainTrack) {
+    throw new Error("Main track not found");
+  }
+
   return (
     <>
       <div className="carousel-isolation-layer">
@@ -54,7 +59,7 @@ export const UserCard = ({
         <div className="city">г.{city}</div>
       </div>
 
-      <AudioButton ref={audioButtonRef} {...tracks[0]} />
+      <AudioButton ref={audioButtonRef} {...mainTrack} />
     </>
   );
 };

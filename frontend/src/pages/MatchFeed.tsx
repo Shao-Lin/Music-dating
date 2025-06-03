@@ -10,6 +10,7 @@ import {
 } from "../api/usersApi";
 import { useCreateChatMutation } from "../api/chatApi";
 import type { RecommendationUser } from "../components/userCard/userType";
+import { useGetSettingsDataQuery } from "../api/settingsAndEditProfileApi";
 
 export const MatchFeed = () => {
   const size = 5;
@@ -19,6 +20,7 @@ export const MatchFeed = () => {
   const [swipeDirection, setSwipeDirection] = useState<"left" | "right" | null>(
     null
   );
+  const { data: dataSettings } = useGetSettingsDataQuery(undefined);
 
   const loadedUserIds = useRef(new Set<string>()); // ⬅️ отслеживание уникальных пользователей
 
@@ -165,7 +167,7 @@ export const MatchFeed = () => {
             onAnimationComplete={handleAnimationComplete}
             className="animated-card"
           >
-            <UserCard {...currentUser} isAutoplay={false} />
+            <UserCard {...currentUser} isAutoplay={dataSettings.autoplay} />
           </motion.div>
         </AnimatePresence>
       </div>

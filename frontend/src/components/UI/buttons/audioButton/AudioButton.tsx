@@ -13,6 +13,8 @@ type MusicData = {
   name: string;
   coverUrl: string;
   url: string;
+  isMain: boolean;
+  trackId: string;
   isEditProfile?: boolean;
 };
 
