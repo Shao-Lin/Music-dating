@@ -27,4 +27,5 @@ public class UserSettingEntity {
     private Boolean subActive;
     private LocalDate activeFrom;
     private LocalDate activeTo;
+    private Boolean autoplay;
 }

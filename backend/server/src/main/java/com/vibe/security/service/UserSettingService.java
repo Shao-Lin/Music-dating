@@ -15,50 +15,51 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 public class UserSettingService {
 
-    private final UserRepository userRepo;
-    private final UserSettingRepository settingRepo;
+	private final UserRepository userRepo;
+	private final UserSettingRepository settingRepo;
 
-    @Transactional(readOnly = true)
-    public UserSettingDto get(UserEntity userEntity) {
-        UserSettingEntity e = settingRepo.findByUser(userEntity)
-                .orElseThrow();
-        return toDto(e);
-    }
+	@Transactional(readOnly = true)
+	public UserSettingDto get(UserEntity userEntity) {
+		UserSettingEntity e = settingRepo.findByUser(userEntity)
+			.orElseThrow();
+		return toDto(e);
+	}
 
-    @Transactional
-    public void put(UserEntity userEntity, UserSettingDto dto) {
-        UserSettingEntity e = settingRepo.findByUser(userEntity)
-                .orElseThrow();
+	@Transactional
+	public void put(UserEntity userEntity, UserSettingDto dto) {
+		UserSettingEntity e = settingRepo.findByUser(userEntity)
+			.orElseThrow();
 
-        if (dto.lang() != null) e.setLang(dto.lang());
-        if (dto.ageFrom() != null) e.setAgeFrom(dto.ageFrom());
-        if (dto.ageTo() != null) e.setAgeTo(dto.ageTo());
-    }
+		if (dto.lang() != null) e.setLang(dto.lang());
+		if (dto.ageFrom() != null) e.setAgeFrom(dto.ageFrom());
+		if (dto.ageTo() != null) e.setAgeTo(dto.ageTo());
+	}
 
-    @Transactional
-    public void buyMonthly(UserEntity userEntity) {
-        UserSettingEntity e = settingRepo.findByUser(userEntity)
-                .orElseGet(() -> {
-                    UserEntity u = userRepo.findById(userEntity.getId()).orElseThrow();
-                    return settingRepo.save(UserSettingEntity.builder()
-                            .user(u).build());
-                });
+	@Transactional
+	public void buyMonthly(UserEntity userEntity) {
+		UserSettingEntity e = settingRepo.findByUser(userEntity)
+			.orElseGet(() -> {
+				UserEntity u = userRepo.findById(userEntity.getId()).orElseThrow();
+				return settingRepo.save(UserSettingEntity.builder()
+					.user(u).build());
+			});
 
-        LocalDate from = LocalDate.now();
-        LocalDate to   = from.plusMonths(1);
+		LocalDate from = LocalDate.now();
+		LocalDate to = from.plusMonths(1);
 
-        e.setSubActive(true);
-        e.setActiveFrom(from);
-        e.setActiveTo(to);
-    }
+		e.setSubActive(true);
+		e.setActiveFrom(from);
+		e.setActiveTo(to);
+	}
 
-    private static UserSettingDto toDto(UserSettingEntity e) {
-        return new UserSettingDto(
-                e.getLang(),
-                e.getAgeFrom(),
-                e.getAgeTo(),
-                e.getSubActive(),
-                e.getActiveFrom(),
-                e.getActiveTo());
-    }
+	private static UserSettingDto toDto(UserSettingEntity e) {
+		return new UserSettingDto(
+			e.getLang(),
+			e.getAgeFrom(),
+			e.getAgeTo(),
+			e.getSubActive(),
+			e.getActiveFrom(),
+			e.getActiveTo(),
+			e.getAutoplay());
+	}
 }

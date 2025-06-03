@@ -338,6 +338,9 @@ databaseChangeLog:
               - column:
                   name: active_to
                   type: date
+              - column:
+                  name: autoplay
+                  type: boolean
 
         - addForeignKeyConstraint:
             constraintName: fk_user_setting_user

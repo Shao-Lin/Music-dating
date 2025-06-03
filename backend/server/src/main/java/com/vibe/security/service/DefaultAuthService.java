@@ -1,17 +1,11 @@
 package com.vibe.security.service;
 
-import com.vibe.security.entity.relational.RefreshTokenEntity;
-import com.vibe.security.entity.relational.RoleEntity;
-import com.vibe.security.entity.relational.TrackEntity;
-import com.vibe.security.entity.relational.UserEntity;
+import com.vibe.security.entity.relational.*;
 import com.vibe.security.exception.InvalidPasswordException;
 import com.vibe.security.exception.RefreshTokenException;
 import com.vibe.security.exception.UserAlreadyExistsException;
 import com.vibe.security.payload.*;
-import com.vibe.security.repository.relational.RefreshTokenRepository;
-import com.vibe.security.repository.relational.RoleRepository;
-import com.vibe.security.repository.relational.TrackRepository;
-import com.vibe.security.repository.relational.UserRepository;
+import com.vibe.security.repository.relational.*;
 import com.vibe.security.util.JwtUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -50,6 +44,7 @@ public class DefaultAuthService implements AuthService {
     private final TrackRepository trackRepository;
     private final SunoBlockingService sunoBlockingService;
     private final AudioTrimService audioTrimService;
+    private final UserSettingRepository settingRepo;
     private final RestClient restClient = RestClient.builder()
             .defaultHeader(HttpHeaders.ACCEPT, MediaType.ALL_VALUE)
             .build();
@@ -79,6 +74,18 @@ public class DefaultAuthService implements AuthService {
             throw new RuntimeException(e);
         }
         UserEntity savedUser = userRepository.save(userEntity);
+
+        UserSettingEntity userSettingEntity = new UserSettingEntity();
+        userSettingEntity.setLang("ru");
+        userSettingEntity.setUser(userEntity);
+        userSettingEntity.setSubActive(Boolean.FALSE);
+        userSettingEntity.setAgeFrom(18);
+        userSettingEntity.setAgeTo(100);
+        userSettingEntity.setActiveFrom(null);
+        userSettingEntity.setActiveTo(null);
+        userSettingEntity.setAutoplay(Boolean.FALSE);
+
+        settingRepo.save(userSettingEntity);
 
         generateMusic(request.about(), savedUser);
     }
@@ -152,6 +159,8 @@ public class DefaultAuthService implements AuthService {
             log.info("Треки загружены в внутреннее хранилище");
 
             trackRepository.saveAll(List.of(trackEntityFirst, trackEntitySecond));
+
+
         } catch (InterruptedException | IOException e) {
             throw new RuntimeException(e);
         }
