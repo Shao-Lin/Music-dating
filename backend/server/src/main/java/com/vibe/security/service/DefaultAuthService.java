@@ -93,10 +93,7 @@ public class DefaultAuthService implements AuthService {
     public void generateMusic(String about, UserEntity savedUser) {
         List<TrackEntity> trackEntitiesByUser = trackRepository.findTrackEntitiesByUser(savedUser);
         if (trackEntitiesByUser != null && !trackEntitiesByUser.isEmpty()) {
-            for (TrackEntity trackEntity : trackEntitiesByUser) {
-                trackEntity.setIsMain(Boolean.FALSE);
-            }
-            trackRepository.saveAllAndFlush(trackEntitiesByUser);
+					trackRepository.deleteAll(trackEntitiesByUser);
         }
 
         try {
