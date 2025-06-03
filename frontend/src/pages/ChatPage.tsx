@@ -80,8 +80,8 @@ export const ChatPage = () => {
     const client = new Client({
       brokerURL:
         window.location.protocol === "https:"
-          ? "wss://localhost:8088/connect-chat"
-          : "ws://localhost:8088/connect-chat",
+          ? "wss://vibedating.ru/api/connect-chat"
+          : "ws://vibedating.ru/api/connect-chat",
 
       reconnectDelay: 5000,
       heartbeatIncoming: 4000,
