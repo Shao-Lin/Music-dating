@@ -134,7 +134,7 @@ public class DefaultAuthService implements AuthService {
                     .toEntity(Resource.class);
 
             ResponseEntity<Resource> track2Image = restClient.get()
-                    .uri(track1.imageUrl())
+                    .uri(track2.imageUrl())
                     .retrieve()
                     .toEntity(Resource.class);
 
