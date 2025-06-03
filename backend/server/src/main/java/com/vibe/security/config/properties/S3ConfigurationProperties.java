@@ -1,4 +1,4 @@
-package com.vibe.security.config;
+package com.vibe.security.config.properties;
 
 import lombok.Getter;
 import lombok.Setter;

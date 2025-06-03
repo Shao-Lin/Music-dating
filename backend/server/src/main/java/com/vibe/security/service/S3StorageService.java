@@ -1,7 +1,9 @@
 package com.vibe.security.service;
 
-import com.vibe.security.config.S3ConfigurationProperties;
+import com.vibe.security.config.properties.S3ConfigurationProperties;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.core.sync.RequestBody;
@@ -9,10 +11,7 @@ import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -46,6 +45,29 @@ public class S3StorageService {
         }
 
         return urls;
+    }
+
+    // Только для загрузки корявых аудио и картинок!!!
+    public String uploadResource(Resource file, MediaType contentType) throws IOException {
+        String ext = MediaType.IMAGE_JPEG.equals(contentType) ? ".jpeg" : ".mp3";
+        String key = UUID.randomUUID() + "-" + Optional.ofNullable(file.getFilename()).orElse("vibe-file" + ext);
+
+
+        PutObjectRequest request = PutObjectRequest.builder()
+                .bucket(props.getBucket())
+                .key(key)
+                .contentType(contentType.getType())
+                .build();
+        s3.putObject(
+                request,
+                RequestBody.fromBytes(file.getInputStream().readAllBytes())
+        );
+
+        return props.getEndpoint() + "/" + props.getBucket() + "/" + key;
+    }
+
+    public void cutAudio(Resource audio) {
+        
     }
 }
 

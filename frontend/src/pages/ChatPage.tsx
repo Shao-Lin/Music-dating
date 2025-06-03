@@ -82,6 +82,7 @@ export const ChatPage = () => {
         window.location.protocol === "https:"
           ? "wss://localhost:8088/connect-chat"
           : "ws://localhost:8088/connect-chat",
+
       reconnectDelay: 5000,
       heartbeatIncoming: 4000,
       heartbeatOutgoing: 4000,

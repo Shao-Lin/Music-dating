@@ -4,14 +4,17 @@ import com.vibe.security.entity.relational.UserEntity;
 import com.vibe.security.mapper.UserMapper;
 import com.vibe.security.payload.ReactionResponse;
 import com.vibe.security.payload.UserDto;
+import com.vibe.security.payload.UserSettingDto;
 import com.vibe.security.repository.relational.UserRepository;
 import com.vibe.security.service.MatchService;
+import com.vibe.security.service.UserSettingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -23,6 +26,7 @@ public class MatchController {
     private final UserRepository userRepository;
     private final MatchService matchService;
     private final UserMapper userMapper;
+    private final UserSettingService userSettingService;
 
     @GetMapping("/recommendations")
     public Set<UserDto> getUnseenUsers(@AuthenticationPrincipal UserDetails userDetails,
@@ -31,7 +35,14 @@ public class MatchController {
     ) {
         UserEntity user = userRepository.findByUsername(userDetails.getUsername()).get();
 
-        return userRepository.findUnseenUsers(user.getId(), user.getGender(), PageRequest.of(page, size))
+        UserSettingDto userSettingDto = userSettingService.get(user);
+
+        LocalDate today = LocalDate.now();
+
+        LocalDate birthDateTo = today.minusYears(userSettingDto.ageFrom()).plusDays(1);
+        LocalDate birthDateFrom = today.minusYears(userSettingDto.ageTo()).minusDays(1);
+
+        return userRepository.findUnseenUsers(user.getId(), user.getGender(), birthDateFrom, birthDateTo, PageRequest.of(page, size))
                 .stream()
                 .map(userMapper::toDto)
                 .collect(Collectors.toSet());
