@@ -50,6 +50,16 @@ spring:
           starttls:
             enable: true
 
+  management:
+    endpoints:
+      web:
+        exposure:
+          include: health,info,prometheus
+    metrics:
+      export:
+        prometheus:
+          enabled: true
+
 jwt:
   secret: ${JWT_SECRET}
   expiration-minutes: ${AT_EXP_MIN}
