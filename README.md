@@ -50,6 +50,8 @@
 + [SWOT-анализ](https://github.com/Shao-Lin/Music-dating/blob/main/documentation/SWOT%20анализ.jpeg)
 + [CI/CD пайплайн](https://github.com/Shao-Lin/Music-dating/actions/runs/14836229994/job/41648046284)
 + [Отчет о метриках](https://github.com/Shao-Lin/Music-dating/blob/dev/documentation/Отчет%20о%20Метриках.pdf)
++ Курсовая работа [(DOCX)](https://github.com/Shao-Lin/Music-dating/blob/dev/documentation/Курсовая%20работа.docx) [(PDF)](https://github.com/Shao-Lin/Music-dating/blob/dev/documentation/Курсовая%20работа%20.pdf)
+
 
 ## 🖥️ Презентация проекта
 + Презентация ТЗ [(PDF)](https://github.com/Shao-Lin/Music-dating/blob/dev/documentation/Презентация%20Проекта.pdf) [(PPTX)](https://github.com/Shao-Lin/Music-dating/blob/main/documentation/Презентация%20Проекта.pptx)
