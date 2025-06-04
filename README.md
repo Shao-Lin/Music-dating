@@ -43,7 +43,7 @@
 
 ## 📂 Документация проекта
 + Предпроектное исследование [(DOCX)](https://github.com/Shao-Lin/Music-dating/blob/main/documentation/Предпроектное%20исследование.docx) [(PDF)](https://github.com/Shao-Lin/Music-dating/blob/main/documentation/Предпроектное%20исследование.pdf)
-+ Техническое задание [(DOCX)](https://github.com/Shao-Lin/Music-dating/blob/main/documentation/Техническое%20задание.docx) [(PDF)](https://github.com/Shao-Lin/Music-dating/blob/main/documentation/Техническое%20задание.pdf)
++ Техническое задание [(DOCX)](https://github.com/Shao-Lin/Music-dating/blob/dev/documentation/Техническое%20задание.docx) [(PDF)](https://github.com/Shao-Lin/Music-dating/blob/dev/documentation/Техническое%20задание.pdf)
 + [Диаграммы](https://github.com/Shao-Lin/Music-dating/tree/main/documentation/Диаграммы)
 + Брендбук [(PDF)](https://github.com/Shao-Lin/Music-dating/blob/main/documentation/Брендбук.pdf)
 + Инструкция по коммитам [(PDF)](https://github.com/Shao-Lin/Music-dating/blob/dev/documentation/Инструкция%20по%20коммитам%20для%20разработчиков.pdf)
@@ -54,6 +54,7 @@
 ## 🖥️ Презентация проекта
 + Презентация ТЗ [(PDF)](https://github.com/Shao-Lin/Music-dating/blob/dev/documentation/Презентация%20Проекта.pdf) [(PPTX)](https://github.com/Shao-Lin/Music-dating/blob/main/documentation/Презентация%20Проекта.pptx)
 + Презентация проекта 2 аттестация [(PDF)](https://github.com/Shao-Lin/Music-dating/blob/dev/documentation/Презентация%20Проекта%202%20Атта.pdf) [(PPTX)](https://github.com/Shao-Lin/Music-dating/blob/dev/documentation/Презентация%20Проекта%202%20Атта.pptx)
++ Презентация проекта для защиты [(PDF)](https://github.com/Shao-Lin/Music-dating/blob/dev/documentation/Презентация%20Проекта%20для%20защиты.pdf)
 
 ## 🎥 Видео по проекту
 + [Видео-презентация проекта 1 аттестация](https://rutube.ru/video/private/058c2bd30da10fb4d47675282fce108a/?p=AwybtGvjN346jdHVNj1k1w)
