@@ -44,7 +44,7 @@ public class MatchController {
         LocalDate birthDateTo = today.minusYears(userSettingDto.ageFrom()).plusDays(1);
         LocalDate birthDateFrom = today.minusYears(userSettingDto.ageTo()).minusDays(1);
 
-        dailyLimitService.consume(user.getId(), DailyLimitService.UsageType.RECOMMENDATION, userSettingDto.subActive());
+        //dailyLimitService.consume(user.getId(), DailyLimitService.UsageType.RECOMMENDATION, userSettingDto.subActive());
 
         return userRepository.findUnseenUsers(user.getId(), user.getGender(), birthDateFrom, birthDateTo, PageRequest.of(page, size))
                 .stream()
