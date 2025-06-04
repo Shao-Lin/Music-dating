@@ -56,8 +56,7 @@
 ## 🖥️ Презентация проекта
 + Презентация ТЗ [(PDF)](https://github.com/Shao-Lin/Music-dating/blob/dev/documentation/Презентация%20Проекта.pdf) [(PPTX)](https://github.com/Shao-Lin/Music-dating/blob/main/documentation/Презентация%20Проекта.pptx)
 + Презентация проекта 2 аттестация [(PDF)](https://github.com/Shao-Lin/Music-dating/blob/dev/documentation/Презентация%20Проекта%202%20Атта.pdf) [(PPTX)](https://github.com/Shao-Lin/Music-dating/blob/dev/documentation/Презентация%20Проекта%202%20Атта.pptx)
-+ Презентация проекта для защиты [(PDF)](https://github.com/Shao-Lin/Music-dating/blob/dev/documentation/Презентация%20Проекта%20для%20защиты.pdf)
-
++ Презентация проекта для защиты [(PDF)](https://github.com/Shao-Lin/Music-dating/blob/dev/documentation/Презентация%20проекта%20для%20защиты.pdf)
 ## 🎥 Видео по проекту
 + [Видео-презентация проекта 1 аттестация](https://rutube.ru/video/private/058c2bd30da10fb4d47675282fce108a/?p=AwybtGvjN346jdHVNj1k1w)
 + [Видео-презентация проекта 2 аттестация](https://rutube.ru/video/private/666fdeb7622e23982c9cb5cefc320206/?p=-gygOuOWLCIJwNuFg_s9iQ)
