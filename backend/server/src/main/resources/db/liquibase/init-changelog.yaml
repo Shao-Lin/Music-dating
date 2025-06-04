@@ -356,3 +356,39 @@ databaseChangeLog:
             columns:
               - column:
                   name: user_id
+
+
+  - changeSet:
+      id: 010-create-usage-stat-table
+      author: David Chernykh
+      changes:
+        - createTable:
+            tableName: usage_stat
+            columns:
+              - column: { name: user_id,    type: UUID,   constraints: { nullable: false } }
+              - column: { name: usage_date, type: DATE,   constraints: { nullable: false } }
+              - column: { name: recs_left,  type: INT,    constraints: { nullable: false, defaultValueNumeric: 25 } }
+              - column: { name: tracks_left,type: INT,    constraints: { nullable: false, defaultValueNumeric: 2 } }
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+
+        - addPrimaryKey:
+            tableName: usage_stat
+            columnNames: user_id, usage_date
+            constraintName: pk_usage_stat
+
+        - addForeignKeyConstraint:
+            baseTableName: usage_stat
+            baseColumnNames: user_id
+            referencedTableName: users
+            referencedColumnNames: id
+            onDelete: CASCADE
+            constraintName: fk_usage_stat_user
+
+        - createIndex:
+            tableName: usage_stat
+            indexName: idx_usage_stat_user
+            columns:
+              - column: { name: user_id }

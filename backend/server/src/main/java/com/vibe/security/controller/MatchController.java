@@ -6,6 +6,7 @@ import com.vibe.security.payload.ReactionResponse;
 import com.vibe.security.payload.UserDto;
 import com.vibe.security.payload.UserSettingDto;
 import com.vibe.security.repository.relational.UserRepository;
+import com.vibe.security.service.DailyLimitService;
 import com.vibe.security.service.MatchService;
 import com.vibe.security.service.UserSettingService;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,7 @@ public class MatchController {
     private final MatchService matchService;
     private final UserMapper userMapper;
     private final UserSettingService userSettingService;
+    private final DailyLimitService dailyLimitService;
 
     @GetMapping("/recommendations")
     public Set<UserDto> getUnseenUsers(@AuthenticationPrincipal UserDetails userDetails,
@@ -41,6 +43,8 @@ public class MatchController {
 
         LocalDate birthDateTo = today.minusYears(userSettingDto.ageFrom()).plusDays(1);
         LocalDate birthDateFrom = today.minusYears(userSettingDto.ageTo()).minusDays(1);
+
+        dailyLimitService.consume(user.getId(), DailyLimitService.UsageType.RECOMMENDATION, userSettingDto.subActive());
 
         return userRepository.findUnseenUsers(user.getId(), user.getGender(), birthDateFrom, birthDateTo, PageRequest.of(page, size))
                 .stream()

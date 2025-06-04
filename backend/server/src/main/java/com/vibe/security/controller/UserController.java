@@ -7,10 +7,7 @@ import com.vibe.security.payload.UserDto;
 import com.vibe.security.payload.UserSettingDto;
 import com.vibe.security.repository.relational.TrackRepository;
 import com.vibe.security.repository.relational.UserRepository;
-import com.vibe.security.service.DefaultAuthService;
-import com.vibe.security.service.S3StorageService;
-import com.vibe.security.service.UserPhotoService;
-import com.vibe.security.service.UserSettingService;
+import com.vibe.security.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -35,6 +32,7 @@ public class UserController {
     private final UserSettingService userSettingService;
     private final DefaultAuthService defaultAuthService;
     private final TrackRepository trackRepository;
+    private final DailyLimitService dailyLimitService;
 
     @GetMapping("/me")
     public UserDto getUserInfo(@AuthenticationPrincipal UserDetails userDetails) {
@@ -93,6 +91,8 @@ public class UserController {
     @PatchMapping("/regenerate-track")
     public void regenerateTrack(@AuthenticationPrincipal UserDetails ud) {
         UserEntity user = userRepository.findByUsername(ud.getUsername()).get();
+        UserSettingDto userSettingDto = userSettingService.get(user);
+        dailyLimitService.consume(user.getId(), DailyLimitService.UsageType.RECOMMENDATION, userSettingDto.subActive());
         defaultAuthService.generateMusic(user.getAbout(), user);
     }
 
