@@ -29,17 +29,23 @@ export const MatchFeedGuest = () => {
     name: "In the end",
     coverUrl: cov3,
     url: sound,
+    isMain: true,
+    trackId: "1",
   };
   const musicdata2: MusicData = {
     name: "Miracle",
     coverUrl: cov2,
     url: sound,
+    isMain: true,
+    trackId: "1",
   };
 
   const musicdata3: MusicData = {
     name: "Fragile",
     coverUrl: cov6,
     url: sound,
+    isMain: true,
+    trackId: "1",
   };
   const arrMusic1 = [musicdata];
   const arrMusic2 = [musicdata2];
