@@ -5,7 +5,7 @@ server:
 spring:
   data:
     mongodb:
-      uri: ${SPRING_DATA_MONGODB_URI:mongodb://user:123@localhost:27017/vibeapp?authSource=admin}
+      uri: ${SPRING_DATA_MONGODB_URI:mongodb://user:123@mongo:27017/vibeapp?authSource=admin}
 
   application:
     name: vibe-auth-server
