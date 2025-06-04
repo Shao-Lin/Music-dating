@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import { useSendingAuthCodeMutation } from "../../../../api/authApi";
 import { useAppSelector } from "../../../../hooks/reduxHook";
+import { useTranslation } from "react-i18next";
 
 export const CodeInput = () => {
   const [code, setCode] = useState(["", "", "", ""]);
@@ -10,6 +11,7 @@ export const CodeInput = () => {
   const navigate = useNavigate();
   const [sendingCode] = useSendingAuthCodeMutation();
   const login = useAppSelector((state) => state.authUsers.login);
+  const { t } = useTranslation(); // используем общий t
 
   const handleChange = async (value: string, index: number) => {
     if (!/^\d?$/.test(value)) return; // только цифры или пусто
@@ -37,7 +39,7 @@ export const CodeInput = () => {
         console.log("Успех:", response);
       } catch (error) {
         console.error("Ошибка:", error);
-        setError("Неверный код. Попробуйте снова.");
+        setError(t("inputCodePage.errors.invalidCode"));
       }
     }
   };

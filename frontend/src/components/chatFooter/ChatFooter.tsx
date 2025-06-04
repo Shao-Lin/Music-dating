@@ -3,6 +3,7 @@ import { Formik, Form, Field, FormikHelpers } from "formik";
 import photoIcon from "../../assets/chat/addImage.png";
 import sendIcon from "../../assets/chat/sendMessage.png";
 import { useAddMessageMutation } from "../../api/chatApi";
+import { useTranslation } from "react-i18next";
 
 type FormValues = {
   message: string;
@@ -16,6 +17,7 @@ export const ChatFooter = ({ chatId }: ChatProp) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [addMessage, { isLoading }] = useAddMessageMutation();
+  const { t } = useTranslation();
 
   const initialValues: FormValues = { message: "", files: [] };
 
@@ -53,7 +55,7 @@ export const ChatFooter = ({ chatId }: ChatProp) => {
     <>
       {imagePreview && (
         <div className="chat-footer__preview">
-          <img src={imagePreview} alt="preview" />
+          <img src={imagePreview} alt={t("chatFooter.previewImageAlt")} />
         </div>
       )}
 
@@ -72,7 +74,7 @@ export const ChatFooter = ({ chatId }: ChatProp) => {
                   className="chat-footer__photo-btn"
                   onClick={() => fileInputRef.current?.click()}
                 >
-                  <img src={photoIcon} alt="add" />
+                  <img src={photoIcon} alt={t("chatFooter.addImageAlt")} />
                 </button>
 
                 <input
@@ -93,7 +95,7 @@ export const ChatFooter = ({ chatId }: ChatProp) => {
 
                 <Field
                   name="message"
-                  placeholder="Введите сообщение..."
+                  placeholder={t("chatFooter.placeholder")}
                   className="chat-footer__input"
                 />
 
@@ -102,7 +104,7 @@ export const ChatFooter = ({ chatId }: ChatProp) => {
                   type="submit"
                   className="chat-footer__send-btn"
                 >
-                  <img src={sendIcon} alt="send" />
+                  <img src={sendIcon} alt={t("chatFooter.sendMessageAlt")} />
                 </button>
               </Form>
             );

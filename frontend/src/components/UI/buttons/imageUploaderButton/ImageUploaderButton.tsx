@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Avatar } from "@mui/material";
 import "./_imageUploader.scss";
 import plusImage from "../../../../assets/plusImage.svg";
+import { useTranslation } from "react-i18next";
 
 interface ImageUploaderProps {
   onImageUpload?: (file: File, preview: string) => void;
@@ -10,6 +11,7 @@ interface ImageUploaderProps {
 export const ImageUploader: React.FC<ImageUploaderProps> = ({
   onImageUpload = () => {},
 }: ImageUploaderProps) => {
+  const { t } = useTranslation();
   const [preview, setPreview] = useState<string | null>(null);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,7 +42,9 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
       <label htmlFor="upload-photo" className="image-uploader__label">
         <div className="image-uploader__button">
           <img src={plusImage} alt="" className="image-uploader__icon" />
-          <span className="image-uploader__text">Загрузить фото</span>
+          <span className="image-uploader__text">
+            {t("questionnairePage.uploadPhoto")}
+          </span>
         </div>
       </label>
       {preview && (

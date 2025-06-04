@@ -16,12 +16,13 @@ import {
 import { useNavigate } from "react-router";
 import { deleteCredentials } from "../../../slices/authSlice";
 import { useAppDispatch } from "../../../hooks/reduxHook";
-import { validationSchema } from "./validation";
+import { getValidationSchema } from "./validation";
 import { isFetchBaseQueryError } from "../../../utils/errorChecker";
 import { isSerializedError } from "../../../utils/errorChecker";
 import { useAppSelector } from "../../../hooks/reduxHook";
 import type { FormValues } from "./types";
 import { WaitingPage } from "../../../pages/servicePages/waiting/WaitingPage";
+import { useTranslation } from "react-i18next";
 
 export const QuestionnaireForm = () => {
   const [, setImagePreview] = useState<string | null>(null);
@@ -34,6 +35,7 @@ export const QuestionnaireForm = () => {
 
   const login = useAppSelector((state) => state.authUsers.login);
   const password = useAppSelector((state) => state.authUsers.password);
+  const { t } = useTranslation();
 
   const initialValues: FormValues = {
     name: "",
@@ -130,12 +132,14 @@ export const QuestionnaireForm = () => {
 
   return (
     <>
-      <header className="header-questionnaire">Анкета</header>
+      <header className="header-questionnaire">
+        {t("questionnairePage.title")}
+      </header>
       <main className="container">
         <div className="form-wrapper">
           <Formik<FormValues>
             initialValues={initialValues}
-            validationSchema={validationSchema}
+            validationSchema={getValidationSchema(t)}
             onSubmit={handleSubmit}
           >
             {({
@@ -148,17 +152,21 @@ export const QuestionnaireForm = () => {
               handleSubmit,
             }) => (
               <form onSubmit={handleSubmit} className="form">
-                <div className="form-label">Имя</div>
+                <div className="form-label">
+                  {t("questionnairePage.name.label")}
+                </div>
                 <ClassicInput
                   name="name"
                   value={values.name}
                   onChange={handleChange}
                   onBlur={handleBlur}
                   error={touched.name ? errors.name : ""}
-                  placeholder="Введите имя"
+                  placeholder={t("questionnairePage.name.placeholder")}
                 />
 
-                <div className="form-label">Дата рождения</div>
+                <div className="form-label">
+                  {t("questionnairePage.birthDate.label")}
+                </div>
                 <DateInput
                   value={values.birthDate}
                   onChange={(val) => setFieldValue("birthDate", val)}
@@ -167,7 +175,9 @@ export const QuestionnaireForm = () => {
                   helperText={touched.birthDate ? errors.birthDate : ""}
                 />
 
-                <div className="form-label">Город</div>
+                <div className="form-label">
+                  {t("questionnairePage.city.label")}
+                </div>
                 <AutocompleteInput
                   name="city"
                   value={values.city}
@@ -176,7 +186,9 @@ export const QuestionnaireForm = () => {
                   error={touched.city ? errors.city : ""}
                 />
 
-                <div className="form-label">О себе</div>
+                <div className="form-label">
+                  {t("questionnairePage.about.label")}
+                </div>
                 <TextArea
                   value={values.about}
                   onChange={handleChange}
@@ -185,14 +197,18 @@ export const QuestionnaireForm = () => {
                   minRows={5}
                 />
 
-                <div className="form-label">Пол</div>
+                <div className="form-label">
+                  {t("questionnairePage.gender.label")}
+                </div>
                 <RadioButton
                   value={values.gender}
                   handleChange={(e) => setFieldValue("gender", e.target.value)}
                   error={touched.gender ? errors.gender : ""}
                 />
 
-                <div className="form-label">Фото</div>
+                <div className="form-label">
+                  {t("questionnairePage.image.label")}
+                </div>
                 <ImageUploader
                   onImageUpload={(file, preview) => {
                     setImagePreview(preview);
@@ -206,7 +222,7 @@ export const QuestionnaireForm = () => {
                 <div className="form-button">
                   <ClassicButton
                     type="submit"
-                    name="Отправить"
+                    name={t("questionnairePage.submit")}
                     isLoading={isLoadingBtn}
                   />
                   {authError && <div className="form-error">{authError}</div>}

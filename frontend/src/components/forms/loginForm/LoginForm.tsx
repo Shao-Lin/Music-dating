@@ -6,15 +6,11 @@ import { ClassicButton } from "../../UI/buttons/classicButton/ClassicButton";
 import { useState } from "react";
 import { useLoginUserMutation } from "../../../api/authApi";
 import { useNavigate } from "react-router";
-import { isFetchBaseQueryError } from "../../../utils/errorChecker";
-import { isSerializedError } from "../../../utils/errorChecker";
-
-const validationSchema = Yup.object({
-  login: Yup.string()
-    .required("Обязательное поле")
-    .email("Введите корректный email."),
-  password: Yup.string().required("Обязательное поле"),
-});
+import {
+  isFetchBaseQueryError,
+  isSerializedError,
+} from "../../../utils/errorChecker";
+import { useTranslation } from "react-i18next";
 
 type CredentialsType = {
   login: string;
@@ -22,39 +18,37 @@ type CredentialsType = {
 };
 
 export const LoginForm = () => {
+  const { t } = useTranslation();
   const [authError, setAuthError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const [login] = useLoginUserMutation();
 
+  const validationSchema = Yup.object({
+    login: Yup.string().required(t("required")).email(t("invalidEmail")),
+    password: Yup.string().required(t("required")),
+  });
+
   const handleLogin = async (credentials: CredentialsType) => {
     try {
       const { accessToken, refreshToken } = await login(credentials).unwrap();
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
-      console.log(`login ${localStorage.getItem("accessToken")}`);
-      console.log(`refresh ${localStorage.getItem("refreshToken")}`);
-
-      console.log("успех входа");
-
       navigate("/profile");
     } catch (err) {
       if (isFetchBaseQueryError(err)) {
-        // Ошибка от сервера
         if (err.status === 401) {
-          setAuthError("Неверный логин или пароль");
+          setAuthError(t("invalidCredentials"));
         } else if (err.status === 400) {
-          setAuthError("Некорректный запрос");
+          setAuthError(t("badRequest"));
         } else {
-          setAuthError(`Ошибка сервера: ${err.status}`);
+          setAuthError(t("serverError", { status: err.status }));
         }
       } else if (isSerializedError(err)) {
-        // Ошибка сериализации
-        setAuthError(err.message || "Неизвестная ошибка");
+        setAuthError(err.message || t("unknownError"));
       } else {
-        // Другие ошибки
-        setAuthError("Что-то пошло не так");
+        setAuthError(t("unknownError"));
       }
     } finally {
       setIsLoading(false);
@@ -77,19 +71,19 @@ export const LoginForm = () => {
           handleSubmit,
         }) => (
           <form onSubmit={handleSubmit} className="form">
-            <div className="form-title">Вход</div>
+            <div className="form-title">{t("loginTitle")}</div>
 
-            <div className="form-label">E-mail</div>
+            <div className="form-label">{t("emailLabel")}</div>
             <ClassicInput
               name="login"
               value={values.login}
               onChange={handleChange}
               onBlur={handleBlur}
               error={touched.login ? errors.login : ""}
-              placeholder="Введите логин"
+              placeholder={t("emailPlaceholder")}
             />
 
-            <div className="form-label">Пароль</div>
+            <div className="form-label">{t("passwordLabel")}</div>
             <PasswordInput
               name="password"
               value={values.password}
@@ -99,7 +93,11 @@ export const LoginForm = () => {
             />
 
             <div className="form-button">
-              <ClassicButton name="Войти" type="submit" isLoading={isLoading} />
+              <ClassicButton
+                name={t("loginBtn")}
+                type="submit"
+                isLoading={isLoading}
+              />
               {authError && <div className="form-error">{authError}</div>}
             </div>
           </form>

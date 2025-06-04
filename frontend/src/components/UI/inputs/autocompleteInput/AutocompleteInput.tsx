@@ -1,6 +1,7 @@
 import { cities } from "./cities";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
+import { useTranslation } from "react-i18next";
 
 export interface CityOption {
   label: string;
@@ -21,6 +22,7 @@ export const AutocompleteInput = ({
   onBlur,
   error,
 }: AutocompleteInputProps) => {
+  const { t } = useTranslation();
   return (
     <Autocomplete
       disablePortal
@@ -33,7 +35,7 @@ export const AutocompleteInput = ({
         <TextField
           {...params}
           name={name}
-          label="Выберите город"
+          label={t("questionnairePage.cityLabel")}
           onBlur={onBlur}
           error={!!error}
           helperText={error}

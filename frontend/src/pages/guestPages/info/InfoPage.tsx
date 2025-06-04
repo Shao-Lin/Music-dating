@@ -1,22 +1,26 @@
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 export const InfoPage = () => {
+  const { t } = useTranslation();
+
   return (
     <div className="welcome-page">
-      <div className="title">Vibe</div>
+      <div className="title">{t("infoPage.title")}</div>
       <div className="description">
-        Добро пожаловать! <br />
-        Вам будут доступны 5 профилей для ознакомления с приложением.
+        {t("infoPage.welcomeMessage1")}
         <br />
-        После вы сможете зарегистрироваться
+        {t("infoPage.welcomeMessage2")}
+        <br />
+        {t("infoPage.welcomeMessage3")}
       </div>
       <div className="spacer" />
       <div className="nav-buttons">
         <Link to="/login" className="nav-button back">
-          Назад
+          {t("infoPage.back")}
         </Link>
         <Link to="/introductoryFeed" className="nav-button next">
-          Далее
+          {t("infoPage.next")}
         </Link>
       </div>
     </div>

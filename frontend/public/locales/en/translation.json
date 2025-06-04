@@ -1,0 +1,161 @@
+{
+  "autoplay": "Autoplay track",
+  "changeLanguage": "Change language",
+  "changeLocation": "Change location",
+  "changeAgeRange": "Change age range",
+  "premiumAlt": "Premium subscription",
+  "buy": "Buy",
+  "logout": "Log out",
+  "logoutConfirm": "Are you sure you want to log out?",
+  "back": "Back",
+  "cityRequired": "City is required",
+  "loading": "Loading...",
+  "errorLoading": "Error loading data",
+
+  "loginTitle": "Login",
+  "emailLabel": "E-mail",
+  "passwordLabel": "Password",
+  "loginBtn": "Log in",
+  "emailPlaceholder": "Enter your email",
+  "required": "This field is required",
+  "invalidEmail": "Please enter a valid email address.",
+  "invalidCredentials": "Invalid login or password",
+  "badRequest": "Bad request",
+  "serverError": "Server error: {{status}}",
+  "unknownError": "Something went wrong",
+
+  "signUpPage": {
+    "title": "Sign Up",
+    "emailLabel": "E-mail",
+    "emailPlaceholder": "Enter email",
+    "passwordLabel": "Password",
+    "confirmPasswordLabel": "Confirm Password",
+    "sendCodeBtn": "Send Code",
+    "required": "This field is required",
+    "invalidEmail": "Enter a valid email",
+    "minPassword": "At least 6 characters",
+    "passwordMismatch": "Passwords do not match",
+    "emailSendError": "Error sending email",
+    "serverConnectionError": "Server connection error",
+    "unknownError": "Unknown error"
+  },
+  "loginPage": {
+    "guestLogin": "Continue as Guest",
+    "signUpLink": "Sign Up"
+  },
+
+  "questionnairePage": {
+    "title": "Questionnaire",
+    "name": {
+      "label": "Name",
+      "placeholder": "Enter your name"
+    },
+    "birthDate": {
+      "label": "Birth Date"
+    },
+    "city": {
+      "label": "City"
+    },
+    "about": {
+      "label": "About You"
+    },
+    "gender": {
+      "label": "Gender",
+      "male": "Male",
+      "female": "Female"
+    },
+    "image": {
+      "label": "Photo"
+    },
+    "submit": "Submit",
+    "errors": {
+      "userExists": "User already exists",
+      "badRequest": "Invalid request",
+      "unauthorized": "Incorrect login or password",
+      "unknown": "Something went wrong",
+
+      "required": "This field is required",
+      "invalidDate": "Enter a valid date",
+      "futureDate": "Date of birth cannot be in the future",
+      "ageLimit": "Age must be between 18 and 100",
+      "minAbout": "Minimum 5 characters",
+      "imageRequired": "Photo is required",
+      "fileSize": "File size must not exceed 10 MB",
+      "fileType": "Unsupported image format"
+    },
+    "datePlaceholder": "Select your date of birth",
+    "cityLabel": "Select a city",
+    "aboutPlaceholder": "Tell us about yourself",
+
+    "uploadPhoto": "Upload a photo"
+  },
+  "inputCodePage": {
+    "emailSent": "We sent a registration code to your email <1>{{email}}</1>.",
+    "enterCode": "Enter the 4-digit code from the email",
+    "resend": "Resend",
+    "resendIn": "Resend in {{seconds}} sec",
+
+    "errors": {
+      "emailNotFound": "Email not found",
+      "sendError": "Error sending email",
+      "networkError": "Connection error",
+      "unknownError": "Unknown error"
+    }
+  },
+  "title": "Edit Profile",
+  "loadingUserData": "Loading user data...",
+  "aboutLabel": "About me",
+  "generate": "Generate",
+  "validation": {
+    "required": "This field is required",
+    "min": "Minimum 10 characters"
+  },
+  "chatFooter": {
+    "placeholder": "Enter your message...",
+    "addImageAlt": "Add image",
+    "sendMessageAlt": "Send message",
+    "previewImageAlt": "Image preview"
+  },
+  "waitingPage": {
+    "alt": "Waiting",
+    "text": "Please wait, music is being generated"
+  },
+  "buyPremiumPage": {
+    "back": "Back",
+    "titleLine1": "Vibe",
+    "titleLine2": "Premium",
+    "swipesUnlimited": "Unlimited number of swipes",
+    "tracksUnlimited": "Unlimited track generation",
+    "yearlyPlan": "Yearly",
+    "monthlyPlan": "Monthly",
+    "discount": "-25%",
+    "monthlyPriceYearlyPlan": "225₽ per month",
+    "yearlyPrice": "2,700₽ per year",
+    "monthlyPrice": "299₽ per month",
+    "buyYearly": "Buy subscription for 2,700₽ per year",
+    "buyMonthly": "Buy subscription for 299₽ per month",
+    "confirmModalText": "Purchase Vibe Premium?",
+    "confirm": "Yes",
+    "cancel": "Back"
+  },
+  "limitPage": {
+    "limitReachedAlt": "Limit reached",
+    "usedAllAttempts": "You have used all your trial attempts.",
+    "getAccess": "To get access to all app features and new swipes, you can",
+    "register": "Sign up"
+  },
+  "userLimitPage": {
+    "alt": "Swipe limit",
+    "limitReachedMessage": "You have reached the daily swipe limit. Please wait to continue",
+    "orBuy": "Or buy",
+    "vibePremium": "Vibe Premium"
+  },
+  "infoPage": {
+    "title": "Vibe",
+    "welcomeMessage1": "Welcome!",
+    "welcomeMessage2": "You will have access to 5 profiles to get familiar with the app.",
+    "welcomeMessage3": "Afterwards, you can register",
+    "back": "Back",
+    "next": "Next"
+  }
+}

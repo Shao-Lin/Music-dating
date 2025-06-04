@@ -5,6 +5,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import { styled } from "@mui/material/styles";
 import { userSettingsProps } from "../../../../pages/SettingsPage";
 import { useEditSettingsMutation } from "../../../../api/settingsAndEditProfileApi";
+import { useTranslation } from "react-i18next";
 
 const PinkRadio = styled(Radio)(() => ({
   width: 15,
@@ -27,11 +28,14 @@ export const RadioLanguageSelectorBtn = ({
   activeTo,
   autoplay,
 }: userSettingsProps) => {
+  const { i18n } = useTranslation();
   const [editLang] = useEditSettingsMutation();
   const [langEdit, setlangEdit] = useState(lang);
 
   const handleChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value;
+    i18n.changeLanguage(newValue);
+    console.log(newValue);
     setlangEdit(newValue); // обновляем UI сразу
 
     try {

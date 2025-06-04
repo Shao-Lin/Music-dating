@@ -3,6 +3,7 @@ import type { DatePickerProps } from "antd";
 import type { FocusEventHandler } from "react";
 import dayjs from "dayjs";
 import "dayjs/locale/ru";
+import { useTranslation } from "react-i18next";
 
 export interface DateProps {
   value: Date | null;
@@ -18,6 +19,7 @@ export const DateInput = ({
   error,
   helperText,
 }: DateProps) => {
+  const { t } = useTranslation();
   const handleChange: DatePickerProps["onChange"] = (date) => {
     onChange(date ? date.toDate() : null);
   };
@@ -29,7 +31,7 @@ export const DateInput = ({
         value={value ? dayjs(value) : null}
         onChange={handleChange}
         format="DD.MM.YYYY"
-        placeholder="Выберите дату рождения"
+        placeholder={t("questionnairePage.datePlaceholder")}
         style={{
           width: "100%",
           height: "52px",

@@ -14,17 +14,13 @@ import { useRegenerateTracksMutation } from "../../../api/settingsAndEditProfile
 import { WaitingPage } from "../../../pages/servicePages/waiting/WaitingPage";
 import { useNavigate } from "react-router";
 import arrowBack from "../../../assets/chat/ArrowBack.svg";
-
-const validationSchema = Yup.object({
-  about: Yup.string()
-    .required("Это поле обязательно")
-    .min(10, "Минимум 10 символов"),
-});
+import { useTranslation } from "react-i18next";
 
 type UserData = {
   about: string;
   tracks: Track[];
 };
+
 interface FormValues {
   about: string;
 }
@@ -37,32 +33,52 @@ export const EditProfileForm = () => {
   } = useGetUserDataQuery(undefined);
   const [editProfile] = useEditProfileMutation();
   const [regenerateTrack, { isLoading }] = useRegenerateTracksMutation();
+  const [patchActiveTrack] = usePatchActiveTrackMutation();
   const navigate = useNavigate();
   const [selectedTrack, setSelectedTrack] = useState<number | null>(null);
-  const [patchActiveTrack] = usePatchActiveTrackMutation();
+  const [localTracks, setLocalTracks] = useState<Track[]>([]);
+  const { t } = useTranslation();
 
-  // Устанавливаем активный трек при первом рендере
+  const validationSchema = Yup.object({
+    about: Yup.string()
+      .required(t("validation.required"))
+      .min(10, t("validation.min")),
+  });
+
+  // Инициализация локального состояния треков
   useEffect(() => {
-    const activeIndex = tracks.findIndex((track: Track) => track.isMain);
-    if (activeIndex === -1) {
-      throw new Error("Main track not found");
+    if (user?.tracks) {
+      setLocalTracks(user.tracks); // Сохраняем исходный порядок треков
+      const activeIndex = user.tracks.findIndex((track: Track) => track.isMain);
+      if (activeIndex === -1) {
+        console.error("Main track not found");
+        setSelectedTrack(0); // Устанавливаем первый трек по умолчанию
+      } else {
+        setSelectedTrack(activeIndex);
+      }
     }
-    setSelectedTrack(activeIndex);
   }, [user]);
 
+  // Обработка смены активного трека
   const handleTrackChange = async (index: number) => {
     setSelectedTrack(index);
-    const selectedTrack = tracks[index];
-    console.log("Изменён активный трек:", selectedTrack);
+    const selectedTrackData = localTracks[index];
+    console.log("Изменён активный трек:", selectedTrackData);
 
     try {
-      await patchActiveTrack(selectedTrack.trackId).unwrap();
+      await patchActiveTrack(selectedTrackData.trackId).unwrap();
+      // Обновляем только флаг isMain, сохраняя порядок треков
       refetch();
+      const updatedTracks = localTracks.map((track, i) =>
+        i === index ? { ...track, isMain: true } : { ...track, isMain: false }
+      );
+      setLocalTracks(updatedTracks);
     } catch (error) {
-      console.error(error);
+      console.error("Ошибка при смене активного трека:", error);
     }
   };
 
+  // Обработка отправки формы
   const handleSubmit = async (values: FormValues) => {
     try {
       await editProfile({
@@ -81,14 +97,14 @@ export const EditProfileForm = () => {
   };
 
   if (isUserLoading) {
-    return <div>Загрузка данных пользователя...</div>;
+    return <div>{t("loadingUserData")}</div>;
   }
 
   if (isLoading) {
     return <WaitingPage />;
   }
 
-  const { tracks, about } = user as UserData;
+  const { about } = user as UserData;
 
   return (
     <>
@@ -96,7 +112,7 @@ export const EditProfileForm = () => {
         className="edit-profile__back-button"
         onClick={() => navigate(-1)}
       >
-        <img src={arrowBack} alt="Назад" />
+        <img src={arrowBack} alt={t("back")} />
       </button>
 
       <div className="edit-profile__title">Vibe</div>
@@ -108,7 +124,7 @@ export const EditProfileForm = () => {
         >
           {({ values, errors, touched, handleChange }) => (
             <Form>
-              <div className="about-title">О себе</div>
+              <div className="about-title">{t("aboutLabel")}</div>
 
               <TextArea
                 name="about"
@@ -119,8 +135,8 @@ export const EditProfileForm = () => {
               />
 
               <div className="audio-section">
-                {tracks.map((track, index) => (
-                  <div className="audio-track" key={index}>
+                {localTracks.map((track, index) => (
+                  <div className="audio-track" key={track.trackId || index}>
                     <AudioButton {...track} isEditProfile={true} />
                     <input
                       type="radio"
@@ -134,7 +150,7 @@ export const EditProfileForm = () => {
               </div>
 
               <div className="generate-button-wrapper">
-                <ClassicButton name="Сгенерировать" type="submit" />
+                <ClassicButton name={t("generate")} type="submit" />
               </div>
             </Form>
           )}

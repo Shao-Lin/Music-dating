@@ -9,18 +9,7 @@ import { setCredentials } from "../../../slices/authSlice";
 import { useNavigate } from "react-router";
 import { useSendingEmailMutation } from "../../../api/authApi";
 import { isFetchBaseQueryError } from "../../../utils/errorChecker";
-
-const validationSchema = Yup.object({
-  login: Yup.string()
-    .email("Введите корректный email")
-    .required("Обязательное поле"),
-  password: Yup.string()
-    .min(6, "Не менее 6 символов")
-    .required("Обязательное поле"),
-  confirmPassword: Yup.string()
-    .min(6, "Не менее 6 символов")
-    .required("Обязательное поле"),
-});
+import { useTranslation } from "react-i18next";
 
 type CredentialsType = {
   login: string;
@@ -29,37 +18,49 @@ type CredentialsType = {
 };
 
 export const SignUpForm = () => {
+  const { t } = useTranslation(); // используем общий t
   const [sendEmailError, setSendEmailError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [sendingEmail] = useSendingEmailMutation();
 
+  const validationSchema = Yup.object({
+    login: Yup.string()
+      .email(t("signUpPage.invalidEmail"))
+      .required(t("signUpPage.required")),
+    password: Yup.string()
+      .min(6, t("signUpPage.minPassword"))
+      .required(t("signUpPage.required")),
+    confirmPassword: Yup.string()
+      .min(6, t("signUpPage.minPassword"))
+      .required(t("signUpPage.required")),
+  });
+
   const handleSubmit = async (credentials: CredentialsType) => {
     const { login, password, confirmPassword } = credentials;
     if (password !== confirmPassword) {
-      setSendEmailError("Пароли не совпадают");
+      setSendEmailError(t("signUpPage.passwordMismatch"));
       return;
     }
 
     try {
       setIsLoading(true);
-      await sendingEmail(login).unwrap(); // важно!
+      await sendingEmail(login).unwrap();
       dispatch(setCredentials({ login, password }));
       navigate("/inputCode");
     } catch (error) {
       if (isFetchBaseQueryError(error)) {
         if ("status" in error) {
-          // Пример если API вернул JSON: { message: "Email не найден" }
           const errData = error.data as { message?: string };
-          setSendEmailError(errData?.message || "Ошибка при отправке email");
+          setSendEmailError(errData?.message || t("signUpPage.emailSendError"));
         } else {
-          setSendEmailError("Ошибка подключения к серверу");
+          setSendEmailError(t("signUpPage.serverConnectionError"));
         }
       } else if (error instanceof Error) {
         setSendEmailError(error.message);
       } else {
-        setSendEmailError("Неизвестная ошибка");
+        setSendEmailError(t("signUpPage.unknownError"));
       }
     } finally {
       setIsLoading(false);
@@ -82,19 +83,19 @@ export const SignUpForm = () => {
           handleSubmit,
         }) => (
           <form onSubmit={handleSubmit} className="form">
-            <div className="form-title">Регистрация</div>
+            <div className="form-title">{t("signUpPage.title")}</div>
 
-            <div className="form-label">E-mail</div>
+            <div className="form-label">{t("signUpPage.emailLabel")}</div>
             <ClassicInput
               name="login"
               value={values.login}
               onChange={handleChange}
               onBlur={handleBlur}
               error={touched.login ? errors.login : ""}
-              placeholder="Введите логин"
+              placeholder={t("signUpPage.emailPlaceholder")}
             />
 
-            <div className="form-label">Пароль</div>
+            <div className="form-label">{t("signUpPage.passwordLabel")}</div>
             <PasswordInput
               name="password"
               value={values.password}
@@ -102,7 +103,10 @@ export const SignUpForm = () => {
               onBlur={handleBlur}
               error={touched.password ? errors.password : ""}
             />
-            <div className="form-label">Подтверждение пароля</div>
+
+            <div className="form-label">
+              {t("signUpPage.confirmPasswordLabel")}
+            </div>
             <PasswordInput
               name="confirmPassword"
               value={values.confirmPassword}
@@ -113,7 +117,7 @@ export const SignUpForm = () => {
 
             <div className="form-button">
               <ClassicButton
-                name="Отправить код"
+                name={t("signUpPage.sendCodeBtn")}
                 type="submit"
                 isLoading={isLoading}
               />

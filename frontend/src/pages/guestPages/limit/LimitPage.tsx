@@ -1,18 +1,24 @@
 import { Link } from "react-router";
 import limitImage from "../../../assets/serviceImages/lock.png";
+import { useTranslation } from "react-i18next";
 
 export const LimitPage = () => {
+  const { t } = useTranslation();
+
   return (
     <div className="limit-page">
-      <img src={limitImage} alt="Limit reached" className="limit-image" />
+      <img
+        src={limitImage}
+        alt={t("limitPage.limitReachedAlt")}
+        className="limit-image"
+      />
       <div className="limit-text">
-        Вы истратили все пробные попытки.
+        {t("limitPage.usedAllAttempts")}
         <br />
         <br />
-        Чтобы получить доступ ко всем функциям приложения и новым свайпам вы
-        можете{" "}
+        {t("limitPage.getAccess") + " "}
         <Link to="/signUp" className="register-link">
-          Зарегистрироваться
+          {t("limitPage.register")}
         </Link>
       </div>
     </div>

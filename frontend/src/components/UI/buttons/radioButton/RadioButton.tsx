@@ -4,6 +4,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormHelperText from "@mui/material/FormHelperText";
 import { ChangeEvent } from "react";
+import { useTranslation } from "react-i18next";
 
 interface RadioButtonProps {
   value: string;
@@ -16,6 +17,7 @@ export const RadioButton = ({
   handleChange,
   error,
 }: RadioButtonProps) => {
+  const { t } = useTranslation();
   return (
     <FormControl
       error={!!error}
@@ -31,8 +33,16 @@ export const RadioButton = ({
         value={value}
         onChange={handleChange}
       >
-        <FormControlLabel value="male" control={<Radio />} label="Мужской" />
-        <FormControlLabel value="female" control={<Radio />} label="Женский" />
+        <FormControlLabel
+          value="male"
+          control={<Radio />}
+          label={t("questionnairePage.gender.male")}
+        />
+        <FormControlLabel
+          value="female"
+          control={<Radio />}
+          label={t("questionnairePage.gender.female")}
+        />
       </RadioGroup>
       {error && <FormHelperText>{error}</FormHelperText>}
     </FormControl>

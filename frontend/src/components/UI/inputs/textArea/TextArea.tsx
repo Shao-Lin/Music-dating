@@ -1,6 +1,7 @@
 import { ChangeEvent } from "react";
 import { FormControl, FormHelperText } from "@mui/material";
 import TextareaAutosize from "@mui/material/TextareaAutosize";
+import { useTranslation } from "react-i18next";
 
 interface TextAreaProps {
   value: string;
@@ -17,6 +18,7 @@ export const TextArea = ({
   error,
   minRows,
 }: TextAreaProps) => {
+  const { t } = useTranslation();
   return (
     <FormControl
       error={!!error}
@@ -31,7 +33,7 @@ export const TextArea = ({
         onChange={onChange}
         minRows={minRows}
         maxRows={minRows}
-        placeholder="Расскажите о себе"
+        placeholder={t("questionnairePage.aboutPlaceholder")}
         style={{
           border: `1px solid ${error ? "#d32f2f" : "rgba(0, 0, 0, 0.23)"}`, // MUI по умолчанию
           borderRadius: "35px",

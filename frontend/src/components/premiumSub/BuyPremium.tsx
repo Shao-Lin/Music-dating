@@ -9,6 +9,7 @@ import { ClassicButton } from "../UI/buttons/classicButton/ClassicButton";
 import { CustomModal } from "../modals/questionModal/CustomModal";
 import { SuccessModal } from "../modals/successModal/SuccessModal";
 import { useBuySubMutation } from "../../api/settingsAndEditProfileApi";
+import { useTranslation } from "react-i18next";
 
 const PinkRadio = styled(Radio)({
   "&.Mui-checked": {
@@ -18,6 +19,8 @@ const PinkRadio = styled(Radio)({
 
 export const BuyPremium = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
+
   const [buyPremium] = useBuySubMutation();
   const [isModalQuestionOpen, setIsModalQuestionOpen] = useState(false);
   const [isSuccessModalOpen, setSuccessIsModalOpen] = useState(false);
@@ -38,34 +41,38 @@ export const BuyPremium = () => {
   return (
     <>
       <div className="premium">
-        <button className="premium__back-button" onClick={() => navigate(-1)}>
-          <img src={arrowBack} alt="Назад" />
+        <button
+          className="premium__back-button"
+          onClick={() => navigate(-1)}
+          aria-label={t("buyPremiumPage.back")}
+        >
+          <img src={arrowBack} alt={t("buyPremiumPage.back")} />
         </button>
 
         <header className="wrap-header">
-          <div className="premium__title">Vibe</div>
-          <div className="premium__title">Premium</div>
+          <div className="premium__title">{t("buyPremiumPage.titleLine1")}</div>
+          <div className="premium__title">{t("buyPremiumPage.titleLine2")}</div>
         </header>
 
         <div className="premium__option">
           <img
             src={infinity}
-            alt="Количество свайпов"
+            alt={t("buyPremiumPage.swipesUnlimited")}
             className="premium__option__icon"
           />
           <span className="premium__option__label">
-            Безлимитное количество свайпов
+            {t("buyPremiumPage.swipesUnlimited")}
           </span>
         </div>
 
         <div className="premium__option">
           <img
             src={regenerate}
-            alt="Генерация трека"
+            alt={t("buyPremiumPage.tracksUnlimited")}
             className="premium__option__icon"
           />
           <span className="premium__option__label">
-            Безлимитная генерация треков
+            {t("buyPremiumPage.tracksUnlimited")}
           </span>
         </div>
 
@@ -76,15 +83,24 @@ export const BuyPremium = () => {
               onChange={() => setSelectedPlan("yearly")}
               value="yearly"
               name="plan"
+              inputProps={{ "aria-label": t("buyPremiumPage.yearlyPlan") }}
             />
             <div className="premium__plan__content">
               <div className="top-row">
-                <span className="plan-name">Ежегодно</span>
-                <span className="plan-discount">-25%</span>
-                <span className="plan-monthly">225р в месяц</span>
+                <span className="plan-name">
+                  {t("buyPremiumPage.yearlyPlan")}
+                </span>
+                <span className="plan-discount">
+                  {t("buyPremiumPage.discount")}
+                </span>
+                <span className="plan-monthly">
+                  {t("buyPremiumPage.monthlyPriceYearlyPlan")}
+                </span>
               </div>
               <div className="bottom-row">
-                <span className="plan-yearly">2 700р в год</span>
+                <span className="plan-yearly">
+                  {t("buyPremiumPage.yearlyPrice")}
+                </span>
               </div>
             </div>
           </label>
@@ -95,11 +111,16 @@ export const BuyPremium = () => {
               onChange={() => setSelectedPlan("monthly")}
               value="monthly"
               name="plan"
+              inputProps={{ "aria-label": t("buyPremiumPage.monthlyPlan") }}
             />
             <div className="premium__plan__content">
               <div className="top-row center">
-                <span className="plan-name">Ежемесячно</span>
-                <span className="plan-monthly">299р в месяц</span>
+                <span className="plan-name">
+                  {t("buyPremiumPage.monthlyPlan")}
+                </span>
+                <span className="plan-monthly">
+                  {t("buyPremiumPage.monthlyPrice")}
+                </span>
               </div>
             </div>
           </label>
@@ -109,8 +130,8 @@ export const BuyPremium = () => {
           <ClassicButton
             name={
               selectedPlan === "yearly"
-                ? "Купить подписку за 2 700р в год"
-                : "Купить подписку за 299р в месяц"
+                ? t("buyPremiumPage.buyYearly")
+                : t("buyPremiumPage.buyMonthly")
             }
             type="button"
             onClick={() => setIsModalQuestionOpen(true)}
@@ -122,9 +143,9 @@ export const BuyPremium = () => {
         <CustomModal
           onClose={() => setIsModalQuestionOpen(false)}
           onDelete={handleBuy}
-          description="Приобрести Vibe Premium?"
-          back="Назад"
-          action="Да"
+          description={t("buyPremiumPage.confirmModalText")}
+          back={t("buyPremiumPage.cancel")}
+          action={t("buyPremiumPage.confirm")}
         />
       )}
 

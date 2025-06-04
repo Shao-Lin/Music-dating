@@ -1,0 +1,162 @@
+{
+  "autoplay": "Автопроигрывание трека",
+  "changeLanguage": "Сменить язык",
+  "changeLocation": "Сменить геолокацию",
+  "changeAgeRange": "Изменить возрастной диапазон",
+  "premiumAlt": "Подписка премиум",
+  "buy": "Купить",
+  "logout": "Выйти из аккаунта",
+  "logoutConfirm": "Вы действительно хотите выйти?",
+  "back": "Назад",
+  "cityRequired": "Город обязателен",
+  "loading": "Загрузка...",
+  "errorLoading": "Ошибка загрузки данных",
+
+  "loginTitle": "Вход",
+  "emailLabel": "E-mail",
+  "passwordLabel": "Пароль",
+  "loginBtn": "Войти",
+  "emailPlaceholder": "Введите логин",
+  "required": "Обязательное поле",
+  "invalidEmail": "Введите корректный email.",
+  "invalidCredentials": "Неверный логин или пароль",
+  "badRequest": "Некорректный запрос",
+  "serverError": "Ошибка сервера: {{status}}",
+  "unknownError": "Что-то пошло не так",
+
+  "signUpPage": {
+    "title": "Регистрация",
+    "emailLabel": "E-mail",
+    "emailPlaceholder": "Введите логин",
+    "passwordLabel": "Пароль",
+    "confirmPasswordLabel": "Подтверждение пароля",
+    "sendCodeBtn": "Отправить код",
+    "required": "Обязательное поле",
+    "invalidEmail": "Введите корректный email",
+    "minPassword": "Не менее 6 символов",
+    "passwordMismatch": "Пароли не совпадают",
+    "emailSendError": "Ошибка при отправке email",
+    "serverConnectionError": "Ошибка подключения к серверу",
+    "unknownError": "Неизвестная ошибка"
+  },
+
+  "loginPage": {
+    "guestLogin": "Войти как гость",
+    "signUpLink": "Зарегистрироваться"
+  },
+
+  "questionnairePage": {
+    "title": "Анкета",
+    "name": {
+      "label": "Имя",
+      "placeholder": "Введите имя"
+    },
+    "birthDate": {
+      "label": "Дата рождения"
+    },
+    "city": {
+      "label": "Город"
+    },
+    "about": {
+      "label": "О себе"
+    },
+    "gender": {
+      "label": "Пол",
+      "male": "Мужской",
+      "female": "Женский"
+    },
+    "image": {
+      "label": "Фото"
+    },
+    "submit": "Отправить",
+    "errors": {
+      "userExists": "Пользователь уже существует",
+      "badRequest": "Некорректный запрос",
+      "unauthorized": "Неверный логин или пароль",
+      "unknown": "Что-то пошло не так",
+
+      "required": "Обязательное поле",
+      "invalidDate": "Введите корректную дату",
+      "futureDate": "Дата рождения не может быть в будущем",
+      "ageLimit": "Возраст должен быть от 18 до 100 лет",
+      "minAbout": "Минимум 5 символов",
+      "imageRequired": "Фото обязательно",
+      "fileSize": "Размер файла не должен превышать 10 МБ",
+      "fileType": "Неподдерживаемый формат изображения"
+    },
+    "datePlaceholder": "Выберите дату рождения",
+    "cityLabel": "Выберите город",
+    "aboutPlaceholder": "Расскажите о себе",
+
+    "uploadPhoto": "Загрузить фото"
+  },
+  "inputCodePage": {
+    "emailSent": "Мы отправили код для регистрации на вашу почту <1>{{email}}</1>.",
+    "enterCode": "Введите 4-значный код, указанный в электронном письме",
+    "resend": "Отправить повторно",
+    "resendIn": "Повторить через {{seconds}} сек",
+    "errors": {
+      "emailNotFound": "Email не найден",
+      "sendError": "Ошибка при отправке email",
+      "networkError": "Ошибка подключения к серверу",
+      "unknownError": "Неизвестная ошибка",
+      "invalidCode": "Неверный код. Попробуйте снова."
+    }
+  },
+  "title": "Редактировать профиль",
+  "loadingUserData": "Загрузка данных пользователя...",
+  "aboutLabel": "О себе",
+  "generate": "Сгенерировать",
+  "validation": {
+    "required": "Это поле обязательно",
+    "min": "Минимум 10 символов"
+  },
+  "chatFooter": {
+    "placeholder": "Введите сообщение...",
+    "addImageAlt": "Добавить изображение",
+    "sendMessageAlt": "Отправить сообщение",
+    "previewImageAlt": "Превью изображения"
+  },
+  "waitingPage": {
+    "alt": "Ожидание",
+    "text": "Пожалуйста подождите, идет генерация музыки"
+  },
+  "buyPremiumPage": {
+    "back": "Назад",
+    "titleLine1": "Vibe",
+    "titleLine2": "Premium",
+    "swipesUnlimited": "Безлимитное количество свайпов",
+    "tracksUnlimited": "Безлимитная генерация треков",
+    "yearlyPlan": "Ежегодно",
+    "monthlyPlan": "Ежемесячно",
+    "discount": "-25%",
+    "monthlyPriceYearlyPlan": "225р в месяц",
+    "yearlyPrice": "2 700р в год",
+    "monthlyPrice": "299р в месяц",
+    "buyYearly": "Купить подписку за 2 700р в год",
+    "buyMonthly": "Купить подписку за 299р в месяц",
+    "confirmModalText": "Приобрести Vibe Premium?",
+    "confirm": "Да",
+    "cancel": "Назад"
+  },
+  "limitPage": {
+    "limitReachedAlt": "Достигнут лимит",
+    "usedAllAttempts": "Вы истратили все пробные попытки.",
+    "getAccess": "Чтобы получить доступ ко всем функциям приложения и новым свайпам вы можете",
+    "register": "Зарегистрироваться"
+  },
+  "userLimitPage": {
+    "alt": "Лимит свайпов",
+    "limitReachedMessage": "Вы достигли дневного лимита свайпов. Чтобы продолжить подождите",
+    "orBuy": "Или купите",
+    "vibePremium": "Vibe Premium"
+  },
+  "infoPage": {
+    "title": "Vibe",
+    "welcomeMessage1": "Добро пожаловать!",
+    "welcomeMessage2": "Вам будут доступны 5 профилей для ознакомления с приложением.",
+    "welcomeMessage3": "После вы сможете зарегистрироваться",
+    "back": "Назад",
+    "next": "Далее"
+  }
+}

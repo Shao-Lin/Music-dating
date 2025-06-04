@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { isFetchBaseQueryError } from "../../../utils/errorChecker";
 import { useSendingEmailMutation } from "../../../api/authApi";
 import { useAppSelector } from "../../../hooks/reduxHook";
+import { useTranslation, Trans } from "react-i18next";
 
 export const InputCodeForm = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -12,6 +13,7 @@ export const InputCodeForm = () => {
   const [sendEmailError, setSendEmailError] = useState("");
   const [sendingEmail] = useSendingEmailMutation();
   const login = useAppSelector((state) => state.authUsers.login);
+  const { t } = useTranslation();
 
   // Таймер обратного отсчета
   useEffect(() => {
@@ -25,25 +27,26 @@ export const InputCodeForm = () => {
 
   const handleResendCode = async () => {
     setIsLoading(true);
-    setCountdown(30); // Устанавливаем таймер на 30 секунд
-    // Здесь должна быть логика повторной отправки кода
-    console.log("Запрос на повторную отправку кода...");
+    setCountdown(30);
 
     try {
-      await sendingEmail(login).unwrap(); // важно!
+      await sendingEmail(login).unwrap();
     } catch (error) {
       if (isFetchBaseQueryError(error)) {
         if ("status" in error) {
-          // Пример если API вернул JSON: { message: "Email не найден" }
           const errData = error.data as { message?: string };
-          setSendEmailError(errData?.message || "Ошибка при отправке email");
+          if (errData?.message === "Email не найден") {
+            setSendEmailError(t("inputCodePage.errors.emailNotFound"));
+          } else {
+            setSendEmailError(t("inputCodePage.errors.sendError"));
+          }
         } else {
-          setSendEmailError("Ошибка подключения к серверу");
+          setSendEmailError(t("inputCodePage.errors.networkError"));
         }
       } else if (error instanceof Error) {
         setSendEmailError(error.message);
       } else {
-        setSendEmailError("Неизвестная ошибка");
+        setSendEmailError(t("inputCodePage.errors.unknownError"));
       }
     }
   };
@@ -51,19 +54,21 @@ export const InputCodeForm = () => {
   return (
     <div className="margin-15">
       <div className="sending-by-email-label">
-        Мы отправили код для регистрации на вашу почту <b>{login}</b>.
+        <Trans
+          i18nKey="inputCodePage.emailSent"
+          values={{ email: login }}
+          components={[<b key="1" />]}
+        />
       </div>
-      <div className="input-number-label">
-        Введите 4-значный код, указанный в электронном письме
-      </div>
+      <div className="input-number-label">{t("inputCodePage.enterCode")}</div>
 
       <CodeInput />
       <div className="button-code">
         <ClassicButton
           name={
             countdown > 0
-              ? `Повторить через ${countdown} сек`
-              : "Отправить повторно"
+              ? t("inputCodePage.resendIn", { seconds: countdown })
+              : t("inputCodePage.resend")
           }
           type="button"
           isLoading={isLoading}

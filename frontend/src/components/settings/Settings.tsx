@@ -20,6 +20,7 @@ import { useNavigate } from "react-router";
 import type { userSettingsProps } from "../../pages/SettingsPage";
 import { useGetUserDataQuery } from "../../api/userApi";
 import { useEditProfileMutation } from "../../api/settingsAndEditProfileApi";
+import { useTranslation } from "react-i18next";
 
 export const Settings = ({
   lang,
@@ -30,6 +31,7 @@ export const Settings = ({
   activeTo,
   autoplay,
 }: userSettingsProps) => {
+  const { t } = useTranslation();
   const userSettings = {
     lang,
     ageFrom,
@@ -39,23 +41,30 @@ export const Settings = ({
     activeTo,
     autoplay,
   };
-  console.log(activeFrom, activeTo);
-  const { data: userData, refetch: refetchUser } =
-    useGetUserDataQuery(undefined);
+  const {
+    data: userData,
+    refetch: refetchUser,
+    isLoading,
+  } = useGetUserDataQuery(undefined);
   const [logout] = useLogoutMutation();
   const [editCity] = useEditProfileMutation();
-  const defaultCity: CityOption = { label: userData.city };
+
   const [ageRange, setAgeRange] = useState<[number, number]>([ageFrom, ageTo]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
+
+  if (isLoading) return <div>{t("loading")}</div>;
+  if (!userData) return <div>{t("errorLoading")}</div>;
+
+  const defaultCity: CityOption = { label: userData.city };
 
   const validationSchema = Yup.object().shape({
     city: Yup.object()
       .nullable()
       .shape({
-        label: Yup.string().required("Город обязателен"),
+        label: Yup.string().required(t("cityRequired")),
       })
-      .required("Город обязателен"),
+      .required(t("cityRequired")),
   });
 
   const handleExit = async () => {
@@ -73,8 +82,8 @@ export const Settings = ({
     <>
       {/* Автопроигрывание */}
       <div className="settings__option">
-        <img src={autoPlay} alt="Автопроигрывание" className="option__icon" />
-        <span className="option__label">Автопроигрывание трека</span>
+        <img src={autoPlay} alt={t("autoplay")} className="option__icon" />
+        <span className="option__label">{t("autoplay")}</span>
         <div className="option__control switch">
           <SwitchButton {...userSettings} />
         </div>
@@ -84,10 +93,10 @@ export const Settings = ({
       <div className="settings__option">
         <img
           src={switchLanguage}
-          alt="Сменить язык"
+          alt={t("changeLanguage")}
           className="option__icon2"
         />
-        <span className="option__label">Сменить язык</span>
+        <span className="option__label">{t("changeLanguage")}</span>
         <div className="option__control radio">
           <RadioLanguageSelectorBtn {...userSettings} />
         </div>
@@ -102,23 +111,23 @@ export const Settings = ({
         {({ values, errors, touched, setFieldValue, setFieldTouched }) => (
           <div className="settings__option-column">
             <div className="settings__option-header">
-              <img src={locationIcon} className="option__icon" alt="Гео" />
-              <span className="option__label">Сменить геолокацию</span>
+              <img
+                src={locationIcon}
+                className="option__icon"
+                alt={t("changeLocation")}
+              />
+              <span className="option__label">{t("changeLocation")}</span>
             </div>
 
             <AutocompleteInput
               name="city"
               value={values.city}
               onChange={async (val) => {
-                setFieldValue("city", val); // Сначала обновляем значение
-                setTimeout(() => setFieldTouched("city", true), 0); // Затем touched, чтобы избежать race condition
-
+                setFieldValue("city", val);
+                setTimeout(() => setFieldTouched("city", true), 0);
                 if (val) {
                   try {
-                    await editCity({
-                      ...userData,
-                      city: val.label, // 👈 город как строка
-                    }).unwrap();
+                    await editCity({ ...userData, city: val.label }).unwrap();
                     refetchUser();
                   } catch (error) {
                     console.error("Ошибка при обновлении города:", error);
@@ -135,45 +144,50 @@ export const Settings = ({
       {/* Изменить возраст */}
       <div className="settings__option-column">
         <div className="settings__option-header">
-          <img src={ageIcon} className="option__icon" alt="Возраст" />
-          <span className="option__label">Изменить возрастной диапазон</span>
+          <img
+            src={ageIcon}
+            className="option__icon"
+            alt={t("changeAgeRange")}
+          />
+          <span className="option__label">{t("changeAgeRange")}</span>
         </div>
         <AgeRangeSliderInput
           initialRange={ageRange}
-          settings={userSettings} // 👈 передаём все настройки
+          settings={userSettings}
           onChange={setAgeRange}
         />
       </div>
 
-      {/* Купить подписку */}
+      {/* Подписка */}
       <div
         className="settings__option"
         onClick={() => navigate("/premiumSubscription")}
       >
         <img
           src={premiumIcon}
-          alt="Подписка премиум"
+          alt={t("premiumAlt")}
           className="option__icon2"
         />
-        <span className="option__label option__premium ">
-          Купить <span className="option__premium-font">Vibe Premium</span>
+        <span className="option__label option__premium">
+          {t("buy")} <span className="option__premium-font">Vibe Premium</span>
         </span>
       </div>
 
       <div className="settings__bottom-button">
         <ClassicButton
-          name="Выйти из аккаунта"
+          name={t("logout")}
           type="button"
           onClick={() => setIsModalOpen(true)}
         />
       </div>
+
       {isModalOpen && (
         <CustomModal
           onClose={() => setIsModalOpen(false)}
           onDelete={handleExit}
-          description="Вы действительно хотите выйти?"
-          back="Назад"
-          action="Выйти"
+          description={t("logoutConfirm")}
+          back={t("back")}
+          action={t("logout")}
         />
       )}
     </>
