@@ -19,7 +19,7 @@ import { WaitingPage } from "./pages/servicePages/waiting/WaitingPage";
 import { ErrorPage } from "./pages/servicePages/error/ErrorPage";
 import { MatchFeedGuest } from "./pages/guestPages/MatchFeedGuest";
 import { BottomMenuGuest } from "./components/navigation/bottomMenuGuest/BottomMenuGuest";
-import { RequireAuth } from "./utils/RequireAuth";
+//import { RequireAuth } from "./utils/RequireAuth";
 
 import { useYandexPageview } from "./hooks/useYandexPageview";
 import { YandexMetrika } from "./YandexMetrika";
@@ -56,14 +56,7 @@ function App() {
           <Route path="matchFeed" element={<MatchFeed />} />
           <Route path="listChat" element={<ListOfChats />} />
           <Route path="listMatch" element={<ListOfMatches />} />
-          <Route
-            path="profile"
-            element={
-              <RequireAuth>
-                <Profile />
-              </RequireAuth>
-            }
-          />
+          <Route path="profile" element={<Profile />} />
           <Route path="userLimit" element={<UserLimitPage />} />
         </Route>
       </Routes>
