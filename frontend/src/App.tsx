@@ -31,7 +31,7 @@ function App() {
       <YandexMetrika />
 
       <Routes>
-        <Route path="/" element={<Navigate to="/profile" replace />} />
+        <Route path="/" element={<Navigate to="/login" replace />} />
 
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signUp" element={<SignUpPage />} />
