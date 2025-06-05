@@ -24,7 +24,9 @@ export const UserCard = ({
   const parseToDate = new Date(birthDate);
   const age = calculateAge(parseToDate);
   const audioButtonRef = useRef<AudioButtonHandle | null>(null);
-  localStorage.setItem("myId", userId);
+  if (isProfile) {
+    localStorage.setItem("myId", userId); // Устанавливаем myId только для профиля
+  }
 
   useEffect(() => {
     dispatch(setId({ userId }));

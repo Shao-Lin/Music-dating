@@ -2,7 +2,6 @@ import { ChatItem } from "../components/chatItem/ChatItem";
 import { ChatItemType } from "../components/chatItem/chatItemType";
 import { useGetChatsQuery } from "../api/chatApi";
 import { useGetMatchesDataQuery } from "../api/usersApi";
-import { useMemo } from "react";
 
 interface PartnerData {
   chat: ChatItemType;
@@ -26,19 +25,29 @@ export const ListOfChats = () => {
     error: matchesError,
   } = useGetMatchesDataQuery();
 
+  console.log(`matches${matches}`);
   const myId = localStorage.getItem("myId");
+  console.log(`myId${myId}`);
 
-  const fullChatInfoList: PartnerData[] = useMemo(() => {
-    if (!chats || !matches || !myId) return [];
+  if (isChatsLoading || isMatchesLoading) return <div>Загрузка...</div>;
+  if (chatsError || matchesError)
+    return <div>Произошла ошибка при загрузке данных</div>;
 
-    return chats
+  let fullChatInfoList: PartnerData[] = [];
+
+  if (chats && matches && myId) {
+    console.log(chats);
+    fullChatInfoList = chats
       .map((chat) => {
         // Находим ID собеседника
         const partnerId = chat.participantIds.find((id) => id !== myId);
         if (!partnerId) return null;
-
+        console.log(`partnerId${partnerId}`);
+        console.log(matches[0].userId);
         // Находим данные пользователя по partnerId
         const user = matches.find((m) => m.userId === partnerId);
+
+        console.log(`user ${user}`);
         if (!user) return null;
 
         return {
@@ -55,11 +64,8 @@ export const ListOfChats = () => {
         };
       })
       .filter(Boolean) as PartnerData[];
-  }, [chats, matches, myId]);
+  }
 
-  if (isChatsLoading || isMatchesLoading) return <div>Загрузка...</div>;
-  if (chatsError || matchesError)
-    return <div>Произошла ошибка при загрузке данных</div>;
   console.log(fullChatInfoList);
   return (
     <main className="content">
